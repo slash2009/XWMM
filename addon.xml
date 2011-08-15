@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="webinterface.XWMM"
+  version="1.9.4"
+  name="XWMM"
+  provider-name="slash">
+  <requires>
+    <import addon="xbmc.gui" version="2.11"/>
+  </requires>
+  <extension
+    point="xbmc.gui.webinterface"/>
+  <extension point="xbmc.addon.metadata">
+    <summary>Web Interface to manage media library</summary>
+    <description>XWMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
+    <platform>all</platform>
+  </extension>
+</addon>

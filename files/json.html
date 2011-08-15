@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>XBMC Video Files - JSON</title>
+<link rel="stylesheet" type="text/css" href="../extjs/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="../extjs/resources/css/xtheme-darkgray.css" />
+<script type="text/javascript" src="../extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../extjs/ext-all.js"></script>
+<script type="text/javascript" src="../ux/ext-basex.js"></script>
+<script type="text/javascript" >
+
+
+Ext.onReady(function() {
+	
+	var ScraperList = [];
+	
+	function xbmcJsonRPC(params) {
+		var inputUrl = '/jsonrpc'
+		var myjson = '';
+		Ext.Ajax.request({
+			url: inputUrl,
+			params : params,
+			method: "POST",
+			async: false,
+			success: function (t){
+				myjson = Ext.util.JSON.decode(t.responseText);
+				},
+			failure: function(t){},
+				timeout: 2000
+		});	
+		return myjson.result;
+	}
+
+	//get all methods
+	var myParams = '{"jsonrpc": "2.0", "method": "JSONRPC.Introspect", \"params\": {\"tvshowid\": 1}, "id": 1}';
+		
+	//get Season (tvshows)
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {\"tvshowid\": 1}, "id": 1}';
+	
+	//get TVShows
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "id": 1}';
+	
+	//get audio albums
+	//var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "id": 1}';
+	
+	// get shares
+	//var myParams = '{"jsonrpc": "2.0", "method": "Files.GetSources", "params": {"media": "video"}, "id": 1}';
+	
+	//get directory
+	//var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"type\": \"files\", \"directory\": \"special://home/addons"}, \"id\": 1}';
+	
+	//Get RootDirectory
+	//var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetRootDirectory\", \"params\": {\"type\": \"files\", \"directory\": \"special://home/addons"}, \"id\": 1}';
+
+	
+	
+	var myShares = xbmcJsonRPC(myParams);
+	//for (var i=0; i<myShares.directories.length; i++) {
+	//	console.log(myShares.directories[i].label,' -- ',myShares.directories[i].file);
+	//}
+	console.log(myShares);
+
+	
+
+		
+});
+	
+</script>
+	
+</head>
+</html>
+
