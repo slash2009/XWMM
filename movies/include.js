@@ -4,15 +4,11 @@
 //------------------------------------------ 
 
 Ext.BLANK_IMAGE_URL = '../extjs/resources/images/default/s.gif';
-var responseFinale = [];
-var movieTable = [];
 var selectedMovie;
 var currentRecord;
 var currentMovie;
-var DetailsFlag;
-var genresFlag;
-var detailPanel;
 
+// context menu to set watched or unwatched
 var gridContextMenu = new Ext.menu.Menu({
 	items: [
 		{ text: 'Mark as watched', handler: setWatched },
@@ -32,12 +28,8 @@ function setUnwatched() {
 		Moviegrid.getView().refresh();
 };
 
+// saving changes
 function updateXBMCAll() {
-
-	// if (Ext.getCmp('moviegenres').isDirty()) {
-		// console.log('test 2');
-		// updateXBMCGenreMovie();
-	// };
 
 	Ext.MessageBox.show({
 		title: 'Please wait',
@@ -62,10 +54,8 @@ function updateXBMCAll() {
 				};
 			};
             if (v == 15) {
-				if (Ext.getCmp('moviegenres').isDirty()) {				
 					updateXBMCGenreMovie();		
 					myText = 'updating Genres'
-				};
 			};
 			Ext.MessageBox.updateProgress(i, myText);
         }
@@ -76,50 +66,22 @@ function updateXBMCAll() {
     }
 }
 
-function LoadAllMoviesdetails(){
-	//storeMovieDetails.load();
-	//storegenre.load();
-	storeVideoFlags.load();
-	storeAudioFlags.load();
-}
-
+// refresh form on item selection
 function updateAllForms(r) {
 
 	Ext.getCmp('MoviedetailPanel').getForm().loadRecord(r);
 	Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
 
 	Ext.getCmp('movierating').updateSrc(r);
-	Ext.getCmp('fanart').updateSrc(r);
-	Ext.getCmp('cover').updateSrc(r);
+	Ext.getCmp('fanart').updateSrc(r.data.fanart);
+	Ext.getCmp('cover').updateSrc(r.data.thumbnail);
 	
+	Ext.getCmp('videocodec').getEl().dom.src = "../images/flags/"+r.data.streamDetails.video[0].codec+".png";
+	Ext.getCmp('aspect').getEl().dom.src = "../images/flags/"+findAspect(r.data.streamDetails.video[0].aspect)+".png";
+	Ext.getCmp('resolution').getEl().dom.src = "../images/flags/"+findResolution(r.data.streamDetails.video[0].width)+".png";	
 	
-	Ext.getCmp('videocodec').getEl().dom.src = "../images/flags/"+r.data.strVideoCodec+".png";
-	Ext.getCmp('aspect').getEl().dom.src = "../images/flags/"+findAspect(r.data.fVideoAspect)+".png";
-	Ext.getCmp('resolution').getEl().dom.src = "../images/flags/"+findResolution(r.data.iVideoWidth)+".png";	
-
-	Ext.getCmp('audiochannels').getEl().dom.src = "../images/flags/"+r.data.iAudioChannels+"c.png";
-	Ext.getCmp('audiocodec').getEl().dom.src = "../images/flags/"+r.data.strAudioCodec+".png";
-}
-
-function GetMovieDetails(r){
-
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select c01, c02, c03, c04, c05, c06, c07, c09, c10, c11, c15, c18, c12, c19,  c20, c08 from movie where idMovie='+r.data.idMovie+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function(resp,opt) {		
-			Ext.getCmp('cover').updateSrc(r);
-			XBMCgetMoviesFields(resp,r);	
-			GetVideoStreams(r);
-			GetAudioStreams(r);
-			updateAllForms(r);
-			r.data.details = true;
-		},
-		failure: function(t){},
-		timeout: 2000
-	});	
-
+	Ext.getCmp('audiochannels').getEl().dom.src = "../images/flags/"+r.data.streamDetails.audio[0].channels+"c.png";
+	Ext.getCmp('audiocodec').getEl().dom.src = "../images/flags/"+r.data.streamDetails.audio[0].codec+".png";
 }
 
 function updateXBMCMovieDetails() {
@@ -135,17 +97,18 @@ function updateXBMCMovieDetails() {
 	}
 }
 
+// update movie genre field when a genre is selected (manually or when movie is selected)
 function movieGenreChange(sm){
 
 	var sel = sm.getSelections();
 	var strTemp = "";
 	for (var i = 0; i < sel.length; i++) {
-		if (strTemp == ""){strTemp = sel[i].data.strGenre}
-			else{ strTemp = strTemp+' / '+sel[i].data.strGenre};
+		if (strTemp == ""){strTemp = sel[i].data.label}
+			else{ strTemp = strTemp+' / '+sel[i].data.label};
 	}
-	currentRecord.data.Moviegenres = strTemp;
+	currentRecord.data.genre = strTemp;
 
-	Ext.getCmp('moviegenres').setValue(strTemp)
+	Ext.getCmp('genreString').setValue(strTemp)
 }
 	
 function updateXBMCGenreMovie(){
@@ -182,67 +145,4 @@ function updateXBMCGenreMovie(){
 	}
 }
 
-// Query XBMC DB genrelinkmovie
-function GetMovieGenres(record){
-	if (record.data.genres == undefined){
-		// get movie genre once
-			var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre FROM genrelinkmovie where idmovie='+record.data.idMovie+')'
-			Ext.Ajax.request({
-				url: inputUrl,
-				method: 'GET',
-				async: false,
-				success: function (t){
-						var responseArr = TrimXbmcXml(t);
-						responseArr = responseArr.split("<record>");
-						//first field is always empty
-						responseArr.remove("");
-						for (var i = 0; i < responseArr.length; i++) {
-							responseArr[i]= storegenre.findExact('idGenre',responseArr[i],0,false,false)
-						};		
-						record.data.genres = responseArr;
-						updateGenreGrid(record.data.genres);
-				},
-				failure: function(t){},
-				timeout: 2000
-			});
-	}
-	else{updateGenreGrid(record.data.genres)};
-}
 
-function checkWatched(val) {
- if ((val != "" ) && (val != "0"))
-	return '<img src=../images/icons/checked.png>';
-
-}
-
-function checkSet(val) {
- if ((val != "" ) && (val != "0"))
-	return '<img src=../images/icons/set.png>';
-
-}
-
-function updateGenreGrid(t){
-
-	
-	Genregrid.getSelectionModel().clearSelections(false);
-	Genregrid.getSelectionModel().selectRows(t, true);
-
-	var bt = Ext.getCmp('savebutton');
-	bt.disable();
-	genresFlag = false
-}
-
-var MoviecolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'idMovie', hidden: true, width: 30},
-		{header: "Title", dataIndex: 'Movietitle', width: 215},
-		{header: "Description", dataIndex: 'Moviedescr', hidden: true},
-		{header: "Duration", dataIndex: 'Movieduration', hidden: true},
-		{header: "Director", dataIndex: 'Moviedirector', hidden: true},
-		{header: "Rating", dataIndex: 'c05', hidden: true},
-		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "Studio", dataIndex: 'c18', hidden: true},
-		{header: "Release", dataIndex: 'c07', hidden: true},
-		{header: "file", dataIndex: 'idFile', hidden: true},
-		{header: "", dataIndex: 'idSet', width: 25, hidden: false, renderer: checkSet},
-		{header: "", dataIndex: 'watched', width: 25, hidden: false, renderer: checkWatched}
-    ]);

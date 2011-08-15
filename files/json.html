@@ -27,20 +27,49 @@ Ext.onReady(function() {
 				myjson = Ext.util.JSON.decode(t.responseText);
 				},
 			failure: function(t){},
-				timeout: 2000
+				timeout: 5000
 		});	
 		return myjson.result;
 	}
+	//test en compilation
+	
+	var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"content": "movie", "fields": ["thumbnail"]},"id": 1}';
 
+	var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "params": {},"id": 1}';
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.MovieRefresh", "params": {"path" : \"smb://HERCULES/Medias/Movies/Action/Tomb Raider (2001)/Tomb Raider (2001).mkv", "title": "iron man.mkv"},"id": 1}';
+	
+	//var myParams = '{"jsonrpc": "2.0", "method": "Files.GetSources", "params": {"media": "video"}, "id": 1}';
+
+	// Set Movie Details id=11 --> handcock
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", \"params\": {"movieid": 11, "fields": [{"genre": "Crime / nicolas"}]},"id": 1}';
+
+	
 	//get all methods
-	var myParams = '{"jsonrpc": "2.0", "method": "JSONRPC.Introspect", \"params\": {\"tvshowid\": 1}, "id": 1}';
-		
+	var myParams = '{"jsonrpc": "2.0", "method": "JSONRPC.Introspect", \"params\": {}, "id": 1}';
+	
+	// get TV Shows
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", \"params\": {"fields": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "cast", "playcount", "episode","imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}';
+	
+	//get actor for a movie
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": 5, "fields": ["year", "title", "file", "thumbnail"]},"id": 1}';
+	
+	// get movie details
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"fields": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "set","streamDetails", "top250", "votes", "writingcredits", "fanart", "thumbnail", "file" ]}, "id": 1}'
+	
+//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"fields": ["year","title","file", "fanart", "thumbnail", "streamDetails"]}, "id": 1}'
+
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid" : 32, "fields": ["genre", "year","title","streamDetails", "mpaa"]}, "id": 1}';
+
 	//get Season (tvshows)
 	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {\"tvshowid\": 1}, "id": 1}';
 	
-	//get TVShows
-	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "id": 1}';
-	
+	// get seasons
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {"tvshowid": 2, "fields": [ "season"]},"id": 1}';
+
+	 
+	//get episodes
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", \"params\": {"tvshowid": 2, "season": 1, "fields": [ "episode", "title"]},"id": 1}';
+
 	//get audio albums
 	//var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "id": 1}';
 	

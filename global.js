@@ -1,19 +1,73 @@
 
-var myVersion = '1.9.4'
+function findResolution(iWidth) {
 
-var videoFlagsRecord = Ext.data.Record.create([
-   {name: 'idFile', mapping: 'field:nth(1)'},		
-   {name: 'strVideoCodec', mapping: 'field:nth(2)'},
-   {name: 'fVideoAspect', mapping: 'field:nth(3)'},	
-   {name: 'iVideoWidth', mapping: 'field:nth(4)'},
-   {name: 'iVideoHeight', mapping: 'field:nth(5)'}
-]);
+if (iWidth == 0)
+	return "defaultscreen";
+else if (iWidth < 721)
+    return "480";
+  // 960x540
+else if (iWidth < 961)
+    return "540";
+  // 1280x720
+else if (iWidth < 1281)
+    return "720";
+  // 1920x1080
+else 
+    return "1080";
 
-var audioFlagsRecord = Ext.data.Record.create([
-   {name: 'idFile', mapping: 'field:nth(1)'},		
-   {name: 'strAudioCodec', mapping: 'field:nth(2)'},
-   {name: 'iAudioChannels', mapping: 'field:nth(3)'}
-]);
+}
+
+function findAspect(vAspect) {
+if (vAspect == 0)
+	return "default";
+if (vAspect < 1.4)
+	return "1.33";
+else if (vAspect < 1.7)
+	return "1.66";
+else if (vAspect < 1.8)
+	return "1.78";
+else if (vAspect < 1.9)
+	return "1.85";
+else if (vAspect < 2.3)
+	return "2.20";
+else 
+	return "2.35";
+}
+
+var VideoFlagsPanel = new Ext.Panel({
+	border: false,
+	defaults:{xtype:'container'},
+	items: [{
+		id: 'videocodec',
+		width:84,
+		height:31,
+		autoEl: {tag: 'img', src: "../images/flags/default.png"}
+	},{
+		width:84,
+		height:31,
+		id: 'resolution',
+		autoEl: {tag: 'img', src: "../images/flags/defaultscreen.png"}
+	},{
+		id: 'aspect',
+		width:48,
+		height:31,
+		autoEl: {tag: 'img', src: "../images/flags/default.png"}
+	}]});
+	
+var AudioFlagsPanel = new Ext.Panel({
+	border: false,
+	defaults:{xtype:'container', width: 64, height: 44},
+	items: [{
+		id: 'audiocodec',
+		autoEl: {tag: 'img', src: "../images/flags/defaultsound.png"}
+	},{
+		id: 'audiochannels',
+		autoEl: {tag: 'img', src: "../images/flags/0c.png"}
+	}]
+});
+
+
+// ------------------------------------------------
 
 var menuBar = new Ext.Toolbar({
 	region: "north",
@@ -76,28 +130,16 @@ var menuBar = new Ext.Toolbar({
 
 })
 
-var storeVideoFlags = new Ext.data.Store({
-	id: 'storevideoflags',
-	reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, videoFlagsRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strVideoCodec, fVideoAspect, iVideoWidth, iVideoHeight from streamdetails where iStreamType=0)' 
-});
-
-var storeAudioFlags = new Ext.data.Store({
-	id: 'storeaudioflags',
-	reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, audioFlagsRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strAudioCodec, iAudioChannels from streamdetails where iStreamType=1)' 
-});
-
 Number.prototype.unsign = function(bytes) {
   return this >= 0 ? this : this - Number.MIN_VALUE*2;
 };
 
-function parseXBMCXml(xmlString) {
+function removeSpace(string) {
+     string = string.replace(/^\s*|\s*$/g,'');
+	 return string
+}
 
+function parseXBMCXml(xmlString) {
 	var tempTable = xmlString.replace(/<\/thumb>/g, ";");
 	tempTable = tempTable.replace(/<([^>]+)>/g,'');
 	tempTable = tempTable.split(";");
@@ -106,7 +148,6 @@ function parseXBMCXml(xmlString) {
 }
 
 
-// Credit to Fiasco from the xbmc forum
 function FindCRC(data) {
   var CRC=0xffffffff;
   data = data.toLowerCase();
@@ -153,116 +194,12 @@ function copyXBMCVideoThumb(thumb, r, element, type) {
 		},
 		failure: function(t){},
 		timeout: 2000
-	})
-};
+	})};
 
-var responseFinale = [];
-var movieTable = [];
+var savingMessage = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
+
 var currentShowPath;
 var selectedMovie;
 var currentRecord;
 var currentMovie;
-var DetailsFlag;
-var detailPanel;
-
-var VideoFlagsPanel = new Ext.Panel({
-	border: false,
-	defaults:{xtype:'container'},
-	items: [{
-		id: 'videocodec',
-		width:84,
-		height:31,
-		autoEl: {tag: 'img', src: "../images/flags/default.png"}
-	},{
-		width:84,
-		height:31,
-		id: 'resolution',
-		autoEl: {tag: 'img', src: "../images/flags/defaultscreen.png"}
-	},{
-		id: 'aspect',
-		width:48,
-		height:31,
-		autoEl: {tag: 'img', src: "../images/flags/default.png"}
-	}]
-});
-
-var AudioFlagsPanel = new Ext.Panel({
-	border: false,
-	defaults:{xtype:'container', width: 64, height: 44},
-	items: [{
-		id: 'audiocodec',
-		autoEl: {tag: 'img', src: "../images/flags/defaultsound.png"}
-	},{
-		id: 'audiochannels',
-		autoEl: {tag: 'img', src: "../images/flags/0c.png"}
-	}]
-});
-
-
-
-function findResolution(iWidth) {
-
-if (iWidth == 0)
-	return "defaultscreen";
-else if (iWidth < 721)
-    return "480";
-  // 960x540
-else if (iWidth < 961)
-    return "540";
-  // 1280x720
-else if (iWidth < 1281)
-    return "720";
-  // 1920x1080
-else 
-    return "1080";
-
-}
-
-function findAspect(vAspect) {
-if (vAspect == 0)
-	return "default";
-if (vAspect < 1.4)
-	return "1.33";
-else if (vAspect < 1.7)
-	return "1.66";
-else if (vAspect < 1.8)
-	return "1.78";
-else if (vAspect < 1.9)
-	return "1.85";
-else if (vAspect < 2.3)
-	return "2.20";
-else 
-	return "2.35";
-}
-
-function GetVideoStreams(record){
-	var index = storeVideoFlags.find('idFile',record.data.idFile,0,false,false);
-	if (index == -1){
-		record.data.strVideoCodec = "default";
-		record.data.fVideoAspect = 0;
-		record.data.iVideoWidth = 0;
-	}
-	else {
-		var mydetails = storeVideoFlags.getAt(index);
-		record.data.strVideoCodec = mydetails.data.strVideoCodec;
-		record.data.fVideoAspect = mydetails.data.fVideoAspect;
-		record.data.iVideoWidth = mydetails.data.iVideoWidth;
-	}
-};
-
-function GetAudioStreams(record) {
-	var index = storeAudioFlags.find('idFile',record.data.idFile,0,false,false);
-	if (index == -1){
-		record.data.strAudioCodec = "defaultsound";
-		record.data.iAudioChannels = 0;
-	}
-	else {
-		var mydetails = storeAudioFlags.getAt(index);
-		record.data.strAudioCodec = mydetails.data.strAudioCodec;
-		record.data.iAudioChannels = mydetails.data.iAudioChannels;
-	}
-}
-
-var savingMessage = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
-
-
+var myVersion = '2.0.0a'

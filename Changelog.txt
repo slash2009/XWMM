@@ -1,12 +1,14 @@
 XWMM Change log
-
+1.9.1
+- Fixes:
+-- Fixed genre list display was not always showing
+-- Fixed movie information not always showing
+-- Fixed changing covers and fanart in movies
 
 1.9.2
 - Fixes:
 -- Fixed genre list display was not always showing in TV Shows
 -- Fixed episode list not always showing
-
-test2
 
 - Added:
 -- Scraper list is created dynamicly from installed add-ons
@@ -26,5 +28,3 @@ test2
 -- Movie release date in HTML export
 -- Music field update
 
-1.9.5
--- changed most http requests by JSON-RPC requests (faster)
