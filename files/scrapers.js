@@ -16,16 +16,16 @@
 	}
 
 function getAddonList(myDir) {
-	for (var i=0; i<myDir.directories.length; i++) {
-		if (myDir.directories[i].label.match("metadata") == "metadata") {
-			var mytest = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"type\": \"files\", \"directory\": \"'+myDir.directories[i].file+'"}, \"id\": 1}';				
+	for (var i=0; i<myDir.files.length; i++) {
+		if (myDir.files[i].label.match("metadata") == "metadata") {
+			var mytest = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"'+myDir.files[i].file+'"}, \"id\": 1}';				
 			//IsScraper('/vfs/'+myDir.directories[i].file+'addon.xml')
 				Ext.Ajax.request({
-					url: '/vfs/'+myDir.directories[i].file+'addon.xml',
+					url: '/vfs/'+myDir.files[i].file+'addon.xml',
 					method: 'GET',
 					async: false,
 					success: function (t){
-						parseAddonXML(t.responseXML, myDir.directories[i].file)
+						parseAddonXML(t.responseXML, myDir.files[i].file)
 					},
 					failure: function(t){},
 					timeout: 2000
@@ -53,7 +53,7 @@ function parseAddonXML(string, path) {
 
 function parseScrapers() {
 	
-	var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"type\": \"files\", \"directory\": \"special://home/addons"}, \"id\": 1}';
+	var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"special://home/addons"}, \"id\": 1}';
 	var myShares = xbmcJsonRPC(myParams);
 
 	getAddonList(myShares);

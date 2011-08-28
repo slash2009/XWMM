@@ -74,16 +74,16 @@ function myExpend(node, event) {
 		if (node.attributes.leaf == false) {
 			node.attributes.scansub = true;
 			var mypath = normalizeString(node.attributes.data);
-			var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"type\": \"files\", \"directory\": \"'+mypath+'\"}, \"id\": 1}';
+			var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"'+mypath+'\"}, \"id\": 1}';
 			var tempStr = xbmcJsonRPC(myParams);
-			if (tempStr.directories != undefined) {
-				for (var i = 0; i < tempStr.directories.length; i++) {
-							addNodeDirectory(node, tempStr.directories[i]);
-				}
-			}
 			if (tempStr.files != undefined) {
 				for (var i = 0; i < tempStr.files.length; i++) {
-							addNodeFile(node, tempStr.files[i]);		
+					if (tempStr.files[i].filetype == "directory") {
+							addNodeDirectory(node, tempStr.files[i])
+					}
+					else {
+						addNodeFile(node, tempStr.files[i]);
+					}
 				}
 			}
 		}

@@ -104,7 +104,7 @@ function movieGenreChange(sm){
 	var strTemp = "";
 	for (var i = 0; i < sel.length; i++) {
 		if (strTemp == ""){strTemp = sel[i].data.label}
-			else{ strTemp = strTemp+' / '+sel[i].data.label};
+			else{ strTemp = strTemp+' / '+sel[i].data.label}
 	}
 	currentRecord.data.genre = strTemp;
 

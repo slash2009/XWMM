@@ -90,10 +90,9 @@ function movieGenreChange(sm){
 	var strTemp = "";
 	for (var i = 0; i < sel.length; i++) {
 		//currentRecord.data.selectedGenre.push(sel[i].data.idGenre);
-		if (strTemp == ""){strTemp = sel[i].data.genre}
-			else{ strTemp = strTemp+' / '+sel[i].data.genre};
+		if (strTemp == ""){strTemp = sel[i].data.label}
+			else{ strTemp = strTemp+' / '+sel[i].data.label};
 	}
-
 	selectedTvShow.data.genre = strTemp;
 
 	Ext.getCmp('genreString').setValue(strTemp)
@@ -105,7 +104,7 @@ function updateTvShowForms(r) {
 	Ext.getCmp('tvshowcover').updateSrc(r.data.thumbnail);
 	var myForm = Ext.getCmp('tvShowdetailPanel');
 	
-	myForm.getForm().loadRecord(r);
+	myForm.getForm().loadRecord(r)
 }
 
 function updateEpisodeForms(r) {
@@ -121,7 +120,7 @@ function updateEpisodeForms(r) {
 	
 	Ext.getCmp('audiochannels').getEl().dom.src = "../images/flags/"+r.data.streamDetails.audio[0].channels+"c.png";
 	Ext.getCmp('audiocodec').getEl().dom.src = "../images/flags/"+r.data.streamDetails.audio[0].codec+".png";
-	Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
+	Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
 }
 
 function updateXBMCGenreTvshow(){

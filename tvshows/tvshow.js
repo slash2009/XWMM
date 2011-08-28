@@ -38,7 +38,7 @@ var TVShowCover = new Ext.ux.XbmcImages({
 	border: 0,
 	width: 380,
 	height:70,
-	autoEl: {tag: 'img', src: "../images/nobanner.png"},
+	autoEl: {tag: 'img', src: "../images/nobanner.png"}
 });
 
 var SeasonCover = new Ext.ux.XbmcImages({
@@ -47,7 +47,7 @@ var SeasonCover = new Ext.ux.XbmcImages({
 	border: 0,
 	width: 160,
 	height:231,
-	autoEl: {tag: 'img', src: "../images/nobanner.png"},
+	autoEl: {tag: 'img', src: "../images/nobanner.png"}
 });
 
 var storeTvshow = new Ext.ux.XbmcStore({
@@ -55,7 +55,7 @@ var storeTvshow = new Ext.ux.XbmcStore({
 	reader: new Ext.data.JsonReader({
 		root:'tvshows'	       
 		}, tvShowRecord),
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", \"params\": {"fields": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode","imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}'
+	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", \"params\": {"fields": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}'
 });
 storeTvshow.loadXbmc();
 
@@ -63,14 +63,14 @@ var storeSeason = new Ext.ux.XbmcStore({
 	sortInfo: {field: 'season', direction: "ASC"},
 	reader: new Ext.data.JsonReader({
 		root:'seasons'	       
-		}, seasonRecord),
+		}, seasonRecord)
 });
 
 var storeEpisode = new Ext.ux.XbmcStore({
 	sortInfo: {field: 'episode', direction: "ASC"},
 	reader: new Ext.data.JsonReader({
 		root:'episodes'	       
-		}, episodeRecord),
+		}, episodeRecord)
 })
 
 var TVShowdetailPanel = new Ext.FormPanel({

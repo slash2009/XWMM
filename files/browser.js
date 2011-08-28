@@ -17,7 +17,7 @@ Ext.onReady(function() {
 			text: myVersion
     });
 	
-	setXBMCResponseFormat();
+	//setXBMCResponseFormat();
 	parseScrapers();
 	var str = '';
 	var myjson = '';
