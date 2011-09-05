@@ -93,37 +93,19 @@ function getMusicCoverList(String, r) {
 
 function GetAlbumDetails(r) {
 
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(SELECT idAlbumInfo, iYear, genre.strGenre, strExtraGenres, strMoods, strStyles, strThemes, strReview, strLabel, strType, strImage from albuminfo JOIN genre ON albuminfo.idGenre = genre.idGenre WHERE idAlbum = '+r.data.idAlbum+')';
-    var resp = "";
-	Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-		async: false,
-        success: function (t){
-			resp = t;
-			},
-        failure: function (t){},
-		timeout: 2000
-    });
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "fields": ["title", "description", "genre", "theme", "mood", "style", "type", "rating", "fanart", "thumbnail", "label"]},"id": 1}');
 
-	var temp = resp.responseText.replace(/<\/record>/g, "");
-	temp = temp.replace(/<record>/g, "");
-	temp = temp.replace(/<recordset>/g, "");
-	temp = temp.replace(/<\/recordset>/g, "");
-	temp = temp.replace(/<html>/g, "");
-	temp = temp.replace(/<\/html>/g, "");
-	temp = temp.replace(/<\/field>/g, "");
-	temp = temp.split("<field>");
+	r.data.description = jsonResponse.albumdetails.description;
+	r.data.title = jsonResponse.albumdetails.title;
+	r.data.genre = jsonResponse.albumdetails.genre;
+	r.data.theme = jsonResponse.albumdetails.theme;
+	r.data.mood = jsonResponse.albumdetails.mood;	
+	r.data.style = jsonResponse.albumdetails.style;
+	r.data.type = jsonResponse.albumdetails.type;
+	r.data.rating = jsonResponse.albumdetails.rating;
+	r.data.fanart = jsonResponse.albumdetails.fanart;
+	r.data.extrathumbnail = jsonResponse.albumdetails.thumbnail;
+	r.data.album_label = jsonResponse.albumdetails.album_label;
 
-	r.data.idAlbumInfo = temp[1];
-	r.data.iYearScraper = temp[2];
-	r.data.strGenreScraper = temp[3];
-	r.data.strExtraGenres = temp[4];	
-	r.data.strMoods = temp[5];
-	r.data.strStyles = temp[6];
-	r.data.strThemes = temp[7];
-	r.data.strReview = temp[8];
-	r.data.strLabel = temp[9];
-	r.data.strType = temp[10];
-	r.data.MusicCoverUrl = getMusicCoverList(temp[11], r)
+	//r.data.MusicCoverUrl = getMusicCoverList(temp[11], r)
 }

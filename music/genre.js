@@ -1,8 +1,7 @@
 
-
-var genreRecord = Ext.data.Record.create([
-   {name: 'idGenre', mapping: 'field:nth(1)'},		
-   {name: 'strGenre', mapping: 'field:nth(2)'}
+var musicGenreRecord = Ext.data.Record.create([	
+   {name: 'genreid'},
+   {name: 'label'},
 ]);
 
 var Checkgenre = new Ext.grid.CheckboxSelectionModel({
@@ -20,17 +19,40 @@ var Checkgenre = new Ext.grid.CheckboxSelectionModel({
 
 var GenrecolModel = new Ext.grid.ColumnModel([
 		Checkgenre,
-		{header: "#", dataIndex: 'idGenre', hidden: true},
-		{header: "Genre", dataIndex: 'strGenre'}
+		{header: "#", dataIndex: 'genreid', hidden: true},
+		{header: "Genre", dataIndex: 'label'}
 ]);
 
-var GenreStore = new Ext.data.Store({
-	sortInfo: {field: 'strGenre', direction: "ASC"},
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
-		}, genreRecord),
-	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idGenre, strGenre FROM genre)'
+function movieGenreChange(sm){
+	var sel = sm.getSelections();
+	var strTemp = "";
+	for (var i = 0; i < sel.length; i++) {
+		if (strTemp == ""){strTemp = sel[i].data.label}
+			else{ strTemp = strTemp+' / '+sel[i].data.label}
+	}
+	currentRecord.data.genre = strTemp;
+
+	Ext.getCmp('genreString').setValue(strTemp)
+}
+
+var GenreStore = new Ext.ux.XbmcStore({
+	id: 'storegenre',
+	sortInfo: {field: 'label', direction: "ASC"},
+	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "params": {},"id": 1}',
+	reader: new Ext.data.JsonReader({
+		root:'genres'	       
+	}, musicGenreRecord),
+		selectFromString :function(string){ // select genre rows according to movie genre field 
+		var myArray = string.split('/');
+		Genregrid.getSelectionModel().clearSelections(false);
+		for (var i = 0; i < myArray.length; i++) {
+			var index = GenreStore.findExact('label',removeSpace(myArray[i]),0,false,false);
+			Genregrid.getSelectionModel().selectRow(index, true);
+		}
+	}
+
 });
+//GenreStore.loadXbmc();
 
 var editor = new Ext.ux.grid.RowEditor({
 	saveText: 'Update',
