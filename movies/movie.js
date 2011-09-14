@@ -2,7 +2,90 @@
 // movie.js
 //------------------------------------------ 
 
+
+var MovieFanart = new Ext.ux.XbmcImages ({
+	id: 'fanart',
+	border: 0,
+	width: 295,
+	height:165,
+	autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg", qtip:'Double-click to change'}
+});
+
+var Stars = new Ext.ux.XbmcStars ({
+	id: 'movierating',
+	border: 0,
+	width: 96,
+	height:27
+});
+
+var MovieCover = new Ext.ux.XbmcImages ({
+	id: 'cover',
+	cls: 'center-align',
+	border: 0,
+	width: 250,
+	height:375,
+	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg", qtip:'Double-click to change'},
+});
+
 Ext.ns('Movie');
+
+var fileDetailsPanel = new Ext.FormPanel({
+	id: 'filedetailPanel',
+	title: 'Other details',
+	labelWidth:50,
+	frame: true,
+	bodyStyle:'padding:5px',
+	defaults: {width: 140, xtype: 'textfield'},
+	items: [{
+		fieldLabel: 'Name',
+		name: 'strFilename',
+		readOnly: true,
+		XBMCName: 'c00'
+	},{
+		fieldLabel: 'Directory',
+		name: 'strPath',
+		readOnly: true,
+		XBMCName: 'c05'
+	},{
+		xtype: 'combo',
+		fieldLabel: 'Set',
+		emptyText : '-- None --',
+		store: MovieSetStore,
+		displayField: 'strSet',
+		id: 'moviesetcombo',
+		mode: 'local',
+		triggerAction: 'all',
+		name: 'strSet',
+		listeners: {
+			change: function(combo, newValue, oldValue) {
+				var currentMovie = Moviegrid.getSelectionModel().getSelected();
+				if (newValue == "") {
+					// remove existing record in setlinkmovie
+					myId = "";
+					var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'"))';
+				}
+				else {
+					var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', newValue)).data.idSet;
+					if (newValue != oldValue) {
+						if (oldValue == "") {
+							// Add new record in setlinkmovie
+							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ('+myId+','+currentMovie.data.idMovie+'))';				
+						}
+						else {
+							// modify existing record in setlinkmovie
+							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ("'+record.data.idMovie+'"))';
+						}
+
+					}
+				}
+				XBMCExecSql(inputUrl);
+				currentMovie.data.idSet = myId;
+				currentMovie.data.strSet = newValue;
+				Moviegrid.getView().refresh();
+			}
+		}
+	}]
+})
 
 var MoviedetailPanel = new Ext.FormPanel({
 	width: 600,
@@ -39,7 +122,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 			fieldLabel: 'Title',
-			name: 'title',
+			name: 'Movietitle',
 			XBMCName: 'c00',
 			allowBlank: false
 		},{
@@ -49,9 +132,9 @@ var MoviedetailPanel = new Ext.FormPanel({
 
 		},{
 			fieldLabel: 'Genres',
-			name: 'genre',
+			name: 'Moviegenres',
 			XBMCName: 'c14',
-			id:'genreString',
+			id:'moviegenres',
 			readOnly: true
 
 		}]
@@ -125,12 +208,13 @@ var MoviedetailPanel = new Ext.FormPanel({
 			fieldLabel: 'Trailer',
 			id: 'trailer',
 			XBMCName: 'c19',
-			name: 'trailer'
+			name: 'MovieTrailer'
 		},{
 			xtype: 'button',
 			text: 'View Trailer',
 			handler: function(){
 				if (Ext.getCmp('trailer').getValue() != '') {
+				//var w = (window.open(urlstring, wname, wfeatures, false));
 						window.open(Ext.getCmp('trailer').getValue(),'')
 				}
 			},
@@ -143,11 +227,14 @@ var MoviedetailPanel = new Ext.FormPanel({
 		items: [MovieFanart]
 	},{
 		width: 160,
+		//frame : false,
 		items: [AudioFlagsPanel]
-
+		// height : 200
 	},{
 		width : 255,
+		//frame : false,
 		items: [VideoFlagsPanel]
+		// heigth :
 	}]
 })
 
@@ -179,22 +266,7 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 			}]	
 		},
 			menuBar,
-		{
-			xtype: 'panel',
-			region:'west',
-			//margins:'5 5 5 5',
-			split:true,
-			width: 285,
-			items: [{
-                height: 100,
-                split: true,
-                collapsible: true,
-				collapsed: true,
-                title: 'Splitter above me',
-                html: 'center south'
-            },
-			Moviegrid]
-		},
+			Moviegrid,
 			MoviedetailPanel
 		]
 		})
@@ -204,30 +276,39 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 	
 	initEvents: function() {
 		Movie.Mainpanel.superclass.initEvents.call(this);
-		var currentMovie = Moviegrid.getSelectionModel();
+		var currentMovie = this.getComponent('Moviegrid').getSelectionModel();
 		
 		currentMovie.on('rowselect', this.onRowSelect, this);
 		
 		// add double-click event to cover object
-		var element = MovieCover.getEl();
-		element.on('dblclick', function(){ChangeImages(currentRecord)});
+		//var element = MovieCover.getEl();
+		MovieCover.getEl().on('dblclick', function(){
+		  ChangeImages(currentRecord);
+		});
+		//element.on('dblclick', function(){ChangeImages(currentRecord)});
 		
 		var element2 = MovieFanart.getEl();
 		element2.on('dblclick', function(){ChangeImages(currentRecord)});
 	},
 
 	onRowSelect: function(sm, rowIdx, r) {
-
-		selectedMovie = r.data.movieid;
+		
+		selectedMovie = r.data.idMovie;
 		currentRecord = r;
 		
-		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", \"params\": {\"movieid\": '+ selectedMovie+', "fields": ["cast"]},"id": 1}';
+		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+ selectedMovie+', "fields": ["cast"]},"id": 1}';
 		storeActor.loadXbmc();
 		
-		updateAllForms(r);
-		storegenre.selectFromString(r.data.genre);
-
-		Ext.getCmp('filedetailPanel').getForm().loadRecord(r);	
+		if (r.data.details == undefined){
+			GetMovieGenres(r);
+			GetMovieDetails(r);
+			Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
+		}
+		else{ 
+			updateGenreGrid(r.data.genres);
+			updateAllForms(r)
+		};
+		
 		
 	}
 });

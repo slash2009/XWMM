@@ -11,7 +11,7 @@ var storeActor = new Ext.ux.XbmcStore({
 	sortInfo: {field: 'name', direction: "ASC"},
 	reader: new Ext.data.JsonReader({
 		root:'moviedetails.cast'	       
-		}, actorRecord),
+		}, actorRecord)
 });
 
 var actorGrid = new Ext.grid.GridPanel({

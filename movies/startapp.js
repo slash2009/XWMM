@@ -1,7 +1,7 @@
 
 // -----------------------------------------
 // startapp.js
-// last modified : 30-04-2011
+// last modified : 04-08-2010
 // Lunch the Movie interface
 //------------------------------------------ 
 
@@ -72,15 +72,38 @@ Ext.onReady(function() {
 			text: myVersion
     });
 	
-	var storesToLoad = [	];
+	setXBMCResponseFormat();
 
-	 startMyApp();
+	var storesToLoad = [
+	   //{store : 'storevideoflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strVideoCodec, fVideoAspect, iVideoWidth, iVideoHeight from streamdetails where iStreamType=0)'},
+	   //{store : 'storeaudioflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strAudioCodec, iAudioChannels from streamdetails where iStreamType=1)'},
+	   {store : 'moviesetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'},
+	   {store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
+	];
+
+	loadStartupStores = function(record, options, success){
+		 var task = storesToLoad.shift();  //From the top
+		 if(task){
+			if(success !== false){
+			  task.callback = arguments.callee   //let's do this again
+			  var store = Ext.StoreMgr.lookup(task.store);
+			  store ? store.load(task) : complain('bad store specified');
+			} else { 
+			  complain( );
+			}
+		 } else {startMyApp()}
+	};
+	
+	 loadStartupStores();
+	 	
+	//Moviegrid.on('contextmenu', gridContextHandler);
 	
 	function startMyApp() {
 		var App = new Movie.Mainpanel({
 			renderTo: Ext.getBody()	 
 		});
 		Ext.QuickTips.init();
+		storeMovie.load();
 		
 		// begin search config
 		var searchStore = new Ext.data.SimpleStore({
@@ -116,7 +139,7 @@ Ext.onReady(function() {
 							valueArr = value.split(/\ +/);
 							for (var i=0; i<valueArr.length; i++) {
 								re = new RegExp(Ext.escapeRe(valueArr[i]), "i");
-								if (re.test(r.data['title'])==false
+								if (re.test(r.data['Movietitle'])==false
 									//&& re.test(r.data['light'])==false) {
 									) {
 									return false;

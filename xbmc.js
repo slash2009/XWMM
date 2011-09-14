@@ -362,8 +362,6 @@ function XBMCScanContent(type,path) {
 
 function XBMCgetMoviesFields(resp, r) {
 
-	//var temp = TrimXbmcXml(resp);
-
 	var temp = resp.responseText.replace(/<\/record>/g, "");
 	temp = temp.replace(/<record>/g, "");
 	temp = temp.replace(/<recordset>/g, "");
@@ -373,22 +371,8 @@ function XBMCgetMoviesFields(resp, r) {
 	temp = temp.replace(/<\/field>/g, "");
 	temp = temp.split("<field>");
 
-	r.data.Moviedescr = temp[1];
-	r.data.MovieOutline = temp[2];
-	r.data.MovieTagline = temp[3];
-	r.data.MovieVotes = temp[4];	
-	r.data.MovieRating = temp[5].slice(0,3);
-	r.data.MovieWriters = temp[6];
-	r.data.MovieRelease = temp[7];
-	r.data.MovieImdb = temp[8];
-	r.data.sortTitle = temp[9]
-	r.data.MovieRuntime = temp[10];
-	r.data.MovieDirector = temp[11];
-	r.data.MovieStudio = temp[12];
-	r.data.MovieViewers = temp[13];
-	r.data.MovieTrailer = temp[14];
-	r.data.MovieFanartUrl = getFanartList(temp[15]);
-	r.data.MovieCoverUrl = getCoverList(temp[16], r);
+	r.data.MovieFanartUrl = getFanartList(temp[1]);
+	r.data.MovieCoverUrl = getCoverList(temp[2], r);
 	
 }
 

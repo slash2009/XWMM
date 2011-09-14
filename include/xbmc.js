@@ -10,6 +10,19 @@ function XBMCExecSql(inputUrl) {
 	});
 }
 
+function XBMCGetSetId(inputUrl) {
+	var response;
+		Ext.Ajax.request({
+		url: inputUrl,
+		method: 'GET',
+		async: false,
+		success: function (t){response = t},
+		failure: function(t){},
+		timeout: 2000
+	});
+	return t;
+
+}
 function setXBMCResponseFormat() {
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=setresponseformat(openRecordSet;<recordset>;closeRecordSet;</recordset>;openRecord;<record>;closeRecord;</record>;openField;<field>;closeField;</field>)';
 	Ext.Ajax.request({
@@ -453,6 +466,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 		
 		var responseArr = temp;
 		
+		
 		responseArr = responseArr.split("<record>");
 		
 		var j = 0;
@@ -483,7 +497,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 		}	
 		
 		var json = str+']}';
-	
+
         var o = eval("("+json+")");
 
         if(!o) {
@@ -495,7 +509,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
             this.recordType = Ext.data.Record.create(o.metaData.fields);
             this.onMetaChange(this.meta, this.recordType, o);
         }
-	
+
         return this.readRecords(o);
     },
 

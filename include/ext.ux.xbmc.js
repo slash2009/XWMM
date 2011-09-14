@@ -20,6 +20,22 @@ function xbmcJsonRPC(params) {
 
 Ext.namespace('Ext.ux');
  
+ 
+ Ext.ux.XbmcGroupingStore = function(config) {
+    Ext.ux.XbmcStore.superclass.constructor.call(this, config)
+};
+
+Ext.extend(Ext.ux.XbmcGroupingStore, Ext.data.GroupingStore, {
+ 	// load from XBMC via JSON-RPC
+	loadXbmc: function() {
+		 var json = xbmcJsonRPC(this.xbmcParams);
+		 this.loadData(json)
+	}, 
+	// JSON-RPC parameters
+	xbmcParams : String,
+	proxy: new Ext.data.MemoryProxy()
+}); 
+ 
 /**
   * Ext.ux.XbmcStore Extension Class
   * @author nicolas
@@ -33,7 +49,7 @@ Ext.namespace('Ext.ux');
   */
   
 Ext.ux.XbmcStore = function(config) {
-    Ext.ux.XbmcStore.superclass.constructor.call(this, config);
+    Ext.ux.XbmcStore.superclass.constructor.call(this, config)
 };
 
 Ext.extend(Ext.ux.XbmcStore, Ext.data.Store, {
@@ -44,7 +60,7 @@ Ext.extend(Ext.ux.XbmcStore, Ext.data.Store, {
 	}, 
 	// JSON-RPC parameters
 	xbmcParams : String,
-	proxy: new Ext.data.MemoryProxy(),
+	proxy: new Ext.data.MemoryProxy()
 }); 
 
 /**

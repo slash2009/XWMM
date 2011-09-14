@@ -28,6 +28,8 @@ function ChangeImages(record) {
 			fields: ['thumb','url', 'title', 'currentCover']
 	});
 	
+	console.log(record.data);
+	
 	var storeFanarts =  new Ext.data.ArrayStore({
 		data: FanartUrlList,
 		autoLoad: true,
@@ -37,9 +39,9 @@ function ChangeImages(record) {
 	function changeXBMCCover() {
 		loadingMask.show();
 		var selNode = viewCovers.getSelectedRecords();
-		var currentMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
+
 		// selNode contains only one item
-		downloadXBMCFile(selNode[0].data.url, currentMovie.data.cover );
+		downloadXBMCFile(selNode[0].data.url, record.data.thumbnail );
 		//update main Movie form
 		Ext.getCmp('cover').refreshMe();
 		loadingMask.hide();
@@ -49,10 +51,10 @@ function ChangeImages(record) {
 	function changeXBMCFanart() {
 		loadingMask.show();
 		var selNode = viewFanarts.getSelectedRecords();
-		var currentMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
+
 		// selNode contains only one item
-		downloadXBMCFile(selNode[0].data.url, currentMovie.data.fanart);
-		//console.log(currentMovie.data);
+		downloadXBMCFile(selNode[0].data.url, record.data.fanart);
+
 		//update main Movie form
 		Ext.getCmp('fanart').refreshMe();
 		loadingMask.hide();

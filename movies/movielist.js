@@ -5,22 +5,32 @@
 //------------------------------------------ 
 
 var MovieRecord = Ext.data.Record.create([
-   {name: 'title'},	{name: 'genre'},{name: 'year'}, {name: 'rating'},	
-   {name: 'director'}, {name: 'trailer'}, {name: 'tagline'}, {name: 'plot'}, {name: 'studio'},
-   {name: 'plotoutline'}, {name: 'originaltitle'}, {name: 'playcount', type: 'int'}, {name: 'writer'},
-   {name: 'set'}, {name: 'plot'}, {name: 'plotoutline'}, {name: 'tagline'}, {name: 'mpaa'}, {name: 'thumbnail'}, {name: 'file'}, {name: 'fanart'},
-   {name: 'streamDetails'}, {name: 'movieid'}, {name: 'file'}, {name: 'runtime'}
+   {name: 'idMovie', mapping: 'field:nth(1)'},		//idMovie
+   {name: 'strFilename', mapping: 'field:nth(2)'},	//strFilename
+   {name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
+   {name: 'Movietitle', mapping: 'field:nth(4)'},	//c00
+   {name: 'strPath', mapping: 'field:nth(5)'},		//strPath
+   {name: 'Moviegenres', mapping: 'field:nth(6)'},	//c14
+   {name: 'idFile', mapping: 'field:nth(7)'},
+   {name: 'watched', mapping: 'field:nth(8)'},
+   {name: 'MovieRelease', mapping: 'field:nth(9)'},
+   {name: 'idSet', mapping: 'field:nth(10)'},
+   {name: 'strSet', mapping: 'field:nth(11)'}
 ]);
 
-var storeMovie = new Ext.ux.XbmcStore({
-	sortInfo: {field: 'title', direction: "ASC"},
-	reader: new Ext.data.JsonReader({
-		root:'movies'	       
+var storeMovie = new Ext.data.GroupingStore({
+	sortInfo: {field: 'Movietitle', direction: "ASC"},
+	reader: new Ext.data.JsonXBMCReader({
+          // records will have a "record" tag
+		root:'data'	       
        }, MovieRecord),
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"fields": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "set", "streamDetails", "top250", "votes", "fanart", "thumbnail", "file" ]}, "id": 1}'
+	listeners: {
+        beforeload: function(){ setXBMCResponseFormat() }
+    },
+	//url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07 FROM movieview)'
+	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movieview.idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07, sets.idSet, strSet FROM movieview LEFT OUTER JOIN setlinkmovie ON movieview.idMovie = setlinkmovie.idMovie LEFT OUTER JOIN sets ON setlinkmovie.idSet = sets.idSet)'
+	
 });
-
-storeMovie.loadXbmc();
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({
@@ -30,7 +40,8 @@ Moviegrid = new Ext.grid.GridPanel({
 	stripeRows: true,
 	viewconfig: {forceFit: true},
 	selModel: new Ext.grid.RowSelectionModel({singleSelect: true}),
-	height: 480,
+	region: 'west',
+	width: 285,
 	split: true,
 	listeners:{
         rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
@@ -40,4 +51,5 @@ Moviegrid = new Ext.grid.GridPanel({
         }}	
 	},
 	store: storeMovie
+	
 }); 

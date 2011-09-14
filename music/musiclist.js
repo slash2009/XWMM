@@ -23,25 +23,22 @@ var CheckArtist = new Ext.grid.CheckboxSelectionModel({
 
 var ArtistcolModel = new Ext.grid.ColumnModel([
 		CheckArtist,
-		{header: "#", dataIndex: 'artistid', hidden: true},
-		{header: "Artist", dataIndex: 'artist'}
+		{header: "#", dataIndex: 'idArtist', hidden: true},
+		{header: "Artist", dataIndex: 'strArtist'}
     ]);
 
 var ArtistRecord = Ext.data.Record.create([
-   {name: 'artistid'},
-   {name: 'artist'},
-   {name: 'label'}
+   {name: 'idArtist', mapping: 'field:nth(1)'},
+   {name: 'strArtist', mapping: 'field:nth(2)'},	
 ]);
 
-var ArtistStore = new Ext.ux.XbmcStore({
-	sortInfo: {field: 'label', direction: "ASC"},
-	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists", "params": {},"id": 1}',
-	reader: new Ext.data.JsonReader({
-		root:'artists'	       
-	}, ArtistRecord),
+var ArtistStore = new Ext.data.GroupingStore({
+	sortInfo: {field: 'strArtist', direction: "ASC"},
+	reader: new Ext.data.JsonXBMCReader({
+		root:'data'	       
+       }, ArtistRecord),
+	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idArtist, strArtist FROM artist)' 
 });
-ArtistStore.loadXbmc();
-
 
 ArtistGrid = new Ext.grid.GridPanel({
 	cm: ArtistcolModel,
@@ -60,22 +57,38 @@ ArtistGrid = new Ext.grid.GridPanel({
 
 // ------------ Album information -------------
 
-var AlbumCover = new Ext.ux.XbmcImages ({
+var AlbumCover = new Ext.Container ({
 	id: 'albumCover',
 	cls: 'center-align',
 	border: 0,
 	width: 160,
 	height:160,
-	autoEl: {tag: 'img', src: "../images/nobanner.png", qtip:'Double-click to change'}
+	autoEl: {tag: 'img', src: "../images/nobanner.png", qtip:'Double-click to change'},
+	refreshMe : function(){
+		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
+	}
 });
 
-var AlbumStars = new Ext.ux.XbmcStars ({
+var AlbumStars = new Ext.Container ({
 	id: 'albumrating',
 	border: 0,
 	width: 58,
-	height:16
+	height:16,
+	autoEl: {tag: 'img', src: "../images/stars/0.png"},
+	updateSrc :function(r){
+		if (r.data.details)	{
+			this.el.dom.src = r.data.AlbumRating
+		}
+		else {
+			var value = Math.round(r.data.iRating);
+			if (value < 0 ) value = 0;
+			//value = value *2;
+			//if (value > 5 ) value = 5;
+			r.data.AlbumRating =  '../images/stars/'+value+'.png';
+			this.el.dom.src = r.data.AlbumRating
+		}
+	}
 });
-
 
 var albumDetailPanel = new Ext.FormPanel({
 	region: 'north',
@@ -101,32 +114,35 @@ var albumDetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 				fieldLabel: 'Title',
-				name: 'title',
+				name: 'strAlbum',
 				id: 'albumtitlefield',
 				allowBlank: false
 			},{
-				fieldLabel: 'Genres',
-				name: 'genre',
-				XBMCName: 'c14',
-				id:'genreString',
-				readOnly: true			
-			},{
 				xtype: 'combo',
-				fieldLabel: 'Artist',
-				store: ArtistStore,
-				id: 'albumartistfield',
-				displayField: 'artist',
+				fieldLabel: 'Genre',
+				store: GenreStore,
+				displayField: 'strGenre',
+				id: 'albumgenrefield',
 				//mode: 'local',
 				//typeAhead: true,
-				name: 'artist'
+				name: 'strGenre'
+			},{
+				xtype: 'combo',
+				fieldLabel: 'artist',
+				store: ArtistStore,
+				id: 'albumartistfield',
+				displayField: 'strArtist',
+				//mode: 'local',
+				//typeAhead: true,
+				name: 'strArtist'
 			},{
 				fieldLabel: 'Year',
 				id: 'albumyearfield',
-				name: 'year'
+				name: 'iYear'
 			},{
 				fieldLabel: 'Rating',
 				id: 'albumratingfield',
-				name: 'rating'
+				name: 'iRating'
 			}]
 	},{
         title:'Additional Info (from scraper)',
@@ -160,11 +176,11 @@ var albumDetailPanel = new Ext.FormPanel({
 		},{
 			fieldLabel: 'Type',
 			id : 'scrapertype',
-			name: 'type'
+			name: 'strType'
 		},{
 			fieldLabel: 'Label',
 			id : 'scraperlabel',
-			name: 'album_label'
+			name: 'strLabel'
 		},{
 			xtype:'textarea',
 			height: 47,
@@ -176,19 +192,19 @@ var albumDetailPanel = new Ext.FormPanel({
 			height: 47,
 			fieldLabel: 'Styles',
 			id : 'scraperstyles',
-			name: 'style'			
+			name: 'strStyles'			
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Moods',
 			id : 'scrapermoods',
-			name: 'mood'
+			name: 'strMoods'
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Themes',
 			id : 'scraperthemes',
-			name: 'theme'			
+			name: 'strThemes'			
 		}]
                 },{
                     title:'Review',
@@ -211,7 +227,7 @@ var albumDetailPanel = new Ext.FormPanel({
                     colspan:2,
 					items: [{
 						xtype:'textarea',
-						name:'description',
+						name:'strReview',
 						id: 'albumreviewfield',
 						listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}},
 						height: 105,
@@ -220,13 +236,56 @@ var albumDetailPanel = new Ext.FormPanel({
                 }]
             });
 	
-
+var AlbumcolModel = new Ext.grid.ColumnModel([
+		{header: "#", dataIndex: 'idAlbum', hidden: true},
+		{header: "Album", dataIndex: 'strAlbum', width: 150},
+		{header: "Artist", dataIndex: 'strArtist', hidden: true},
+		{header: "Genre", dataIndex: 'strGenre', hidden: true},
+		{header: "Year", dataIndex: 'iYear', hidden: true}
+    ]);
 
 var AlbumRecord = Ext.data.Record.create([
-   {name: 'albumid'}, {name: 'label'}, {name: 'artist'},
-   {name: 'idArtist'}, {name: 'genre'},	{name: 'year'}, {name: 'thumbnail'}
+   {name: 'idAlbum', mapping: 'field:nth(1)'},
+   {name: 'strAlbum', mapping: 'field:nth(2)'},	
+   {name: 'idArtist', mapping: 'field:nth(3)'},	
+   {name: 'idGenre', mapping: 'field:nth(4)'},	
+   {name: 'strArtist', mapping: 'field:nth(5)'},
+   {name: 'strGenre', mapping: 'field:nth(6)'},	
+   {name: 'iYear', mapping: 'field:nth(7)'},
+   {name: 'strThumb', mapping: 'field:nth(8)'},
+   {name: 'iRating', mapping: 'field:nth(9)'},
+   {name: 'strReview', mapping: 'field:nth(10)'}
 ]);
-	
+
+// ------------ Album Extra Info --------------
+
+var AlbumInfoRecord = Ext.data.Record.create([
+	{name: 'idAlbumInfo', mapping: 'field:nth(1)'},	
+	{name: 'idAlbum', mapping: 'field:nth(2)'},
+	{name: 'iYear', mapping: 'field:nth(3)'},
+	{name: 'idGenre', mapping: 'field:nth(4)'},	
+	{name: 'strExtraGenres', mapping: 'field:nth(5)'},
+	{name: 'stMoods', mapping: 'field:nth(6)'},	
+	{name: 'strStyles', mapping: 'field:nth(7)'},
+	{name: 'strThemes', mapping: 'field:nth(8)'},
+	{name: 'strReview', mapping: 'field:nth(9)'},
+	{name: 'strImage', mapping: 'field:nth(10)'},
+	{name: 'strLabel', mapping: 'field:nth(11)'},
+	{name: 'strType', mapping: 'field:nth(12)'},
+	{name: 'iRating', mapping: 'field:nth(13)'},
+]);
+
+var AlbumInfoStore = new Ext.data.GroupingStore({
+	sortInfo: {field: 'idAlbumInfo', direction: "ASC"},
+	reader: new Ext.data.JsonXBMCReader({
+		root:'data'	       
+       }, AlbumInfoRecord),
+	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idAlbumInfo, idAlbum, iYear, idGenre, strExtraGenres, strMoods, strStyles, strThemes, strReview, strImage, strLabel, strType, iRating FROM albuminfo)' 
+});
+
+// --------------------------------------------
+
+
 // ------------ Track information -------------
 
 function convertTime(val) {
@@ -239,30 +298,40 @@ function convertTime(val) {
 }
 
 function starRating(val) {
-console.log(val);
 	return "<img src=../images/small-stars/"+val+".gif>"
 }
 
 var SongcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'songid', hidden: true},
-		{header: "#", dataIndex: 'track', width: 30},
-		{header: "Track", dataIndex: 'title', width: 300},
-		{header: "Duration", dataIndex: 'duration', width: 70, renderer: convertTime},
-		{header: "Artist", dataIndex: 'artist', width: 150}
-		//{header: "Rating", dataIndex: 'rating', width: 100, renderer: starRating}
+		{header: "#", dataIndex: 'idSong', hidden: true},
+		{header: "#", dataIndex: 'iTrack', width: 30},
+		{header: "Track", dataIndex: 'strTitle', width: 300},
+		{header: "Duration", dataIndex: 'iDuration', width: 70, renderer: convertTime},
+		{header: "Rating", dataIndex: 'rating', width: 100, renderer: starRating}
     ]);
 
 var SongRecord = Ext.data.Record.create([
-   {name: 'songid'}, {name: 'label'}, {name: 'track', type: 'int'},	{name: 'title'},
-   {name: 'duration'}, {name: 'rating'}, {name: 'file'}, {name: 'playcount'}, {name: 'artist'}
+   {name: 'idSong', mapping: 'field:nth(1)'},		
+   {name: 'strTitle', mapping: 'field:nth(2)'},	
+   {name: 'iTrack', type: 'int', mapping: 'field:nth(3)'},		
+   {name: 'iDuration', mapping: 'field:nth(4)'},	
+   {name: 'iYear', mapping: 'field:nth(5)'},		
+   {name: 'strFileName', mapping: 'field:nth(6)'},
+   {name: 'rating', mapping: 'field:nth(7)'},
+   {name: 'idAlbum', mapping: 'field:nth(8)'},
+   {name: 'strAlbum', mapping: 'field:nth(9)'},
+   {name: 'strPath', mapping: 'field:nth(10)'},
+   {name: 'idArtist', mapping: 'field:nth(11)'},
+   {name: 'strArtist', mapping: 'field:nth(12)'},
+   {name: 'idGenre', mapping: 'field:nth(13)'},
+   {name: 'strGenre', mapping: 'field:nth(14)'},
 ]);
 
-var SongStore = new Ext.ux.XbmcStore({
-	sortInfo: {field: 'track', direction: "ASC"},
-	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {},"id": 1}',
-	reader: new Ext.data.JsonReader({
-		root:'songs'	       
-	}, SongRecord),
+var SongStore = new Ext.data.GroupingStore({
+	sortInfo: {field: 'iTrack', direction: "ASC"},
+	reader: new Ext.data.JsonXBMCReader({
+		root:'data'	       
+       }, SongRecord),
+	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strGenre FROM songview WHERE idSong = -1)' 
 });
 
 SongGrid = new Ext.grid.GridPanel({
@@ -287,11 +356,11 @@ SongGrid = new Ext.grid.GridPanel({
 Ext.onReady(function() {
 
 	//Load existing genres
-	GenreStore.loadXbmc();
+	GenreStore.load();
 	SongStore.load();
-	//ArtistStore.loadXbmc();
-	//AlbumStore.loadXbmc();
-	//AlbumInfoStore.loadXbmc();
+	ArtistStore.load();
+	AlbumStore.load();
+	AlbumInfoStore.load();
 	
 	menuBar.add({
 			xtype: 'tbbutton',

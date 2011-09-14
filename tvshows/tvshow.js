@@ -18,7 +18,7 @@ var seasonRecord = Ext.data.Record.create([
 
 var episodeRecord = Ext.data.Record.create([
 	{name: 'episode'}, {name: 'title'}, {name: 'rating'}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
-	{name: 'streamDetails'}, {name: 'playcount'}
+	{name: 'streamdetails'}, {name: 'playcount'}
 ]);
 
 var tvshowStars = new Ext.ux.XbmcStars ({
@@ -345,9 +345,12 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 		EpisodedetailPanel.setTitle("<div align='center'>Select Episode</div>");
 		
 		SeasonGrid.setTitle("<div align='center'> "+r.data.title+" Seasons</div>");
+
+		GettvShowDetails(r);
 		updateTvShowForms(r);
-		
-		storegenre.selectFromString(r.data.genre);
+		// corriger ici le refresh de la grille des genres
+		//GetTvshowGenres(currentRecord);
+		//storegenre.selectFromString(r.data.genre);
 		storeSeason.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {"tvshowid": '+myTvShow+', "fields": [ "season", "thumbnail"]},"id": 1}';
 		storeSeason.loadXbmc();
 
@@ -364,15 +367,18 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 		EpisodedetailPanel.getForm().reset();
 		//Ext.getCmp('episodedetailPanel').getForm().reset(); does not work
 
-		storeEpisode.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", \"params\": {"tvshowid": '+myTvShow+', "season": '+mySeason+', "fields": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamDetails", "playcount"]},"id": 1}';
+		storeEpisode.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": '+myTvShow+', "season": '+mySeason+', "fields": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount"]},"id": 1}';
 		storeEpisode.loadXbmc();
+		
+		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVshowDetails", "params": {"tvshowid": '+ myTvShow+', "fields": ["cast"]},"id": 1}';
+		storeActor.loadXbmc();
 	},
 	
 	episodeSelect: function(sm, rowIdx, r) {		
 
 		selectedEpisode = r;
 		var mySeason = selectedSeason.data.season;
-
+		//GetepisodeDetails(r);
 		EpisodedetailPanel.setTitle("<div align='center'> Season "+mySeason+" / Episode "+r.data.episode+"</div>");
 		updateEpisodeForms(r)
 	}

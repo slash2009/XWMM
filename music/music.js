@@ -67,19 +67,17 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 			GetAlbumDetails(r);
 		}
 		
-		GenreStore.selectFromString(r.data.genre);
 		albumDetailPanel.getForm().loadRecord(r);
-		albumDetailPanel.setTitle("<div align='center'>"+r.data.title+"  /  "+r.data.artist+"</div>");
+		albumDetailPanel.setTitle("<div align='center'>"+r.data.strAlbum+"  /  "+r.data.strArtist+"</div>");
 		
-		Ext.getCmp('albumCover').el.dom.src = "../../vfs/"+r.data.thumbnail;
+		Ext.getCmp('albumCover').el.dom.src = "../../vfs/"+r.data.strThumb;
 		
 		AlbumStars.updateSrc(r);
 		
 		r.data.details = true;
 		
-		SongStore.xbmcParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"albumid": '+ r.data.albumid+', "fields": ["title", "track", "duration", "file", "rating", "artist"]},"id": 1}';
-		SongStore.loadXbmc();
-
+		SongStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strTitle, iTrack, iDuration, iYear, strFileName, rating, idAlbum, strAlbum, strPath, idArtist, strArtist, idGenre, strGenre FROM songview WHERE idAlbum = '+r.data.idAlbum+')'
+		SongStore.load();
 		Ext.getCmp('savebutton').disable();
 	}
 });
