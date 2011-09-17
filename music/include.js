@@ -9,6 +9,40 @@ function updateMusicAlbum() {
 
 	var record = Ext.getCmp('albumGrid').getSelectionModel().getSelected();
 	
+		Ext.MessageBox.show({
+		title: 'Please wait',
+		msg: 'Saving changes',
+		progressText: 'Checking changes...',
+		width:300,
+		progress:true,
+		closable:false,
+		animEl: 'samplebutton'
+	})
+	var f = function(v){
+        return function(){
+		if(v == 30){
+            Ext.MessageBox.hide();
+        }else{
+            var i = v/29;
+			if (v == 1) {
+				myText = 'Checking changes...';
+				updateExtraAlbuminfo(record)
+				myText = 'updating album info';
+			};
+            if (v == 15) {
+				updateStandardAlbuminfo(record)	
+					myText = 'saving'
+			};
+			Ext.MessageBox.updateProgress(i, myText);
+        }
+        };
+    };
+    for(var i = 1; i < 31; i++){
+        setTimeout(f(i), i*100);
+    }
+}
+	
+function updateExtraAlbuminfo (record) {
 	if (Ext.getCmp('scrapertype').isDirty() || Ext.getCmp('scraperlabel').isDirty() || Ext.getCmp('scraperextgenre').isDirty() || Ext.getCmp('scraperstyles').isDirty() || Ext.getCmp('scrapermoods').isDirty() || Ext.getCmp('scraperthemes').isDirty()) {
 		// check if record exists otherwise create it
 		if (AlbumInfoStore.find('idAlbum',record.data.idAlbum,0,false,false) == -1) {
@@ -23,7 +57,10 @@ function updateMusicAlbum() {
 		record.data.strType = Ext.getCmp('scrapertype').getValue();
 		updateXBMCAlbumScraperInfo(record)
 	}
-	
+}
+
+function updateStandardAlbuminfo(record)	 {
+
 	if (Ext.getCmp('albumratingfield').isDirty() || Ext.getCmp('albumreviewfield').isDirty()) {
 		record.data.iRating = Ext.getCmp('albumratingfield').getValue();
 		record.data.strReview = Ext.getCmp('albumreviewfield').getValue();

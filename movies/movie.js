@@ -24,7 +24,7 @@ var MovieCover = new Ext.ux.XbmcImages ({
 	border: 0,
 	width: 250,
 	height:375,
-	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg", qtip:'Double-click to change'},
+	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg", qtip:'Double-click to change'}
 });
 
 Ext.ns('Movie');
@@ -62,7 +62,7 @@ var fileDetailsPanel = new Ext.FormPanel({
 				if (newValue == "") {
 					// remove existing record in setlinkmovie
 					myId = "";
-					var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'"))';
+					var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'")';
 				}
 				else {
 					var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', newValue)).data.idSet;
