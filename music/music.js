@@ -64,7 +64,7 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 		currentRecord = r;
 		
 		if (r.data.details == undefined){
-			GetAlbumDetails(r);
+			GetAlbumDetails(r)
 		}
 		
 		albumDetailPanel.getForm().loadRecord(r);
@@ -72,11 +72,11 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 		
 		AlbumCover.updateSrc(r.data.currentThumbnail);
 		
-		if (r.data.rating < 1) {AlbumStars.updateSrc(r)};
+		if (r.data.rating < 10) { AlbumStars.updateSrc(r)};
 		
 		r.data.details = true;
 		
-		SongStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strTitle, iTrack, iDuration, iYear, strFileName, rating, idAlbum, strAlbum, strPath, idArtist, strArtist, idGenre, strGenre FROM songview WHERE idAlbum = '+r.data.albumid+')'
+		SongStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strTitle, iTrack, iDuration, iYear, strFileName, rating, idAlbum, strAlbum, strPath, idArtist, strArtist, idGenre, strGenre FROM songview WHERE idAlbum = '+r.data.albumid+')';
 		SongStore.load();
 		Ext.getCmp('savebutton').disable();
 	}

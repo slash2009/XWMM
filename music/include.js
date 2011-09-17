@@ -87,7 +87,7 @@ function updateStandardAlbuminfo(record)	 {
 		AlbumStore.add(record);
 		AlbumGrid.getStore().reload()
 
-	};
+	}
 			
 }
 
@@ -110,7 +110,7 @@ function getMusicCoverList(String, r) {
 	 {
 	  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 	  xmlDoc.async="false";
-	  xmlDoc.loadXML(String);
+	  xmlDoc.loadXML(String)
 	 } 
 	 
 	 var MasterUrl = getTagAttribute(xmlDoc.documentElement, 'url');
@@ -125,7 +125,7 @@ function getMusicCoverList(String, r) {
 		
 		result.push([previewUrl, downloadUrl, "Remote", ""]);
 	}
-	 return result;
+	 return result
 }
 
 function GetAlbumDetails(r) {
