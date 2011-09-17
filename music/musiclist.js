@@ -57,37 +57,19 @@ ArtistGrid = new Ext.grid.GridPanel({
 
 // ------------ Album information -------------
 
-var AlbumCover = new Ext.Container ({
+var AlbumCover = new Ext.ux.XbmcImages ({
 	id: 'albumCover',
-	cls: 'center-align',
+	autoEl: {tag: 'img', src: "../images/nobanner.png"},
 	border: 0,
 	width: 160,
-	height:160,
-	autoEl: {tag: 'img', src: "../images/nobanner.png", qtip:'Double-click to change'},
-	refreshMe : function(){
-		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
-	}
+	height:160
 });
 
-var AlbumStars = new Ext.Container ({
+var AlbumStars = new Ext.ux.XbmcStars ({
 	id: 'albumrating',
 	border: 0,
 	width: 58,
-	height:16,
-	autoEl: {tag: 'img', src: "../images/stars/0.png"},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = r.data.AlbumRating
-		}
-		else {
-			var value = Math.round(r.data.iRating);
-			if (value < 0 ) value = 0;
-			//value = value *2;
-			//if (value > 5 ) value = 5;
-			r.data.AlbumRating =  '../images/stars/'+value+'.png';
-			this.el.dom.src = r.data.AlbumRating
-		}
-	}
+	height:16
 });
 
 var albumDetailPanel = new Ext.FormPanel({
@@ -138,11 +120,11 @@ var albumDetailPanel = new Ext.FormPanel({
 			},{
 				fieldLabel: 'Year',
 				id: 'albumyearfield',
-				name: 'iYear'
+				name: 'year'
 			},{
 				fieldLabel: 'Rating',
 				id: 'albumratingfield',
-				name: 'iRating'
+				name: 'rating'
 			}]
 	},{
         title:'Additional Info (from scraper)',
@@ -176,7 +158,7 @@ var albumDetailPanel = new Ext.FormPanel({
 		},{
 			fieldLabel: 'Type',
 			id : 'scrapertype',
-			name: 'strType'
+			name: 'type'
 		},{
 			fieldLabel: 'Label',
 			id : 'scraperlabel',
@@ -192,13 +174,13 @@ var albumDetailPanel = new Ext.FormPanel({
 			height: 47,
 			fieldLabel: 'Styles',
 			id : 'scraperstyles',
-			name: 'strStyles'			
+			name: 'style'			
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Moods',
 			id : 'scrapermoods',
-			name: 'strMoods'
+			name: 'mood'
 		},{
 			xtype:'textarea',
 			height: 47,
@@ -207,7 +189,7 @@ var albumDetailPanel = new Ext.FormPanel({
 			name: 'strThemes'			
 		}]
                 },{
-                    title:'Review',
+                    title:'Description',
 					buttons: [{
 						disabled: true,
 						text:'Save',
@@ -227,7 +209,7 @@ var albumDetailPanel = new Ext.FormPanel({
                     colspan:2,
 					items: [{
 						xtype:'textarea',
-						name:'strReview',
+						name:'description',
 						id: 'albumreviewfield',
 						listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}},
 						height: 105,
@@ -236,26 +218,9 @@ var albumDetailPanel = new Ext.FormPanel({
                 }]
             });
 	
-var AlbumcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'idAlbum', hidden: true},
-		{header: "Album", dataIndex: 'strAlbum', width: 150},
-		{header: "Artist", dataIndex: 'strArtist', hidden: true},
-		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "Year", dataIndex: 'iYear', hidden: true}
-    ]);
 
-var AlbumRecord = Ext.data.Record.create([
-   {name: 'idAlbum', mapping: 'field:nth(1)'},
-   {name: 'strAlbum', mapping: 'field:nth(2)'},	
-   {name: 'idArtist', mapping: 'field:nth(3)'},	
-   {name: 'idGenre', mapping: 'field:nth(4)'},	
-   {name: 'strArtist', mapping: 'field:nth(5)'},
-   {name: 'strGenre', mapping: 'field:nth(6)'},	
-   {name: 'iYear', mapping: 'field:nth(7)'},
-   {name: 'strThumb', mapping: 'field:nth(8)'},
-   {name: 'iRating', mapping: 'field:nth(9)'},
-   {name: 'strReview', mapping: 'field:nth(10)'}
-]);
+
+
 
 // ------------ Album Extra Info --------------
 

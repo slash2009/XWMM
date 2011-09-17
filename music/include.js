@@ -130,7 +130,13 @@ function getMusicCoverList(String, r) {
 
 function GetAlbumDetails(r) {
 
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(SELECT idAlbumInfo, iYear, genre.strGenre, strExtraGenres, strMoods, strStyles, strThemes, strReview, strLabel, strType, strImage from albuminfo JOIN genre ON albuminfo.idGenre = genre.idGenre WHERE idAlbum = '+r.data.idAlbum+')';
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "fields": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description"]}, "id": 1}');
+
+	mergeJson(r.data, jsonResponse.albumdetails);
+
+	r.data.details = true;
+
+    var inputUrl = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(SELECT idAlbumInfo, iYear, genre.strGenre, strExtraGenres, strLabel, strImage from albuminfo JOIN genre ON albuminfo.idGenre = genre.idGenre WHERE idAlbum = '+r.data.albumid+')';
     var resp = "";
 	Ext.Ajax.request({
         url: inputUrl,
@@ -156,11 +162,11 @@ function GetAlbumDetails(r) {
 	r.data.iYearScraper = temp[2];
 	r.data.strGenreScraper = temp[3];
 	r.data.strExtraGenres = temp[4];	
-	r.data.strMoods = temp[5];
-	r.data.strStyles = temp[6];
-	r.data.strThemes = temp[7];
-	r.data.strReview = temp[8];
-	r.data.strLabel = temp[9];
-	r.data.strType = temp[10];
-	r.data.MusicCoverUrl = getMusicCoverList(temp[11], r)
+	//r.data.strMoods = temp[5];
+	//r.data.strStyles = temp[6];
+	//r.data.strThemes = temp[7];
+	//r.data.strReview = temp[8];
+	r.data.strLabel = temp[5];
+	//r.data.strType = temp[10];
+	r.data.MusicCoverUrl = getMusicCoverList(temp[6], r)
 }
