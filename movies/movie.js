@@ -178,19 +178,19 @@ var MoviedetailPanel = new Ext.FormPanel({
 			xtype:'textarea',
 			name:'plot',
 			XBMCName: 'c01',
-			fieldLabel:'Description',
+			fieldLabel:'Plot',
 			height: 95
 		},{
 			xtype:'textarea',
 			height: 34,
 			name:'plotoutline',
 			XBMCName: 'c02',
-			fieldLabel:'Abstract'
+			fieldLabel:'Outline'
 		},{
 			xtype:'textarea',
 			name:'tagline',
 			XBMCName: 'c03',
-			fieldLabel:'Tag Line',
+			fieldLabel:'Tagline',
 			height: 34
 		},{	
 			fieldLabel: 'Director',
