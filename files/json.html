@@ -34,10 +34,9 @@ Ext.onReady(function() {
 	//test en compilation
 	
 	var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1}';
-
-	//var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "params": {},"id": 1}';
-	
-	//var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"fields": ["label", "artist", "year"]},"id": 1}';
+	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.SearchForDetails", "params": {"path": "smb://HERCULES/Medias/TVSeries/Damages/", "title": "Damages"},"id": 1}';
+		
+	//var myParams = '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": 7, "fields": ["label", "artist", "year"]},"id": 1}';
 	
 	//var myParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.MovieRefresh", "params": {"path" : \"smb://HERCULES/Medias/Movies/Action/Tomb Raider (2001)/Tomb Raider (2001).mkv", "title": "iron man.mkv"},"id": 1}';
 	
@@ -48,7 +47,7 @@ Ext.onReady(function() {
 
 	
 	//get all methods
-	//var myParams = '{"jsonrpc": "2.0", "method": "JSONRPC.Introspect", \"params\": {}, "id": 1}';
+	var myParams = '{"jsonrpc": "2.0", "method": "JSONRPC.Introspect", \"params\": {}, "id": 1}';
 	
 	//get sets
 	//var myParams2 = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": 3, "fields": ["title"]}, "id": 1}';

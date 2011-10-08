@@ -55,7 +55,7 @@ var storeTvshow = new Ext.ux.XbmcStore({
 	reader: new Ext.data.JsonReader({
 		root:'tvshows'	       
 		}, tvShowRecord),
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", \"params\": {"fields": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}'
+	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", \"params\": {"properties": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}'
 });
 storeTvshow.loadXbmc();
 
@@ -351,7 +351,7 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 		// corriger ici le refresh de la grille des genres
 		//GetTvshowGenres(currentRecord);
 		//storegenre.selectFromString(r.data.genre);
-		storeSeason.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {"tvshowid": '+myTvShow+', "fields": [ "season", "thumbnail"]},"id": 1}';
+		storeSeason.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {"tvshowid": '+myTvShow+', "properties": [ "season", "thumbnail"]},"id": 1}';
 		storeSeason.loadXbmc();
 
 	},
@@ -367,10 +367,10 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 		EpisodedetailPanel.getForm().reset();
 		//Ext.getCmp('episodedetailPanel').getForm().reset(); does not work
 
-		storeEpisode.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": '+myTvShow+', "season": '+mySeason+', "fields": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount"]},"id": 1}';
+		storeEpisode.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": '+myTvShow+', "season": '+mySeason+', "properties": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount"]},"id": 1}';
 		storeEpisode.loadXbmc();
 		
-		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVshowDetails", "params": {"tvshowid": '+ myTvShow+', "fields": ["cast"]},"id": 1}';
+		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVshowDetails", "params": {"tvshowid": '+ myTvShow+', "properties": ["cast"]},"id": 1}';
 		storeActor.loadXbmc();
 	},
 	

@@ -296,7 +296,7 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		selectedMovie = r.data.idMovie;
 		currentRecord = r;
 		
-		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+ selectedMovie+', "fields": ["cast"]},"id": 1}';
+		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+ selectedMovie+', "properties": ["cast"]},"id": 1}';
 		storeActor.loadXbmc();
 		
 		if (r.data.details == undefined){

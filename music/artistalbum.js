@@ -11,7 +11,7 @@ var AlbumRecord = Ext.data.Record.create([
 var AlbumStore = new Ext.ux.XbmcGroupingStore({
 	sortInfo: {field: 'strAlbum', direction: "ASC"},
 	groupField: 'strArtist',
-	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"artistid": -1, "genreid": -1, "fields": ["label", "genre", "artist", "year", "thumbnail"]},"id": 1}',
+	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["genre", "artist", "year", "thumbnail"]},"id": 1}',
 	reader: new Ext.data.JsonReader({
 		root:'albums'	       
 		}, AlbumRecord)

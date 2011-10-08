@@ -130,7 +130,7 @@ function getMusicCoverList(String, r) {
 
 function GetAlbumDetails(r) {
 
-	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "fields": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description"]}, "id": 1}');
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "properties": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description"]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.albumdetails);
 

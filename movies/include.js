@@ -105,7 +105,7 @@ function updateAllForms(r) {
 
 function GetMovieDetails(r){
 
-	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "fields": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file" ]}, "id": 1}');
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file" ]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.moviedetails);
 
