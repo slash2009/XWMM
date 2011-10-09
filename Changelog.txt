@@ -44,3 +44,7 @@ XWMM Change log
 2.0.0c:
 - Fixes:
 -- broken JSON-RPC requests (changed fields for properties)
+
+- Added
+-- some movie fields (country, imdb number, original title) in other details
+-- improved movie save function (set fields change enables save button)

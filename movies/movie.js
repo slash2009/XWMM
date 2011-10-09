@@ -2,7 +2,6 @@
 // movie.js
 //------------------------------------------ 
 
-
 var MovieFanart = new Ext.ux.XbmcImages ({
 	id: 'fanart',
 	border: 0,
@@ -35,7 +34,7 @@ var fileDetailsPanel = new Ext.FormPanel({
 	labelWidth:50,
 	frame: true,
 	bodyStyle:'padding:5px',
-	defaults: {width: 140, xtype: 'textfield'},
+	defaults: {width: 140, xtype: 'textfield', listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}},
 	items: [{
 		fieldLabel: 'Name',
 		name: 'strFilename',
@@ -44,12 +43,10 @@ var fileDetailsPanel = new Ext.FormPanel({
 	},{
 		fieldLabel: 'Original',
 		name: 'originaltitle',
-		readOnly: true,
 		XBMCName: 'c16'
 	},{
 		fieldLabel: 'Country',
 		name: 'country',
-		readOnly: true,
 		XBMCName: 'c21'
 	},{
 		fieldLabel: 'imdb',
@@ -68,30 +65,8 @@ var fileDetailsPanel = new Ext.FormPanel({
 		name: 'strSet',
 		listeners: {
 			change: function(combo, newValue, oldValue) {
-				var currentMovie = Moviegrid.getSelectionModel().getSelected();
-				if (newValue == "") {
-					// remove existing record in setlinkmovie
-					myId = "";
-					var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'")';
-				}
-				else {
-					var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', newValue)).data.idSet;
-					if (newValue != oldValue) {
-						if (oldValue == "") {
-							// Add new record in setlinkmovie
-							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ('+myId+','+currentMovie.data.idMovie+'))';				
-						}
-						else {
-							// modify existing record in setlinkmovie
-							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ("'+record.data.idMovie+'"))';
-						}
-
-					}
-				}
-				XBMCExecSql(inputUrl);
-				currentMovie.data.idSet = myId;
-				currentMovie.data.strSet = newValue;
-				Moviegrid.getView().refresh();
+				if (newValue != oldValue)
+					Ext.getCmp('savebutton').enable()
 			}
 		}
 	}]

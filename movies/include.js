@@ -33,12 +33,39 @@ function setUnwatched() {
 		Moviegrid.getView().refresh();
 };
 
-function updateXBMCAll() {
 
-	// if (Ext.getCmp('moviegenres').isDirty()) {
-		// console.log('test 2');
-		// updateXBMCGenreMovie();
-	// };
+function updateXBMCSet(item) {
+	var currentMovie = currentRecord; //Moviegrid.getSelectionModel().getSelected();
+	console.log(item);
+	if (item.value == "") {
+	// remove existing record in setlinkmovie
+		myId = "";
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'")';
+	}
+	else {
+		var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', item.value)).data.idSet;
+		if (item.value != item.originalValue) {
+			if (item.originalValue == "") {
+				// Add new record in setlinkmovie
+				var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ('+myId+','+currentMovie.data.idMovie+'))';				
+			}
+			else {
+				// modify existing record in setlinkmovie
+				var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ("'+record.data.idMovie+'"))';
+			}
+
+		}
+	}
+	XBMCExecSql(inputUrl);
+	item.IsDirty = false;
+	item.originalValue = item.getValue();
+	console.log(item.isDirty());
+	currentMovie.data.idSet = myId;
+	currentMovie.data.strSet = item.value;
+	Moviegrid.getView().refresh();
+}
+
+function updateXBMCAll() {
 
 	Ext.MessageBox.show({
 		title: 'Please wait',
@@ -60,6 +87,14 @@ function updateXBMCAll() {
 				if (MoviedetailPanel.getForm().isDirty()) {
 					updateXBMCTables(MoviedetailPanel, 'movie');
 					myText = 'updating movie info';
+				};
+				if (Ext.getCmp('moviesetcombo').isDirty()) {
+					updateXBMCSet(Ext.getCmp('moviesetcombo'));
+					myText = 'updating Sets'
+				} 
+				if (fileDetailsPanel.getForm().isDirty()) {
+					updateXBMCTables(fileDetailsPanel, 'movie');
+					myText = 'updating additional info';
 				};
 			};
             if (v == 15) {
@@ -94,12 +129,16 @@ function updateAllForms(r) {
 	Ext.getCmp('cover').updateSrc(r.data.thumbnail);
 	
 	if (r.data.streamdetails != null) {
-		Ext.getCmp('videocodec').getEl().dom.src = "../images/flags/"+r.data.streamdetails.video[0].codec+".png";
-		Ext.getCmp('aspect').getEl().dom.src = "../images/flags/"+findAspect(r.data.streamdetails.video[0].aspect)+".png";
-		Ext.getCmp('resolution').getEl().dom.src = "../images/flags/"+findResolution(r.data.streamdetails.video[0].width)+".png";	
+		if (r.data.streamdetails.video != null) {
+			Ext.getCmp('videocodec').getEl().dom.src = "../images/flags/"+r.data.streamdetails.video[0].codec+".png";
+			Ext.getCmp('aspect').getEl().dom.src = "../images/flags/"+findAspect(r.data.streamdetails.video[0].aspect)+".png";
+			Ext.getCmp('resolution').getEl().dom.src = "../images/flags/"+findResolution(r.data.streamdetails.video[0].width)+".png"
+		}
 		
-		Ext.getCmp('audiochannels').getEl().dom.src = "../images/flags/"+r.data.streamdetails.audio[0].channels+"c.png";
-		Ext.getCmp('audiocodec').getEl().dom.src = "../images/flags/"+r.data.streamdetails.audio[0].codec+".png";
+		if (r.data.streamdetails.audio != null) {
+			Ext.getCmp('audiochannels').getEl().dom.src = "../images/flags/"+r.data.streamdetails.audio[0].channels+"c.png";
+			Ext.getCmp('audiocodec').getEl().dom.src = "../images/flags/"+r.data.streamdetails.audio[0].codec+".png"
+		}
 	}
 }
 
@@ -129,6 +168,15 @@ function updateXBMCMovieDetails() {
 
 	var changedData = new Array();
 	var itemsList = Ext.getCmp('MoviedetailPanel').form.items.items;
+	for (var i = 0; i < itemsList.length; i++){
+		f = itemsList[i];
+		if(f.isDirty()){
+			var data = f.getName()+' : '+f.getValue();
+			changedData.push(data);
+		}
+	}
+	// also check additional fields
+	itemsList = Ext.getCmp('filedetailPanel').form.items.items;
 	for (var i = 0; i < itemsList.length; i++){
 		f = itemsList[i];
 		if(f.isDirty()){
@@ -235,5 +283,7 @@ var MoviecolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'idMovie', hidden: true, width: 30},
 		{header: "Title", dataIndex: 'Movietitle', width: 215},
 		{header: "", dataIndex: 'strSet', width: 25, hidden: false, renderer: checkSet},
-		{header: "", dataIndex: 'watched', width: 25, hidden: false, renderer: checkWatched}
+		{header: "Genre", dataIndex: 'strGenre', hidden: true},
+		{header: "", dataIndex: 'watched', width: 25, hidden: false, renderer: checkWatched},
+		
     ]);

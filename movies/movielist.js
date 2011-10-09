@@ -27,19 +27,8 @@ var storeMovie = new Ext.ux.XbmcGroupingStore({
 		}, MovieRecord)
 });
 
-storeMovie.loadXbmc();
+//storeMovie.loadXbmc();
 
-// var storeMovie = new Ext.data.GroupingStore({
-	// sortInfo: {field: 'Movietitle', direction: "ASC"},
-	// reader: new Ext.data.JsonXBMCReader({
-		// root:'data'	       
-       // }, MovieRecord),
-	// listeners: {
-        // beforeload: function(){ setXBMCResponseFormat() }
-    // },
-	// url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movieview.idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07, sets.idSet, strSet FROM movieview LEFT OUTER JOIN setlinkmovie ON movieview.idMovie = setlinkmovie.idMovie LEFT OUTER JOIN sets ON setlinkmovie.idSet = sets.idSet)'
-	
-// });
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({
@@ -47,6 +36,7 @@ Moviegrid = new Ext.grid.GridPanel({
 	id: 'Moviegrid',
 	enableDragDrop: false,
 	stripeRows: true,
+	loadMask: true,
 	viewconfig: {forceFit: true},
 	selModel: new Ext.grid.RowSelectionModel({singleSelect: true}),
 	region: 'west',

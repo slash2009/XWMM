@@ -1,11 +1,4 @@
 
-
-// -----------------------------------------
-// movie.js
-// last modified : 31-12-2009
-// 
-//------------------------------------------ 
-
 Ext.ns('Movie');
 
 var MovieRecord = Ext.data.Record.create([
