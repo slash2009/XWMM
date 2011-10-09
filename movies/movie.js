@@ -42,10 +42,20 @@ var fileDetailsPanel = new Ext.FormPanel({
 		readOnly: true,
 		XBMCName: 'c00'
 	},{
-		fieldLabel: 'Directory',
-		name: 'strPath',
+		fieldLabel: 'Original',
+		name: 'originaltitle',
 		readOnly: true,
-		XBMCName: 'c05'
+		XBMCName: 'c16'
+	},{
+		fieldLabel: 'Country',
+		name: 'country',
+		readOnly: true,
+		XBMCName: 'c21'
+	},{
+		fieldLabel: 'imdb',
+		name: 'imdbnumber',
+		readOnly: true,
+		XBMCName: 'c09'
 	},{
 		xtype: 'combo',
 		fieldLabel: 'Set',
