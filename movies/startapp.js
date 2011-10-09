@@ -77,7 +77,7 @@ Ext.onReady(function() {
 	var storesToLoad = [
 	   //{store : 'storevideoflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strVideoCodec, fVideoAspect, iVideoWidth, iVideoHeight from streamdetails where iStreamType=0)'},
 	   //{store : 'storeaudioflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strAudioCodec, iAudioChannels from streamdetails where iStreamType=1)'},
-	   {store : 'moviesetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'},
+	   //{store : 'moviesetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'},
 	   {store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
 	];
 
@@ -95,7 +95,7 @@ Ext.onReady(function() {
 	};
 	
 	 loadStartupStores();
-	 	
+	
 	//Moviegrid.on('contextmenu', gridContextHandler);
 	
 	function startMyApp() {

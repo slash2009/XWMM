@@ -5,32 +5,41 @@
 //------------------------------------------ 
 
 var MovieRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'field:nth(1)'},		//idMovie
-   {name: 'strFilename', mapping: 'field:nth(2)'},	//strFilename
-   {name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
-   {name: 'Movietitle', mapping: 'field:nth(4)'},	//c00
-   {name: 'strPath', mapping: 'field:nth(5)'},		//strPath
-   {name: 'Moviegenres', mapping: 'field:nth(6)'},	//c14
-   {name: 'idFile', mapping: 'field:nth(7)'},
-   {name: 'watched', mapping: 'field:nth(8)'},
-   {name: 'MovieRelease', mapping: 'field:nth(9)'},
-   {name: 'idSet', mapping: 'field:nth(10)'},
-   {name: 'strSet', mapping: 'field:nth(11)'}
+   {name: 'idMovie', mapping: 'movieid'},		//idMovie
+   {name: 'strFilename', mapping: 'file'},	//strFilename
+   //{name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
+   {name: 'Movietitle', mapping: 'title'},	//c00
+   //{name: 'strPath', mapping: 'field:nth(5)'},		//strPath
+   {name: 'Moviegenres', mapping: 'genre'},	//c14
+   //{name: 'idFile', mapping: 'field:nth(7)'},
+   {name: 'watched', mapping: 'playcount'},
+   {name: 'MovieRelease', mapping: 'year'},
+   {name: 'streamdetails'}, // required for htmlexport
+   //{name: 'idSet', mapping: 'field:nth(10)'},
+   {name: 'strSet', mapping: 'set'}
 ]);
 
-var storeMovie = new Ext.data.GroupingStore({
+var storeMovie = new Ext.ux.XbmcGroupingStore({
 	sortInfo: {field: 'Movietitle', direction: "ASC"},
-	reader: new Ext.data.JsonXBMCReader({
-          // records will have a "record" tag
-		root:'data'	       
-       }, MovieRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	//url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07 FROM movieview)'
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movieview.idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07, sets.idSet, strSet FROM movieview LEFT OUTER JOIN setlinkmovie ON movieview.idMovie = setlinkmovie.idMovie LEFT OUTER JOIN sets ON setlinkmovie.idSet = sets.idSet)'
-	
+	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}',
+	reader: new Ext.data.JsonReader({
+		root:'movies'	       
+		}, MovieRecord)
 });
+
+storeMovie.loadXbmc();
+
+// var storeMovie = new Ext.data.GroupingStore({
+	// sortInfo: {field: 'Movietitle', direction: "ASC"},
+	// reader: new Ext.data.JsonXBMCReader({
+		// root:'data'	       
+       // }, MovieRecord),
+	// listeners: {
+        // beforeload: function(){ setXBMCResponseFormat() }
+    // },
+	// url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movieview.idMovie, strFilename, c10, c00, strPath, c14, idFile, playCount, c07, sets.idSet, strSet FROM movieview LEFT OUTER JOIN setlinkmovie ON movieview.idMovie = setlinkmovie.idMovie LEFT OUTER JOIN sets ON setlinkmovie.idSet = sets.idSet)'
+	
+// });
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({

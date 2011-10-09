@@ -215,18 +215,14 @@ function GetMovieGenres(record){
 function checkWatched(val) {
  if ((val != "" ) && (val != "0"))
 	return '<img src=../images/icons/checked.png>';
-
 }
 
 function checkSet(val) {
- if ((val != "" ) && (val != "0"))
+ if ((typeof(val[0]) != "undefined" ))
 	return '<img src=../images/icons/set.png>';
-
 }
 
 function updateGenreGrid(t){
-
-	
 	Genregrid.getSelectionModel().clearSelections(false);
 	Genregrid.getSelectionModel().selectRows(t, true);
 
@@ -238,14 +234,6 @@ function updateGenreGrid(t){
 var MoviecolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'idMovie', hidden: true, width: 30},
 		{header: "Title", dataIndex: 'Movietitle', width: 215},
-		{header: "Description", dataIndex: 'Moviedescr', hidden: true},
-		{header: "Duration", dataIndex: 'Movieduration', hidden: true},
-		{header: "Director", dataIndex: 'Moviedirector', hidden: true},
-		{header: "Rating", dataIndex: 'c05', hidden: true},
-		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "Studio", dataIndex: 'c18', hidden: true},
-		{header: "Release", dataIndex: 'c07', hidden: true},
-		{header: "file", dataIndex: 'idFile', hidden: true},
-		{header: "", dataIndex: 'idSet', width: 25, hidden: false, renderer: checkSet},
+		{header: "", dataIndex: 'strSet', width: 25, hidden: false, renderer: checkSet},
 		{header: "", dataIndex: 'watched', width: 25, hidden: false, renderer: checkWatched}
     ]);

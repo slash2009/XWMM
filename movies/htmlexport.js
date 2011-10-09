@@ -8,6 +8,7 @@ function movieExport() {
 }
 
 function showHtmlAllMovies(window) {
+	console.log(storeMovie.data);
 	for (var i=0; i< storeMovie.data.length ; i++) {	
 		this.writeHtmlLine(window, i)
 	}
@@ -15,7 +16,7 @@ function showHtmlAllMovies(window) {
 
 function showHtmlWatchedMovies(window) {
 	for (var i=0; i< storeMovie.data.length; i++) {
-		if (storeMovie.data.items[i].data.playcount > 0) {
+		if (storeMovie.data.items[i].data.watched > 0) {
 			this.writeHtmlLine(window, i)
 		}
 	}
@@ -24,7 +25,7 @@ function showHtmlWatchedMovies(window) {
 
 function showHtmlUnwatchedMovies(window) {
 	for (var i=0; i< storeMovie.data.length; i++) {
-		if (storeMovie.data.items[i].data.playcount == 0) {
+		if (storeMovie.data.items[i].data.watched == 0) {
 			this.writeHtmlLine(window, i)
 		}
 	}
@@ -33,18 +34,23 @@ function showHtmlUnwatchedMovies(window) {
 function writeHtmlLine(window, index) {	
 		var movieList = storeMovie.data.items;
 		window.document.write("<tr>");
-		window.document.write("<td>"+movieList[index].data.title+"</td>");
-		window.document.write("<td>"+movieList[index].data.year+"</td>");
-		window.document.write("<td>"+movieList[index].data.genre+"</td>");
-		
-		var myRecord = new MovieRecord;
-		myRecord.data.idFile = storeMovie.data.items[i].data.idFile;
-		GetVideoStreams(myRecord);
-		GetAudioStreams(myRecord);
-		myWin.document.write("<td>"+myRecord.data.strVideoCodec+"</td>");
-		myWin.document.write("<td>"+myRecord.data.strAudioCodec+"</td>");
-		myWin.document.write("</tr>");
-		
+		window.document.write("<td>"+movieList[index].data.Movietitle+"</td>");
+		window.document.write("<td>"+movieList[index].data.MovieRelease+"</td>");
+		window.document.write("<td>"+movieList[index].data.Moviegenres+"</td>");
+		if  (movieList[index].data.streamdetails == null) 
+			window.document.write("<td> </td><td> </td>")
+		else {
+			if (movieList[index].data.streamdetails.video != null)
+				window.document.write("<td>"+movieList[index].data.streamdetails.video[0].codec+"</td>");
+			else
+				window.document.write("<td> </td>");
+				
+			if (movieList[index].data.streamdetails.audio != null)
+				window.document.write("<td>"+movieList[index].data.streamdetails.audio[0].codec+"</td>")
+			else
+				window.document.write("<td> </td>");
+		}
+	
 		window.document.write("</tr>");
 }
 
