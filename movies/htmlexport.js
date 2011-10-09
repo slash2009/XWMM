@@ -4,11 +4,9 @@ function movieExport() {
 	this.writeHtmlLine = writeHtmlLine;
 	this.WatchedMovies = showHtmlWatchedMovies;
 	this.UnwatchedMovies = showHtmlUnwatchedMovies
-
 }
 
 function showHtmlAllMovies(window) {
-	console.log(storeMovie.data);
 	for (var i=0; i< storeMovie.data.length ; i++) {	
 		this.writeHtmlLine(window, i)
 	}
@@ -20,7 +18,6 @@ function showHtmlWatchedMovies(window) {
 			this.writeHtmlLine(window, i)
 		}
 	}
-
 }
 
 function showHtmlUnwatchedMovies(window) {
@@ -49,8 +46,7 @@ function writeHtmlLine(window, index) {
 				window.document.write("<td>"+movieList[index].data.streamdetails.audio[0].codec+"</td>")
 			else
 				window.document.write("<td> </td>");
-		}
-	
+		}	
 		window.document.write("</tr>");
 }
 
