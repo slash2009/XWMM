@@ -249,10 +249,6 @@ var albumDetailPanel = new Ext.Panel({
      ]
 });
 	
-
-
-
-
 // ------------ Album Extra Info --------------
 
 var AlbumInfoRecord = Ext.data.Record.create([

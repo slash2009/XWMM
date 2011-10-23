@@ -45,6 +45,7 @@ XWMM Change log
 - Fixes:
 -- broken JSON-RPC requests (changed fields for properties)
 -- Removed caching files
+-- music year/album and genre/album views
 
 - Added
 -- some movie fields (country, imdb number, original title) in other details
