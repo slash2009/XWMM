@@ -1,36 +1,29 @@
+var AlbumRecord = Ext.data.Record.create([
+   {name: 'albumid'},
+   {name: 'strAlbum', mapping:'label'},	
+   {name: 'strArtist', mapping:'artist'},	
+   {name: 'strGenre', mapping:'genre'},	
+   {name: 'year'}, {name: 'currentThumbnail', mapping:'thumbnail'}
+]);
+
+var AlbumStore = new Ext.ux.XbmcGroupingStore({
+	sortInfo: {field: 'strAlbum', direction: "ASC"},
+	groupField: 'year',
+	xbmcParams: '{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["genre", "artist", "year", "thumbnail"]},"id": 1}',
+	reader: new Ext.data.JsonReader({
+		root:'albums'	       
+		}, AlbumRecord)
+});
+AlbumStore.loadXbmc();
+setXBMCResponseFormat();
 
 var AlbumcolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'albumid', hidden: true},
 		{header: "Album", dataIndex: 'strAlbum', width: 150},
 		{header: "Artist", dataIndex: 'strArtist', hidden: true},
 		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "Year", dataIndex: 'iYear', hidden: true}
-]);
-
-var AlbumRecord = Ext.data.Record.create([
-   {name: 'albumid', mapping: 'field:nth(1)'},
-   {name: 'strAlbum', mapping: 'field:nth(2)'},	
-   {name: 'idArtist', mapping: 'field:nth(3)'},	
-   {name: 'idGenre', mapping: 'field:nth(4)'},	
-   {name: 'strArtist', mapping: 'field:nth(5)'},
-   {name: 'strGenre', mapping: 'field:nth(6)'},	
-   {name: 'iYear', mapping: 'field:nth(7)'},
-   {name: 'currentThumbnail', mapping: 'field:nth(8)'},
-   {name: 'iRating', mapping: 'field:nth(9)'},
-   {name: 'strReview', mapping: 'field:nth(10)'}
-]);
-
-var AlbumStore = new Ext.data.GroupingStore({
-	sortInfo: {field: 'strAlbum', direction: "ASC"},
-	groupField: 'iYear',
-	reader: new Ext.data.JsonXBMCReader({
- 		root:'data'	       
-       }, AlbumRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idAlbum, strAlbum, idArtist, idGenre, strArtist, strGenre, iYear, strThumb, iRating, strReview FROM albumview WHERE strAlbum <> "")' 
-});
+		{header: "Year", dataIndex: 'year', hidden: true}
+    ]);
 
 AlbumGrid = new Ext.grid.GridPanel({
 	cm: AlbumcolModel,
