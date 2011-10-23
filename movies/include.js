@@ -36,7 +36,6 @@ function setUnwatched() {
 
 function updateXBMCSet(item) {
 	var currentMovie = currentRecord; //Moviegrid.getSelectionModel().getSelected();
-	console.log(item);
 	if (item.value == "") {
 	// remove existing record in setlinkmovie
 		myId = "";
@@ -59,7 +58,6 @@ function updateXBMCSet(item) {
 	XBMCExecSql(inputUrl);
 	item.IsDirty = false;
 	item.originalValue = item.getValue();
-	console.log(item.isDirty());
 	currentMovie.data.idSet = myId;
 	currentMovie.data.strSet = item.value;
 	Moviegrid.getView().refresh();
@@ -191,12 +189,12 @@ function movieGenreChange(sm){
 	var sel = sm.getSelections();
 	var strTemp = "";
 	for (var i = 0; i < sel.length; i++) {
-		if (strTemp == ""){strTemp = sel[i].data.strGenre}
-			else{ strTemp = strTemp+' / '+sel[i].data.strGenre};
+		if (strTemp == ""){strTemp = sel[i].data.label}
+			else{ strTemp = strTemp+' / '+sel[i].data.label};
 	}
 	currentRecord.data.Moviegenres = strTemp;
-
 	Ext.getCmp('moviegenres').setValue(strTemp)
+
 }
 	
 function updateXBMCGenreMovie(){
@@ -220,7 +218,7 @@ function updateXBMCGenreMovie(){
 	// remove associated records from StoreMovie
 	// insert selected genres 
 	for (var i = 0; i < modifiedGenre.length; i++){
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genrelinkmovie (idGenre, idMovie) VALUES ('+modifiedGenre[i].data.idGenre+','+idMovie+'))';
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genrelinkmovie (idGenre, idMovie) VALUES ('+modifiedGenre[i].data.genreid+','+idMovie+'))';
 		Ext.Ajax.request({
 			url: inputUrl,
 			method: 'GET',
@@ -247,8 +245,9 @@ function GetMovieGenres(record){
 						responseArr = responseArr.split("<record>");
 						//first field is always empty
 						responseArr.remove("");
+						
 						for (var i = 0; i < responseArr.length; i++) {
-							responseArr[i]= storegenre.findExact('idGenre',responseArr[i],0,false,false)
+							responseArr[i]= storegenre.findExact('genreid',responseArr[i],0,false,false)
 						};		
 						record.data.genres = responseArr;
 						updateGenreGrid(record.data.genres);
@@ -268,15 +267,6 @@ function checkWatched(val) {
 function checkSet(val) {
  if ((typeof(val[0]) != "undefined" ))
 	return '<img src=../images/icons/set.png>';
-}
-
-function updateGenreGrid(t){
-	Genregrid.getSelectionModel().clearSelections(false);
-	Genregrid.getSelectionModel().selectRows(t, true);
-
-	var bt = Ext.getCmp('savebutton');
-	bt.disable();
-	genresFlag = false
 }
 
 var MoviecolModel = new Ext.grid.ColumnModel([

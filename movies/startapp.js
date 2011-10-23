@@ -76,7 +76,7 @@ Ext.onReady(function() {
 	   //{store : 'storevideoflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strVideoCodec, fVideoAspect, iVideoWidth, iVideoHeight from streamdetails where iStreamType=0)'},
 	   //{store : 'storeaudioflags', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strAudioCodec, iAudioChannels from streamdetails where iStreamType=1)'},
 	   {store : 'moviesetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'},
-	   {store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
+	   //{store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
 	];
 
 	loadStartupStores = function(record, options, success){
@@ -98,13 +98,11 @@ Ext.onReady(function() {
 	
 	function startMyApp() {
 	
-		
-	
+
 		var App = new Movie.Mainpanel({
 			renderTo: Ext.getBody()	 
 		});
 		Ext.QuickTips.init();
-		storeMovie.loadXbmc();
 		
 		// begin search config
 		var searchStore = new Ext.data.SimpleStore({

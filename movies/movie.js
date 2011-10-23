@@ -265,12 +265,9 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		
 		currentMovie.on('rowselect', this.onRowSelect, this);
 		
-		// add double-click event to cover object
-		//var element = MovieCover.getEl();
 		MovieCover.getEl().on('dblclick', function(){
 		  ChangeImages(currentRecord);
 		});
-		//element.on('dblclick', function(){ChangeImages(currentRecord)});
 		
 		var element2 = MovieFanart.getEl();
 		element2.on('dblclick', function(){ChangeImages(currentRecord)});

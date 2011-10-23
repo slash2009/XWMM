@@ -422,7 +422,8 @@ function updateXBMCTables(myForm, myTable) {
 		var myIndex = 'idEpisode='+idEpisode;
 	};
 	if (myTable == 'tvshow') {
-		var idShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.idShow;	
+		console.log(Ext.getCmp('tvshowgrid').getSelectionModel().getSelected());
+		var idShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.tvshowid;	
 		var myIndex = 'idShow='+idShow;
 	};
 	
@@ -431,6 +432,10 @@ function updateXBMCTables(myForm, myTable) {
 		var myIndex = 'idMovie='+idMovie;
 	};
 
+	if (myTable == 'albuminfo') {
+		return
+	}
+	
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE '+myTable+' SET '+sqlData+' WHERE '+myIndex+')';
 	Ext.Ajax.request({
 		url: inputUrl,
@@ -438,7 +443,8 @@ function updateXBMCTables(myForm, myTable) {
 		success: function (t){},
 		failure: function(t){},
 		timeout: 2000
-	});
+	})
+	
 }
 
 

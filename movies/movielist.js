@@ -27,7 +27,7 @@ var storeMovie = new Ext.ux.XbmcGroupingStore({
 		}, MovieRecord)
 });
 
-//storeMovie.loadXbmc();
+storeMovie.loadXbmc();
 
 
 // grid with list of movies

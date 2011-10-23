@@ -19,7 +19,7 @@ var MoviePicture = new Ext.form.FieldSet({
 });
 
 var genreRecord = Ext.data.Record.create([	
-   {name: 'genreid'},
+   {name: 'genreid', type: 'string'},
    {name: 'label'}
 ]);
 
@@ -35,6 +35,14 @@ var Checkgenre = new Ext.grid.CheckboxSelectionModel({
 		}
 	}
 });
+
+
+function updateGenreGrid(t){
+	Genregrid.getSelectionModel().clearSelections(false);
+	Genregrid.getSelectionModel().selectRows(t, true);
+	// var bt = Ext.getCmp('savebutton');
+	// bt.disable()
+};
 
 var GenrecolModel = new Ext.grid.ColumnModel([
 		Checkgenre,
@@ -57,7 +65,6 @@ var storegenre = new Ext.ux.XbmcStore({
 			Genregrid.getSelectionModel().selectRow(index, true);
 		}
 	}
-
 });
 storegenre.loadXbmc();
 
@@ -72,8 +79,7 @@ var editor = new Ext.ux.grid.RowEditor({
 			else {
 				updateXBMCGenreString(record);
 				storegenre.reload();
-			}
-								
+			}								
  		 }
 	}
 });
@@ -84,7 +90,7 @@ var GenreMgmtGrid = new Ext.grid.GridPanel({
 			id: 'genremgmtgrid',
 			columns: [
 				{header: "#", dataIndex: 'genreid', hidden: true},
-				{header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'genre'}
+				{header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'label'}
 			],
 			clicksToEdit: 1,
 			title: 'Genre Management',

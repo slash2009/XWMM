@@ -73,17 +73,17 @@ Ext.extend(Ext.ux.XbmcStore, Ext.data.Store, {
   */
 
 Ext.ux.XbmcImages = function(config) {
-    Ext.ux.XbmcImages.superclass.constructor.call(this, config);
+    Ext.ux.XbmcImages.superclass.constructor.call(this, config)
 }; 
 
 Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 	// refresh image
 	refreshMe : function(){
-		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
+		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime()
 	},
 	// set source image
 	updateSrc :function(imagePath){
-		this.el.dom.src = "/vfs/"+imagePath;
+		this.el.dom.src = "/vfs/"+imagePath
 	}
 }); 
 
@@ -97,10 +97,7 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
   */
 
 Ext.ux.XbmcStars = function(config) {
- 
-    // call parent constructor
-    Ext.ux.XbmcStars.superclass.constructor.call(this, config);
- 
+    Ext.ux.XbmcStars.superclass.constructor.call(this, config)
 }; 
 
 Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
@@ -108,7 +105,7 @@ Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
 	autoEl: {tag: 'img', src: "../images/stars/0.png"},
 	updateSrc :function(r){
 		var value = Math.round(r.data.rating);
-		this.el.dom.src =  '../images/stars/'+value+'.png';
+		this.el.dom.src =  '../images/stars/'+value+'.png'
 	}
 }); 
 

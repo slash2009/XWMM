@@ -346,10 +346,12 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 		
 		SeasonGrid.setTitle("<div align='center'> "+r.data.title+" Seasons</div>");
 
+		GetTvshowGenres(selectedTvShow);
+		
 		GettvShowDetails(r);
 		updateTvShowForms(r);
 		// corriger ici le refresh de la grille des genres
-		//GetTvshowGenres(currentRecord);
+		
 		//storegenre.selectFromString(r.data.genre);
 		storeSeason.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", \"params\": {"tvshowid": '+myTvShow+', "properties": [ "season", "thumbnail"]},"id": 1}';
 		storeSeason.loadXbmc();

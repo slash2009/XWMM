@@ -2,9 +2,9 @@
 var myVersion = '2.0.0c'
 
 function mergeJson(object1, object2) {
-var i;
-for (i in object2)
-    object1[i]=object2[i];
+	var i;
+	for (i in object2)	
+		object1[i]=object2[i];
 }
 
 
