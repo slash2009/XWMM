@@ -67,7 +67,10 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 			GetAlbumDetails(r)
 		}
 		
-		albumDetailPanel.getForm().loadRecord(r);
+		//albumDetailPanel.getForm().loadRecord(r);
+		standardInfo.getForm().loadRecord(r);
+		extraInfo.getForm().loadRecord(r);
+		albumDescription.getForm().loadRecord(r);
 		albumDetailPanel.setTitle("<div align='center'>"+r.data.strAlbum+"  /  "+r.data.strArtist+"</div>");
 		
 		AlbumCover.updateSrc(r.data.currentThumbnail);

@@ -17,7 +17,8 @@ function updateMusicAlbum() {
 		progress:true,
 		closable:false,
 		animEl: 'samplebutton'
-	})
+	});
+	
 	var f = function(v){
         return function(){
 		if(v == 30){
@@ -26,12 +27,18 @@ function updateMusicAlbum() {
             var i = v/29;
 			if (v == 1) {
 				myText = 'Checking changes...';
-				updateExtraAlbuminfo(record)
-				myText = 'updating album info';
+				if (standardInfo.getForm().isDirty()) {
+					updateXBMCTables(standardInfo.form, 'album');
+					myText = 'updating Album info'
+				}
 			};
-            if (v == 15) {
-				updateStandardAlbuminfo(record)	
-					myText = 'saving'
+            if (v == 19) {
+				if ((extraInfo.getForm().isDirty()) || (albumDescription.getForm().isDirty())) {
+					ValidateAlbuminfo(record);
+					updateXBMCTables(extraInfo.form, 'albuminfo');
+					updateXBMCTables(albumDescription.form, 'albuminfo');
+					myText = 'updating Extra info'
+				}					
 			};
 			Ext.MessageBox.updateProgress(i, myText);
         }
@@ -42,53 +49,13 @@ function updateMusicAlbum() {
     }
 }
 	
-function updateExtraAlbuminfo (record) {
-	if (Ext.getCmp('scrapertype').isDirty() || Ext.getCmp('scraperlabel').isDirty() || Ext.getCmp('scraperextgenre').isDirty() || Ext.getCmp('scraperstyles').isDirty() || Ext.getCmp('scrapermoods').isDirty() || Ext.getCmp('scraperthemes').isDirty()) {
-		// check if record exists otherwise create it
-		if (AlbumInfoStore.find('idAlbum',record.data.idAlbum,0,false,false) == -1) {
-			var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.idAlbum+'"," '+record.data.iYear+'", "'+record.data.idGenre+'"))';		
-			XBMCExecSql(inputUrl);	
-		}
-		
-		record.data.strMoods = Ext.getCmp('scrapermoods').getValue();
-		record.data.strStyles = Ext.getCmp('scraperstyles').getValue();
-		record.data.strThemes = Ext.getCmp('scraperthemes').getValue();
-		record.data.strLabel = Ext.getCmp('scraperlabel').getValue();
-		record.data.strType = Ext.getCmp('scrapertype').getValue();
-		updateXBMCAlbumScraperInfo(record)
+function ValidateAlbuminfo (record) {
+	// check if record exists otherwise create it
+	AlbumInfoStore.reload();
+	if (AlbumInfoStore.find('idAlbum',record.data.albumid,0,false,false) == -1) {
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.albumid+'"," '+record.data.year+'", "'+record.data.genre+'"))';		
+		XBMCExecSql(inputUrl)
 	}
-}
-
-function updateStandardAlbuminfo(record)	 {
-
-	if (Ext.getCmp('albumratingfield').isDirty() || Ext.getCmp('albumreviewfield').isDirty()) {
-		record.data.iRating = Ext.getCmp('albumratingfield').getValue();
-		record.data.strReview = Ext.getCmp('albumreviewfield').getValue();
-		updateXBMCAlbumInfo(record)
-	};
-	
-	if (Ext.getCmp('albumartistfield').isDirty() || Ext.getCmp('albumtitlefield').isDirty() || Ext.getCmp('albumgenrefield').isDirty() || Ext.getCmp('albumyearfield').isDirty()) {
-		//get the Artist id from combobox
-		var x = ArtistStore.findExact('strArtist', Ext.getCmp('albumartistfield').getValue(),0, false, false);
-		record.data.idArtist = ArtistStore.getAt(x).data.idArtist;
-		record.data.strArtist = Ext.getCmp('albumartistfield').getValue();
-		
-		//get the Genre id from combobox
-		var x = GenreStore.findExact('strGenre', Ext.getCmp('albumgenrefield').getValue(),0, false, false);
-		record.data.idGenre = GenreStore.getAt(x).data.idGenre;
-		record.data.strGenre = Ext.getCmp('albumgenrefield').getValue();
-		
-		record.data.strAlbum = Ext.getCmp('albumtitlefield').getValue();
-		record.data.iYear = Ext.getCmp('albumyearfield').getValue();		
-		
-		updateXBMCAlbum(record);
-		//update Album store
-		AlbumStore.remove(record);
-		AlbumStore.add(record);
-		AlbumGrid.getStore().reload()
-
-	}
-			
 }
 
 function getMusicCoverList(String, r) {
@@ -130,7 +97,7 @@ function getMusicCoverList(String, r) {
 
 function GetAlbumDetails(r) {
 
-	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "properties": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description"]}, "id": 1}');
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "properties": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description", "albumlabel"]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.albumdetails);
 

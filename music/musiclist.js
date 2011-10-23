@@ -72,23 +72,12 @@ var AlbumStars = new Ext.ux.XbmcStars ({
 	height:16
 });
 
-var albumDetailPanel = new Ext.FormPanel({
-	region: 'north',
-	width: 740,
-	id: 'albumDetailPanel',
-	trackResetOnLoad: true,
-	title: "<div align='center'>Select Album</div>",
-	defaults:{hideLabels:true, border:false},
-	layout:'table',
-	layoutConfig: {columns:3},
-	defaults: {frame:true, width:270, height: 190},
-	items:[{
-		width:190,
-		items: [AlbumStars, AlbumCover]
-	},{
+var standardInfo = new Ext.FormPanel({
 		layout: 'form',
 		title: 'Album Info (from tags)',
-		id: 'albumTags',
+		frame:true, width:270, height: 190,
+		trackResetOnLoad: true,
+		bodyStyle:'padding:5px',
 		labelWidth: 60,
 		defaults: {	xtype:'textfield',
 			width: 170,
@@ -98,37 +87,46 @@ var albumDetailPanel = new Ext.FormPanel({
 				fieldLabel: 'Title',
 				name: 'strAlbum',
 				id: 'albumtitlefield',
-				allowBlank: false
+				allowBlank: false,
+				XBMCName: 'strAlbum'
 			},{
 				xtype: 'combo',
 				fieldLabel: 'Genre',
 				store: GenreStore,
 				displayField: 'strGenre',
 				id: 'albumgenrefield',
+				valueField : 'idGenre',
 				//mode: 'local',
 				//typeAhead: true,
-				name: 'strGenre'
+				name: 'strGenre',
+				XBMCName: 'idGenre'
 			},{
 				xtype: 'combo',
 				fieldLabel: 'artist',
 				store: ArtistStore,
 				id: 'albumartistfield',
 				displayField: 'strArtist',
+				valueField : 'idArtist',
 				//mode: 'local',
 				//typeAhead: true,
-				name: 'strArtist'
+				name: 'strArtist',
+				XBMCName: 'idArtist'
 			},{
 				fieldLabel: 'Year',
 				id: 'albumyearfield',
-				name: 'year'
-			},{
-				fieldLabel: 'Rating',
-				id: 'albumratingfield',
-				name: 'rating'
+				name: 'year',
+				XBMCName: 'iYear'
+
 			}]
-	},{
+});
+
+var extraInfo = new Ext.FormPanel({
         title:'Additional Info (from scraper)',
 		layout: 'form',
+		trackResetOnLoad : true,
+		frame:true,
+		height: 368,
+		width: 280,
 		id: 'albumscraperdetails',
 		labelWidth: 60,
 		defaults: {	xtype:'textfield',
@@ -141,10 +139,7 @@ var albumDetailPanel = new Ext.FormPanel({
 					},
 					buffer: 100
 				}
-
 		},
-		height: 380,
-		width: 280,
 		rowspan: 2,
 		items:[{
 			fieldLabel: 'Genre',
@@ -156,67 +151,103 @@ var albumDetailPanel = new Ext.FormPanel({
 			//id: 'scraperyear',
 			readOnly : true
 		},{
+			fieldLabel: 'Rating',
+			id: 'albumratingfield',
+			name: 'rating',
+			XBMCName: 'iRating'
+		},{
 			fieldLabel: 'Type',
 			id : 'scrapertype',
-			name: 'type'
+			name: 'type',
+			XBMCName: 'strType'
 		},{
 			fieldLabel: 'Label',
 			id : 'scraperlabel',
-			name: 'strLabel'
+			name: 'albumlabel',
+			XBMCName: 'strLabel'
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Extra Genre',
 			id : 'scraperextgenre',
-			name: 'strExtraGenres'
+			name: 'strExtraGenres',
+			XBMCName: 'strExtraGenres'
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Styles',
 			id : 'scraperstyles',
-			name: 'style'			
+			name: 'style',
+			XBMCName: 'strStyles'		
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Moods',
 			id : 'scrapermoods',
-			name: 'mood'
+			name: 'mood',
+			XBMCName: 'strMoods'
 		},{
 			xtype:'textarea',
 			height: 47,
 			fieldLabel: 'Themes',
 			id : 'scraperthemes',
-			name: 'strThemes'			
+			name: 'theme',
+			XBMCName: 'strThemes'
 		}]
-                },{
-                    title:'Description',
-					buttons: [{
-						disabled: true,
-						text:'Save',
-						id: 'savebutton',
-						handler: function(){	
-							updateMusicAlbum();
-							//storeMovie.reload();
-							this.disable();
-						}
-					},{
-						text:'Cancel',
-						handler: function(){
-							updateGenreGrid(currentRecord.data.genres)
-						}
-					}],    
-					width: 460,
-                    colspan:2,
-					items: [{
-						xtype:'textarea',
-						name:'description',
-						id: 'albumreviewfield',
-						listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}},
-						height: 105,
-						width: 430
-					}]
-                }]
-            });
+});
+
+var albumDescription = new Ext.FormPanel({
+    title:'Description',
+	layout: 'form',
+	trackResetOnLoad : true,
+	labelWidth: 6,
+	buttons: [{
+		disabled: true,
+		text:'Save',
+		id: 'savebutton',
+		handler: function(){	
+			updateMusicAlbum();
+			//storeMovie.reload();
+			this.disable();
+		}
+	},{
+		text:'Cancel',
+		handler: function(){
+			updateGenreGrid(currentRecord.data.genres)
+		}
+	}],    
+	width: 460,
+    colspan:2,
+	items: [{
+		xtype:'textarea',
+		name:'description',
+		id: 'albumreviewfield',
+		XBMCName: 'strReview',
+		listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}},
+		height: 105,
+		width: 430
+	}]
+})
+
+var albumDetailPanel = new Ext.Panel({
+	region: 'north',
+	width: 740,
+	id: 'albumDetailPanel',
+	trackResetOnLoad: true,
+	title: "<div align='center'>Select Album</div>",
+	defaults:{hideLabels:true, border:false},
+	layout:'table',
+	layoutConfig: {columns:3},
+	defaults: {frame:true},
+	items:[{
+			width:190,
+			items: [AlbumStars, AlbumCover]
+		}, 
+		standardInfo, 
+		extraInfo,
+		albumDescription
+     ]
+});
 	
 
 

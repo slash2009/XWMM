@@ -409,7 +409,8 @@ function removeXbmcActorMovie(record) {
 
 function updateXBMCTables(myForm, myTable) {				
 	var sqlData = '';
-	var itemsList = myForm.form.items.items;
+	var itemsList = myForm.items.items;
+
 	for (var i = 0; i < itemsList.length; i++){
 		f = itemsList[i];
 		if(f.isDirty()){
@@ -418,12 +419,11 @@ function updateXBMCTables(myForm, myTable) {
 		}
 	}
 	if (myTable == 'episode') {
-		var idEpisode = Ext.getCmp('episodegrid').getSelectionModel().getSelected().data.idEpisode;
+		var idEpisode = EpisodeGrid.getSelectionModel().getSelected().data.episodeid;
 		var myIndex = 'idEpisode='+idEpisode;
 	};
 	if (myTable == 'tvshow') {
-		console.log(Ext.getCmp('tvshowgrid').getSelectionModel().getSelected());
-		var idShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.tvshowid;	
+		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;	
 		var myIndex = 'idShow='+idShow;
 	};
 	
@@ -432,8 +432,18 @@ function updateXBMCTables(myForm, myTable) {
 		var myIndex = 'idMovie='+idMovie;
 	};
 
-	if (myTable == 'albuminfo') {
-		return
+	if ((myTable == 'album') || (myTable == 'albuminfo')) {
+		var idAlbum = AlbumGrid.getSelectionModel().getSelected().data.albumid;	
+		var myIndex = 'idAlbum='+idAlbum;
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE '+myTable+' SET '+sqlData+' WHERE '+myIndex+')';
+		Ext.Ajax.request({
+			url: inputUrl,
+			method: 'GET',
+			success: function (t){},
+			failure: function(t){},
+			timeout: 2000
+		})
+	return
 	}
 	
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE '+myTable+' SET '+sqlData+' WHERE '+myIndex+')';
