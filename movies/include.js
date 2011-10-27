@@ -83,7 +83,7 @@ function updateXBMCAll() {
 			if (v == 1) {
 				myText = 'Checking changes...';
 				if (MoviedetailPanel.getForm().isDirty()) {
-					updateXBMCTables(MoviedetailPanel, 'movie');
+					updateXBMCTables(MoviedetailPanel.getForm(), 'movie');
 					myText = 'updating movie info';
 				};
 				if (Ext.getCmp('moviesetcombo').isDirty()) {
@@ -91,7 +91,7 @@ function updateXBMCAll() {
 					myText = 'updating Sets'
 				} 
 				if (fileDetailsPanel.getForm().isDirty()) {
-					updateXBMCTables(fileDetailsPanel, 'movie');
+					updateXBMCTables(fileDetailsPanel.getForm(), 'movie');
 					myText = 'updating additional info';
 				};
 			};
@@ -111,8 +111,6 @@ function updateXBMCAll() {
 }
 
 function LoadAllMoviesdetails(){
-	//storeMovieDetails.load();
-	//storegenre.load();
 	storeVideoFlags.load();
 	storeAudioFlags.load();
 }
@@ -142,7 +140,7 @@ function updateAllForms(r) {
 
 function GetMovieDetails(r){
 
-	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file" ]}, "id": 1}');
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file", "sorttitle"]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.moviedetails);
 

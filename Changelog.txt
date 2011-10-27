@@ -51,3 +51,8 @@ XWMM Change log
 -- some movie fields (country, imdb number, original title) in other details
 -- improved movie save function: set fields change enables save button
 -- improved musci save function: save any field and progress bar
+
+2.0.0d:
+- Fixes:
+-- Movie Set save function
+-- Sort Title save

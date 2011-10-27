@@ -31,6 +31,7 @@ Ext.ns('Movie');
 var fileDetailsPanel = new Ext.FormPanel({
 	id: 'filedetailPanel',
 	title: 'Other details',
+	trackResetOnLoad : true,
 	labelWidth:50,
 	frame: true,
 	bodyStyle:'padding:5px',
@@ -39,7 +40,7 @@ var fileDetailsPanel = new Ext.FormPanel({
 		fieldLabel: 'Name',
 		name: 'strFilename',
 		readOnly: true,
-		XBMCName: 'c00'
+		//XBMCName: 'c00'
 	},{
 		fieldLabel: 'Original',
 		name: 'originaltitle',
@@ -112,7 +113,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 			allowBlank: false
 		},{
 			fieldLabel: 'Sort Title',
-			name: 'sortTitle',
+			name: 'sorttitle',
 			XBMCName: 'c10'
 
 		},{
