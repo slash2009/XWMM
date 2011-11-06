@@ -15,7 +15,7 @@ var fanartTpl = new Ext.XTemplate(
     '</tpl>'
 );
 
-	window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
+window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
 
 function ChangeImages(record) {
 
@@ -39,9 +39,10 @@ function ChangeImages(record) {
 		var selNode = viewCovers.getSelectedRecords();
 		var currentMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
 		// selNode contains only one item
-		downloadXBMCFile(selNode[0].data.url, currentMovie.data.cover );
+		//console.log(selNode[0].data.url, '--  ', currentMovie.data);
+		downloadXBMCFile(selNode[0].data.url, currentMovie.data.thumbnail );
 		//update main Movie form
-		Ext.getCmp('cover').refreshMe();
+		MovieCover.refreshMe();
 		loadingMask.hide();
 		
 	}
@@ -157,7 +158,7 @@ function ChangeImages(record) {
 				}
 				else {
 					var v = Ext.getCmp('myLocal').getValue();
-					console.log(Ext.getCmp('myLocal').files[0].getAsBinary());
+					
 				}
 					preview.updateSrc(v);
 					fp.getForm().submit({url: '../test'})

@@ -348,6 +348,24 @@ function getCoverList(String, r) {
 	 return result;
 }
 
+function XBMCgetMoviesFields(resp, r) {
+
+	//var temp = TrimXbmcXml(resp);
+
+	var temp = resp.responseText.replace(/<\/record>/g, "");
+	temp = temp.replace(/<record>/g, "");
+	temp = temp.replace(/<recordset>/g, "");
+	temp = temp.replace(/<\/recordset>/g, "");
+	temp = temp.replace(/<html>/g, "");
+	temp = temp.replace(/<\/html>/g, "");
+	temp = temp.replace(/<\/field>/g, "");
+	temp = temp.split("<field>");
+	r.data.MovieFanartUrl = getFanartList(temp[1]);
+	r.data.MovieCoverUrl = getCoverList(temp[2], r);
+	
+}
+
+
 function XBMCScanContent(type,path) {
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary('+type+','+path+'))';
 	Ext.Ajax.request({
@@ -410,9 +428,8 @@ function removeXbmcActorMovie(record) {
 function updateXBMCTables(myForm, myTable) {				
 	var sqlData = '';
 	var itemsList = myForm.items.items;
-
 	for (var i = 0; i < itemsList.length; i++){
-		f = itemsList[i];
+		f = itemsList[i]; 
 		if(f.isDirty()){
 			if (sqlData == '') {sqlData = f.XBMCName+'="'+f.getValue()+'"';}
 				else {sqlData = sqlData+' ,'+f.XBMCName+'="'+f.getValue()+'"';}

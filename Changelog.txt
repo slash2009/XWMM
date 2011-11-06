@@ -56,3 +56,7 @@ XWMM Change log
 - Fixes:
 -- Movie Set save function
 -- Sort Title save
+
+2.0.0e:
+- Fixes:
+-- change Movie thumbnail and fanart
