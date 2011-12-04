@@ -8,10 +8,13 @@ var ActorcolModel = new Ext.grid.ColumnModel([
 		{header: "Role", dataIndex: 'role'}
 ]);
 
-var storeActor = new Ext.ux.XbmcStore({
+var storeActor = new Ext.data.Store({
 	sortInfo: {field: 'name', direction: "ASC"},
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc"
+	}),
 	reader: new Ext.data.JsonReader({
-		root:'tvshowdetails.cast'	       
+		root:'result.tvshowdetails.cast'	       
 		}, actorRecord)
 });
 

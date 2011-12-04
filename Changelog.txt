@@ -60,3 +60,4 @@ XWMM Change log
 2.0.0e:
 - Fixes:
 -- change Movie thumbnail and fanart
+-- changed most http request to JSON-RPC in music section

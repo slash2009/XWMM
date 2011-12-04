@@ -1,7 +1,6 @@
 
 
 function XBMCFixPath(myNode) {
-	
 	if (myNode.attributes.leaf) {	
 		if (myNode.attributes.xbmcIdFile != -1) {
 			if (myNode.attributes.xbmcIdPath == -1) {
@@ -14,23 +13,6 @@ function XBMCFixPath(myNode) {
 		for (var i=0; i< myNode.childNodes.length; i++)
 			XBMCFixPath(myNode.childNodes[i]);
 	}
-}
-
-function xbmcJsonRPC(params) {
-	var inputUrl = '/jsonrpc'
-	var myjson = '';
-	Ext.Ajax.request({
-		url: inputUrl,
-		params : params,
-	method: "POST",
-		async: false,
-		success: function (t){
-			myjson = Ext.util.JSON.decode(t.responseText);
-			},
-		failure: function(t){},
-			timeout: 2000
-	});	
-	return myjson.result;
 }
 
 function TrimXbmcXml(t){

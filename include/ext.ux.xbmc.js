@@ -18,54 +18,11 @@ function xbmcJsonRPC(params) {
 
 // Name space for XBMC objects
 
-Ext.namespace('Ext.ux');
- 
- 
- Ext.ux.XbmcGroupingStore = function(config) {
-    Ext.ux.XbmcStore.superclass.constructor.call(this, config)
-};
-
-Ext.extend(Ext.ux.XbmcGroupingStore, Ext.data.GroupingStore, {
- 	// load from XBMC via JSON-RPC
-	loadXbmc: function() {
-		 var json = xbmcJsonRPC(this.xbmcParams);
-		 this.loadData(json)
-	}, 
-	// JSON-RPC parameters
-	xbmcParams : String,
-	proxy: new Ext.data.MemoryProxy()
-}); 
- 
-/**
-  * Ext.ux.XbmcStore Extension Class
-  * @author nicolas
-  * @version 1.0
-  * @class Ext.ux.XbmcStore
-  * @extends Ext.Data.Store
-  * @constructor
-  * @param {Object} config Configuration options
-  *		xbmcParams :	XBMC JSON-RPC parameters (string)
-  * 	loadXbmc : 		function to load from XBMC (no params)
-  */
-  
-Ext.ux.XbmcStore = function(config) {
-    Ext.ux.XbmcStore.superclass.constructor.call(this, config)
-};
-
-Ext.extend(Ext.ux.XbmcStore, Ext.data.Store, {
- 	// load from XBMC via JSON-RPC
-	loadXbmc: function() {
-		 var json = xbmcJsonRPC(this.xbmcParams);
-		 this.loadData(json)
-	}, 
-	// JSON-RPC parameters
-	xbmcParams : String,
-	proxy: new Ext.data.MemoryProxy()
-}); 
+Ext.namespace('Ext.ux'); 
 
 /**
   * Ext.ux.XbmcImages Extension Class
-  * @author nicolas
+  * @author slash
   * @version 1.0
   * @class Ext.ux.XbmcImages
   * @extends Ext.Container
@@ -89,7 +46,7 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 
 /**
   * Ext.ux.XbmcStars Extension Class
-  * @author nicolas
+  * @author slash
   * @version 1.0
   * @class Ext.ux.XbmcStars
   * @extends Ext.Container

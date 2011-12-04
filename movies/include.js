@@ -24,13 +24,13 @@ var gridContextMenu = new Ext.menu.Menu({
 function setWatched() {
 		setXBMCwatched(currentRecord.data.idFile);
 		currentRecord.data.watched ="1";
-		Moviegrid.getView().refresh();
+		Moviegrid.getView().refresh()
 };
 
 function setUnwatched() {
 		setXBMCunwatched(currentRecord.data.idFile);
 		currentRecord.data.watched = "";
-		Moviegrid.getView().refresh();
+		Moviegrid.getView().refresh()
 };
 
 
@@ -60,7 +60,7 @@ function updateXBMCSet(item) {
 	item.originalValue = item.getValue();
 	currentMovie.data.idSet = myId;
 	currentMovie.data.strSet = item.value;
-	Moviegrid.getView().refresh();
+	Moviegrid.getView().refresh()
 }
 
 function updateXBMCAll() {
@@ -110,10 +110,10 @@ function updateXBMCAll() {
     }
 }
 
-function LoadAllMoviesdetails(){
-	storeVideoFlags.load();
-	storeAudioFlags.load();
-}
+// function LoadAllMoviesdetails(){
+	// storeVideoFlags.load();
+	// storeAudioFlags.load();
+// }
 
 function updateAllForms(r) {
 
@@ -259,19 +259,20 @@ function GetMovieGenres(record){
 
 function checkWatched(val) {
  if ((val != "" ) && (val != "0"))
-	return '<img src=../images/icons/checked.png>';
+	return '<img src=../images/icons/checked.png>'
+
 }
 
 function checkSet(val) {
  if ((typeof(val[0]) != "undefined" ))
-	return '<img src=../images/icons/set.png>';
+	return '<img src=../images/icons/set.png>'
 }
 
 var MoviecolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'idMovie', hidden: true, width: 30},
-		{header: "Title", dataIndex: 'Movietitle', width: 215},
-		{header: "", dataIndex: 'strSet', width: 25, hidden: false, renderer: checkSet},
+		{header: "Title", dataIndex: 'Movietitle', width: 210},
+		{header: "S", dataIndex: 'strSet', width: 26, hidden: false, renderer: checkSet},
 		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "", dataIndex: 'watched', width: 25, hidden: false, renderer: checkWatched},
+		{header: "W", dataIndex: 'watched', width: 26, hidden: false, renderer: checkWatched},
 		
     ]);

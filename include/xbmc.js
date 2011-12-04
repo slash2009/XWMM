@@ -654,3 +654,134 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 	    };
     }
 });
+
+
+
+Ext.data.XBMCProxy = function(conn){
+    Ext.data.XBMCProxy.superclass.constructor.call(this, conn);
+
+    this.conn = conn;
+    this.conn.url = null;
+    this.useAjax = !conn || !conn.events;
+
+    var actions = Ext.data.Api.actions;
+    this.activeRequest = {};
+    for (var verb in actions) {
+        this.activeRequest[actions[verb]] = undefined
+    }
+};
+
+Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
+
+    getConnection : function() {
+        return this.useAjax ? Ext.Ajax : this.conn;
+    },
+
+    setUrl : function(url, makePermanent) {
+        this.conn.url = url;
+        if (makePermanent === true) {
+            this.url = url;
+            this.api = null;
+            Ext.data.Api.prepare(this);
+        }
+    },
+
+    doRequest : function(action, rs, params, reader, cb, scope, arg) {
+        var  o = {
+            method: (this.api[action]) ? this.api[action]['method'] : undefined,
+            request: {
+                callback : cb,
+                scope : scope,
+                arg : arg
+            },
+            reader: reader,
+            callback : this.createCallback(action, rs),
+            scope: this
+        };
+	
+		o.jsonData = Ext.util.JSON.encode(this.conn.xbmcParams);
+		
+        if (params.jsonData) {
+            o.jsonData = params.jsonData;
+        } else if (params.xmlData) {
+            o.xmlData = params.xmlData;
+        } else {
+            o.params = params || {};
+        }
+
+        this.conn.url = this.buildUrl(action, rs);
+	
+        if(this.useAjax){
+
+            Ext.applyIf(o, this.conn);
+
+            this.activeRequest[action] = Ext.Ajax.request(o);
+        }else{
+            this.conn.request(o);
+        }
+        // request is sent, nullify the connection url in preparation for the next request
+        this.conn.url = null;
+    },
+
+    createCallback : function(action, rs) {
+        return function(o, success, response) {
+            this.activeRequest[action] = undefined;
+            if (!success) {
+                if (action === Ext.data.Api.actions.read) {
+                    // @deprecated: fire loadexception for backwards compat.
+                    // TODO remove
+                    this.fireEvent('loadexception', this, o, response);
+                }
+                this.fireEvent('exception', this, 'response', action, o, response);
+                o.request.callback.call(o.request.scope, null, o.request.arg, false);
+                return;
+            }
+            if (action === Ext.data.Api.actions.read) {
+                this.onRead(action, o, response);
+            } else {
+                this.onWrite(action, o, response, rs);
+            }
+        };
+    },
+
+    onRead : function(action, o, response) {
+        var result;
+        try {
+            result = o.reader.read(response);
+        }catch(e){
+
+            this.fireEvent('loadexception', this, o, response, e);
+
+            this.fireEvent('exception', this, 'response', action, o, response, e);
+            o.request.callback.call(o.request.scope, null, o.request.arg, false);
+            return;
+        }
+        if (result.success === false) {
+
+            this.fireEvent('loadexception', this, o, response);
+
+            // Get DataReader read-back a response-object to pass along to exception event
+            var res = o.reader.readResponse(action, response);
+            this.fireEvent('exception', this, 'remote', action, o, res, null);
+        }
+        else {
+            this.fireEvent('load', this, o, o.request.arg);
+        }
+
+        o.request.callback.call(o.request.scope, result, o.request.arg, result.success);
+    },
+    // inherit docs
+    destroy: function(){
+        if(!this.useAjax){
+            this.conn.abort();
+        }else if(this.activeRequest){
+            var actions = Ext.data.Api.actions;
+            for (var verb in actions) {
+                if(this.activeRequest[actions[verb]]){
+                    Ext.Ajax.abort(this.activeRequest[actions[verb]]);
+                }
+            }
+        }
+        Ext.data.HttpProxy.superclass.destroy.call(this);
+    }
+});

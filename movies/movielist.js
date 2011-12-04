@@ -19,15 +19,18 @@ var MovieRecord = Ext.data.Record.create([
    {name: 'strSet', mapping: 'set'}
 ]);
 
-var storeMovie = new Ext.ux.XbmcGroupingStore({
+var storeMovie = new Ext.data.GroupingStore({
 	sortInfo: {field: 'Movietitle', direction: "ASC"},
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}',
+	//autoLoad: true,
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}
+	}),
 	reader: new Ext.data.JsonReader({
-		root:'movies'	       
-		}, MovieRecord)
+		root: 'result.movies'
+	}, MovieRecord)
 });
 
-storeMovie.loadXbmc();
 
 
 // grid with list of movies
@@ -46,9 +49,8 @@ Moviegrid = new Ext.grid.GridPanel({
         rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
             gridContextMenu.showAt(e.getXY());    
             e.stopEvent();
-            return false;
+            return false
         }}	
 	},
 	store: storeMovie
-	
 }); 

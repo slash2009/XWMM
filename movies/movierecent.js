@@ -1,23 +1,9 @@
 
-
 // -----------------------------------------
-// movie.js
-// last modified : 03-03-2010
+// movierecent.js
+// last modified : 30-11-2011
 // 
 //------------------------------------------ 
-
-// var MovieRecord = Ext.data.Record.create([
-   // {name: 'idMovie', type: 'int', mapping: 'field:nth(1)'},		//idMovie
-   // {name: 'strFilename', mapping: 'field:nth(2)'},	//strFilename
-   // {name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
-   // {name: 'Movietitle', mapping: 'field:nth(4)'},	//c00
-   // {name: 'strPath', mapping: 'field:nth(5)'},		//strPath
-   // {name: 'Moviegenres', mapping: 'field:nth(6)'},	//c14
-   // {name: 'idFile', mapping: 'field:nth(7)'},
-   // {name: 'watched', mapping: 'field:nth(8)'},
-   // {name: 'idSet', mapping: 'field:nth(10)'},
-   // {name: 'strSet', mapping: 'field:nth(11)'}
-// ]);
 
 var MovieRecord = Ext.data.Record.create([
    {name: 'idMovie', mapping: 'movieid'},		//idMovie
@@ -34,17 +20,16 @@ var MovieRecord = Ext.data.Record.create([
    {name: 'strSet', mapping: 'set'}
 ]);
 
-var storeMovie = new Ext.ux.XbmcGroupingStore({
+var storeMovie = new Ext.data.GroupingStore({
 	sortInfo: {field: 'Movietitle', direction: "ASC"},
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetRecentlyAddedMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}',
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetRecentlyAddedMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}
+	}),
 	reader: new Ext.data.JsonReader({
-		root:'movies'	       
+		root:'result.movies'	       
 		}, MovieRecord)
 });
-
-storeMovie.loadXbmc();
-
-
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({
@@ -65,6 +50,5 @@ Moviegrid = new Ext.grid.GridPanel({
         }}	
 	},
 	store: storeMovie
-	
 }); 
 

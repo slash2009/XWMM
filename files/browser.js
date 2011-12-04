@@ -190,15 +190,11 @@ function runtree() {
 	});
 	
 	getStacks();
-
-	
 	
 	var myVideoShares = getShares('video');
 	
-	
 		for (var i = 1; i < myVideoShares.length; i++) {
 			var tempStr = myVideoShares[i].split(";");	
-			
 			var myNode = new rootRecord(tempStr[0], tempStr[1], tempStr[1]);
 			myNode.checkDirPath();
 			treegrid.root.appendChild(new Ext.tree.TreeNode({text: tempStr[0], data: tempStr[1], leaf: false, children:[], expandable:true, scansub: false, isInDb: myNode.xbmcIdFile, xbmcIdPath: myNode.xbmcIdPath, xbmcContent: myNode.xbmcContent, xbmcScraper: myNode.xbmcScraper}));

@@ -28,8 +28,6 @@ function ChangeImages(record) {
 			fields: ['thumb','url', 'title', 'currentCover']
 	});
 	
-	console.log(record.data);
-	
 	var storeFanarts =  new Ext.data.ArrayStore({
 		data: FanartUrlList,
 		autoLoad: true,

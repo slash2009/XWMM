@@ -50,12 +50,16 @@ var GenrecolModel = new Ext.grid.ColumnModel([
 		{header: "Genre", width: 200, dataIndex: 'label'}
 ]);
 
-var storegenre = new Ext.ux.XbmcStore({
+var storegenre = new Ext.data.Store({
 	id: 'storegenre',
 	sortInfo: {field: 'label', direction: "ASC"},
-	xbmcParams: '{"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1}',
+	autoLoad: true,
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1}
+	}),
 	reader: new Ext.data.JsonReader({
-		root:'genres'	       
+		root:'result.genres'	       
 	}, genreRecord),
 	selectFromString :function(string){ // select genre rows according to movie genre field 
 		var myArray = string.split('/');
@@ -66,7 +70,8 @@ var storegenre = new Ext.ux.XbmcStore({
 		}
 	}
 });
-storegenre.loadXbmc();
+
+
 
 var editor = new Ext.ux.grid.RowEditor({
 	saveText: 'Update',

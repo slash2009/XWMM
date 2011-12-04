@@ -8,9 +8,7 @@ var responseFinale = [];
 var movieTable = [];
 var selectedMovie;
 var currentRecord;
-var currentEpisode;
 var currentMovie;
-var DetailsFlag;
 var genresFlag;
 var detailPanel;
 
@@ -23,18 +21,18 @@ var gridContextMenu = new Ext.menu.Menu({
 });
 
 function setWatched() {
-	if (currentEpisode.data.watched == "") {
-		setXBMCwatched(currentEpisode.data.idFile);
-		currentEpisode.data.watched ="1";
+	if (selectedEpisode.data.watched == "") {
+		setXBMCwatched(selectedEpisode.data.idFile);
+		selectedEpisode.data.watched ="1";
 		EpisodeGrid.getView().refresh();
 	}
 };
 
 function setUnwatched() {
-	if (currentEpisode.data.watched != "") {
-		setXBMCunwatched(currentEpisode.data.idFile);
-		currentEpisode.data.watched = "";
-		EpisodeGrid.getView().refresh();
+	if (selectedEpisode.data.watched != "") {
+		setXBMCunwatched(selectedEpisode.data.idFile);
+		selectedEpisode.data.watched = "";
+		EpisodeGrid.getView().refresh()
 	}
 };
 
@@ -76,7 +74,7 @@ function updateXBMCAll() {
 			};
 			Ext.MessageBox.updateProgress(i, myText);
         }
-        };
+        }
     };
     for(var i = 1; i < 31; i++){
         setTimeout(f(i), i*100);
@@ -92,7 +90,7 @@ function movieGenreChange(sm){
 			else{ strTemp = strTemp+' / '+sel[i].data.label};
 	}
 	selectedTvShow.data.genre = strTemp;
-	Ext.getCmp('genreString').setValue(strTemp);
+	Ext.getCmp('genreString').setValue(strTemp)
 }
 
 function updateTvShowForms(r) {
@@ -101,7 +99,7 @@ function updateTvShowForms(r) {
 	Ext.getCmp('tvshowcover').updateSrc(r.data.thumbnail)
 	Ext.getCmp('seasoncover').updateSrc(r, -1);
 	var myForm = Ext.getCmp('tvShowdetailPanel');
-	myForm.getForm().loadRecord(r);
+	myForm.getForm().loadRecord(r)
 }
 
 function updateEpisodeForms(r) {
@@ -218,11 +216,5 @@ var seasoncolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'season', hidden: true},
 		{header: "Season", width: 115, dataIndex: 'label'}
     ]);
-	
-// var GenrecolModel = new Ext.grid.ColumnModel([
-	// Checkgenre,
-	// {header: "#", dataIndex: 'idGenre', hidden: true},
-	// {header: "Genre", width: 200, dataIndex: 'strGenre'}
-// ]);
 	
 //Ext.BLANK_IMAGE_URL = 'extjs/resources/../images/stars/default/s.gif';

@@ -1,8 +1,8 @@
 
 
 var genreRecord = Ext.data.Record.create([
-   {name: 'idGenre', mapping: 'field:nth(1)'},		
-   {name: 'strGenre', mapping: 'field:nth(2)'}
+   {name: 'idGenre', mapping: 'genreid'},		
+   {name: 'strGenre', mapping: 'label'}
 ]);
 
 var Checkgenre = new Ext.grid.CheckboxSelectionModel({
@@ -26,11 +26,17 @@ var GenrecolModel = new Ext.grid.ColumnModel([
 
 var GenreStore = new Ext.data.Store({
 	sortInfo: {field: 'strGenre', direction: "ASC"},
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
+	autoLoad: true,
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.genres'	       
 		}, genreRecord),
 	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idGenre, strGenre FROM genre)'
 });
+
 
 var editor = new Ext.ux.grid.RowEditor({
 	saveText: 'Update',

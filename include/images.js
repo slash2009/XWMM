@@ -39,7 +39,6 @@ function ChangeImages(record) {
 		var selNode = viewCovers.getSelectedRecords();
 		var currentMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
 		// selNode contains only one item
-		//console.log(selNode[0].data.url, '--  ', currentMovie.data);
 		downloadXBMCFile(selNode[0].data.url, currentMovie.data.thumbnail );
 		//update main Movie form
 		MovieCover.refreshMe();
@@ -53,7 +52,6 @@ function ChangeImages(record) {
 		var currentMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
 		// selNode contains only one item
 		downloadXBMCFile(selNode[0].data.url, currentMovie.data.fanart);
-		//console.log(currentMovie.data);
 		//update main Movie form
 		Ext.getCmp('fanart').refreshMe();
 		loadingMask.hide();

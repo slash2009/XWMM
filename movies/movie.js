@@ -39,7 +39,7 @@ var fileDetailsPanel = new Ext.FormPanel({
 	items: [{
 		fieldLabel: 'Name',
 		name: 'strFilename',
-		readOnly: true,
+		readOnly: true
 		//XBMCName: 'c00'
 	},{
 		fieldLabel: 'Original',
@@ -86,7 +86,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 		id: 'savebutton',
 		handler: function(){	
 			updateXBMCAll();
-			this.disable();
+			this.disable()
 		}
 	},{
 		text:'Cancel',
@@ -257,7 +257,7 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		]
 		})
 			
-		Movie.Mainpanel.superclass.initComponent.call(this);
+		Movie.Mainpanel.superclass.initComponent.call(this)
 	},
 	
 	initEvents: function() {
@@ -279,13 +279,13 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		selectedMovie = r.data.idMovie;
 		currentRecord = r;
 		
-		storeActor.xbmcParams = '{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+ selectedMovie+', "properties": ["cast"]},"id": 1}';
-		storeActor.loadXbmc();
+		storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": selectedMovie, "properties": ["cast"]},"id": 1};
+		storeActor.reload();
 		
 		if (r.data.details == undefined){
 			GetMovieGenres(r);
 			GetMovieDetails(r);
-			Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
+			Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
 		}
 		else{ 
 			updateGenreGrid(r.data.genres);
