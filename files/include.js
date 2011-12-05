@@ -179,22 +179,6 @@ function createJsonRootDirectory(tablestring) {
 	return temp;
 }
 
-function getDir(path) {
-	var currentList = [];
-	//path = normalizeString(path);
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=GetDirectory(' + path + ')';
-		Ext.Ajax.request({
-			url: inputUrl,
-			method: 'GET',
-			async: false,
-			success: function (t){
-				currentList = TrimXbmcXml(t).split("<li>")
-			},
-			failure: function (t){}
-		});
-	return currentList
-}
-
 
 
 
