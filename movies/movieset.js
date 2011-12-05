@@ -36,10 +36,11 @@ var MoviesInSetRecord = Ext.data.Record.create([
 var MoviesInSetStore = new Ext.data.GroupingStore({
 	sortInfo: {field: 'c00', direction: "ASC"},
 	id: 'moviesinsetstore',
+	autoLoad: false,
 	reader: new Ext.data.JsonXBMCReader({
 		root:'data'	       
        }, MoviesInSetRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie WHERE idSet = -1)' 
+ 
 });
 
 var MovieInSetGrid = new Ext.grid.GridPanel({

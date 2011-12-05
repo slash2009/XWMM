@@ -95,7 +95,7 @@ Ext.onReady(function() {
 	startMyApp()
 	
 	//Moviegrid.on('contextmenu', gridContextHandler);
-	
+	MovieSetStore.load();
 	function startMyApp() {
 	
 
