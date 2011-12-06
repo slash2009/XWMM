@@ -23,22 +23,6 @@ function TrimXbmcXml(t){
 	return temp
 }
 
-function getShares(type){
-	var tempList = [];
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=GetShares(' + type + ')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-		async: false,
-        success: function (t){
-			tempList = TrimXbmcXml(t).split("<li>");
-			},
-        failure: function (t){},
-		timeout: 2000
-    });
-	return tempList
-}
-
 function isDirectory (item) {	
 	var myPosition = item.length -1;
 	var lastChar = item.substring(myPosition, myPosition + 1);

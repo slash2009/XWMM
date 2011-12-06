@@ -191,13 +191,14 @@ function runtree() {
 	
 	getStacks();
 	
-	var myVideoShares = getShares('video');
+	var myVideoShares = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "Files.GetSources", "params": {"media": "video"}, "id": 1}').sources;
 	
-		for (var i = 1; i < myVideoShares.length; i++) {
-			var tempStr = myVideoShares[i].split(";");	
-			var myNode = new rootRecord(tempStr[0], tempStr[1], tempStr[1]);
+		for (var i = 0; i < myVideoShares.length; i++) {
+
+			var myNode = new rootRecord(myVideoShares[i].label, myVideoShares[i].file, myVideoShares[i].file);
 			//myNode.checkDirPath();
-			treegrid.root.appendChild(new Ext.tree.TreeNode({text: tempStr[0], data: tempStr[1], leaf: false, children:[], expandable:true, scansub: false, isInDb: myNode.xbmcIdFile, xbmcIdPath: myNode.xbmcIdPath, xbmcContent: myNode.xbmcContent, xbmcScraper: myNode.xbmcScraper}));
+			treegrid.root.appendChild(new Ext.tree.TreeNode({text: myVideoShares[i].label, data: myVideoShares[i].file, leaf: false, children:[], expandable:true, scansub: false, isInDb: myNode.xbmcIdFile, xbmcIdPath: myNode.xbmcIdPath, xbmcContent: myNode.xbmcContent, xbmcScraper: myNode.xbmcScraper}));
+
 		}
 	
 }
