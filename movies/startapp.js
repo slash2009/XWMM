@@ -73,7 +73,7 @@ Ext.onReady(function() {
 	setXBMCResponseFormat();
 
 	var storesToLoad = [
-	   {store : 'moviesetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'}
+	   {store : 'movieallsetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'}
 	   //{store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
 	];
 
@@ -92,10 +92,10 @@ Ext.onReady(function() {
 	
 	 // loadStartupStores();
 	
-	startMyApp()
-	
-	//Moviegrid.on('contextmenu', gridContextHandler);
 	MovieSetStore.load();
+	
+	startMyApp()
+
 	function startMyApp() {
 	
 
