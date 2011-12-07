@@ -3,45 +3,51 @@
 //------------ Movie Sets ----------------
 
 var MovieSetcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'idSet', hidden: true},
-		{header: "Set Name", dataIndex: 'strSet', width: 200}
+		{header: "#", dataIndex: 'setid', hidden: true},
+		{header: "Set Name", dataIndex: 'set', width: 200}
     ]);
 
 var MovieSetRecord = Ext.data.Record.create([
-   {name: 'idSet', mapping: 'field:nth(1)'},		
-   {name: 'strSet', mapping: 'field:nth(2)'}	
+   {name: 'set', mapping: 'label'},		
+   {name: 'setid'}	
 ]);
 
-var MovieSetStore = new Ext.data.GroupingStore({
-	sortInfo: {field: 'strSet', direction: "ASC"},
+var MovieSetStore = new Ext.data.Store({
+	sortInfo: {field: 'set', direction: "ASC"},
 	id: 'moviesetstore',
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
-       }, MovieSetRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)' 
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSets", "params": {}, "id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.sets'	       
+		}, MovieSetRecord)
 });
+
 
 //------- Movies in a Set
 
 var MoviesInSetcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'idMovie', hidden: true},
-		{header: "Movie Title", dataIndex: 'c00', width: 200}
+		{header: "#", dataIndex: 'movieid', hidden: true},
+		{header: "Movie Title", dataIndex: 'movieinset', width: 200}
     ]);
 
 var MoviesInSetRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'field:nth(1)'},		
-   {name: 'c00', mapping: 'field:nth(2)'}	
+   {name: 'idmovie'},		
+   {name: 'movieinset', mapping: 'label'}	
 ]);
 
-var MoviesInSetStore = new Ext.data.GroupingStore({
-	sortInfo: {field: 'c00', direction: "ASC"},
+var MoviesInSetStore = new Ext.data.Store({
+	//sortInfo: {field: 'set', direction: "ASC"},
 	id: 'moviesinsetstore',
-	autoLoad: false,
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
-       }, MoviesInSetRecord),
- 
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc"
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.setdetails.items.movies'	       
+		}, MoviesInSetRecord)
 });
+
 
 var MovieInSetGrid = new Ext.grid.GridPanel({
 	width:250,
@@ -95,8 +101,8 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 	width: 250,
 	height: 290,
 	columns: [
-		{header: "#", dataIndex: 'idSet', hidden: true},
-		{header: "Set Name", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strSet'}
+		{header: "#", dataIndex: 'setid', hidden: true},
+		{header: "Set Name", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'set'}
 	],
 	clicksToEdit: 1,
 	title: 'Sets',
@@ -106,7 +112,7 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 		singleSelect: true,
 		listeners : {
 			rowselect: function(sm, row, rec) {
-				MoviesInSetStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie WHERE idSet = '+rec.data.idSet+')';
+				MoviesInSetStore.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": rec.data.setid, "properties": ["title", "thumbnail"]}, "id": 1};
 				MoviesInSetStore.load();
 			}
 		}
