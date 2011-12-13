@@ -72,26 +72,6 @@ Ext.onReady(function() {
 	
 	setXBMCResponseFormat();
 
-	var storesToLoad = [
-	   {store : 'movieallsetstore', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'}
-	   //{store : 'storegenre', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)'}
-	];
-
-	// loadStartupStores = function(record, options, success){
-		 // var task = storesToLoad.shift();  //From the top
-		 // if(task){
-			// if(success !== false){
-			  // task.callback = arguments.callee   //let's do this again
-			  // var store = Ext.StoreMgr.lookup(task.store);
-			  // store ? store.load(task) : complain('bad store specified');
-			// } else { 
-			  // complain( );
-			// }
-		 // } else {startMyApp()}
-	// };
-	
-	 // loadStartupStores();
-	
 	MovieSetStore.load();
 	
 	startMyApp()

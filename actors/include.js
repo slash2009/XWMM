@@ -24,10 +24,8 @@ var ActorMovieStore = new Ext.data.Store({
 	reader: new Ext.data.JsonXBMCReader({
 		root:'data'	       
        }, ActorMovieRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idMovie, c00 FROM movie WHERE idMovie = -1)' 
+	autoLoad: false,
+	url: '/' 
 });
 
 ActorMovieGrid = new Ext.grid.GridPanel({
@@ -73,10 +71,8 @@ var ActorTvshowStore = new Ext.data.Store({
 	reader: new Ext.data.JsonXBMCReader({
 		root:'data'	       
        }, ActorTvshowRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idShow, c00 FROM tvshow WHERE idShow = -1)'
+	autoLoad: false,
+	url: '/' 
 });
 
 ActorTvshowGrid = new Ext.grid.GridPanel({
@@ -124,10 +120,8 @@ var ActorEpisodeStore = new Ext.data.Store({
 	reader: new Ext.data.JsonXBMCReader({
 		root:'data'	       
        }, ActorEpisodeRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idEpisode, c00 FROM episode WHERE idEpisode = -1)'
+	autoLoad: false,
+	url: '/' 
 });
 
 ActorEpisodeGrid = new Ext.grid.GridPanel({
@@ -171,7 +165,7 @@ var ActorPicture = new Ext.Container ({
 			thumb = thumb.replace(/<thumb>/g, "");
 			var thumbCrc = FindCRC("actor"+r.data.strActor);
 			//console.log(r.data.strActor,' - ',thumbCrc);
-			this.el.dom.src = "http://192.168.0.5/vfs/special://masterprofile/Thumbnails/Video/"+thumbCrc.substring(0,1)+"/"+thumbCrc+".tbn";
+			this.el.dom.src = "../../vfs/special://masterprofile/Thumbnails/Video/"+thumbCrc.substring(0,1)+"/"+thumbCrc+".tbn";
 		}
 	}
 });

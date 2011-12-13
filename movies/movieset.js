@@ -21,31 +21,6 @@ var MovieSetStore = new Ext.data.GroupingStore({
 	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)'
 });
 
-//------------ Movie Sets ----------------
-
-
-
-// var MovieSetRecord = Ext.data.Record.create([
-   // {name: 'set', mapping: 'label'},		
-   // {name: 'setid'}	
-// ]);
-
-// var MovieSetStore = new Ext.data.Store({
-	// sortInfo: {field: 'set', direction: "ASC"},
-	// autoLoad: true,
-	// id: 'moviesetstore',
-	// proxy: new Ext.data.XBMCProxy({
-		// url: "/jsonrpc",
-		// xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSets", "params": {}, "id": 1}
-	// }),
-	// reader: new Ext.data.JsonReader({
-		// root:'result.sets'	       
-		// }, MovieSetRecord)
-// });
-
-
-//------- Movies in a Set
-
 var MoviesInSetcolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'movieid', hidden: true},
 		{header: "Movie Title", dataIndex: 'movieinset', width: 200}
