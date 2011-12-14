@@ -1,19 +1,4 @@
 XWMM Change log
-1.9.1
-- Fixes:
--- Fixed genre list display was not always showing
--- Fixed movie information not always showing
--- Fixed changing covers and fanart in movies
-
-1.9.2
-- Fixes:
--- Fixed genre list display was not always showing in TV Shows
--- Fixed episode list not always showing
-
-- Added:
--- Scraper list is created dynamicly from installed add-ons
--- Fanart display in Movie interface
-
 1.9.3
 - Fixes:
 -- Save button disabled
@@ -28,36 +13,24 @@ XWMM Change log
 -- Movie release date in HTML export
 -- Music field update
 
-2.0.0a
+2.0.0
 - Fixes:
--- Changed many request from http to JSON-RPC
+
 -- fixed IE8 compatibility
 -- fixed files view that was not displayed
+-- Music interface display
+-- Removed caching files
 
 - Added:
 -- added new XWMM icon
-
-2.0.0b:
-- Fixes:
--- Music interface display
-
-2.0.0c:
-- Fixes:
--- broken JSON-RPC requests (changed fields for properties)
--- Removed caching files
--- music year/album and genre/album views
-
-- Added
 -- some movie fields (country, imdb number, original title) in other details
 -- improved movie save function: set fields change enables save button
 -- improved musci save function: save any field and progress bar
 
-2.0.0d:
+2.0.1
 - Fixes:
--- Movie Set save function
--- Sort Title save
+-- Changed most request from http to JSON-RPC
 
-2.0.0e:
+2.0.2
 - Fixes:
--- change Movie thumbnail and fanart
--- changed most http request to JSON-RPC in music section
+-- Compatibility with XBMC Addons standards
