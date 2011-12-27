@@ -51,10 +51,12 @@ function updateMusicAlbum() {
 	
 function ValidateAlbuminfo (record) {
 	// check if record exists otherwise create it
-	AlbumInfoStore.reload();
-	if (AlbumInfoStore.find('idAlbum',record.data.albumid,0,false,false) == -1) {
+	// AlbumInfoStore.reload();
+	// if (AlbumInfoStore.find('idAlbum',record.data.albumid,0,false,false) == -1) {
+	if (record.data.scraperInfo = false) {
 		var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.albumid+'"," '+record.data.year+'", "'+record.data.genre+'"))';		
-		XBMCExecSql(inputUrl)
+		XBMCExecSql(inputUrl);
+		record.data.scraperInfo = true
 	}
 }
 
@@ -124,16 +126,17 @@ function GetAlbumDetails(r) {
 	temp = temp.replace(/<\/html>/g, "");
 	temp = temp.replace(/<\/field>/g, "");
 	temp = temp.split("<field>");
-
-	r.data.idAlbumInfo = temp[1];
-	r.data.iYearScraper = temp[2];
-	r.data.strGenreScraper = temp[3];
-	r.data.strExtraGenres = temp[4];	
-	//r.data.strMoods = temp[5];
-	//r.data.strStyles = temp[6];
-	//r.data.strThemes = temp[7];
-	//r.data.strReview = temp[8];
-	r.data.strLabel = temp[5];
-	//r.data.strType = temp[10];
-	r.data.MusicCoverUrl = getMusicCoverList(temp[6], r)
+	
+	// If the ajax request returns an empty record, flag the album to create and albuminfo record when saving
+	if (typeof temp[1] === "undefined") 
+		r.data.scraperInfo = false
+	else
+	{
+		r.data.idAlbumInfo = temp[1];
+		r.data.iYearScraper = temp[2];
+		r.data.strGenreScraper = temp[3];
+		r.data.strExtraGenres = temp[4];	
+		r.data.strLabel = temp[5];
+		r.data.MusicCoverUrl = getMusicCoverList(temp[6], r)
+	}
 }

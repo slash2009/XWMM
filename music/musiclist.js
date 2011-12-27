@@ -252,35 +252,6 @@ var albumDetailPanel = new Ext.Panel({
      ]
 });
 	
-// ------------ Album Extra Info --------------
-
-// var AlbumInfoRecord = Ext.data.Record.create([
-	// {name: 'idAlbumInfo', mapping: 'field:nth(1)'},	
-	// {name: 'idAlbum', mapping: 'field:nth(2)'},
-	// {name: 'iYear', mapping: 'field:nth(3)'},
-	// {name: 'idGenre', mapping: 'field:nth(4)'},	
-	// {name: 'strExtraGenres', mapping: 'field:nth(5)'},
-	// {name: 'stMoods', mapping: 'field:nth(6)'},	
-	// {name: 'strStyles', mapping: 'field:nth(7)'},
-	// {name: 'strThemes', mapping: 'field:nth(8)'},
-	// {name: 'strReview', mapping: 'field:nth(9)'},
-	// {name: 'strImage', mapping: 'field:nth(10)'},
-	// {name: 'strLabel', mapping: 'field:nth(11)'},
-	// {name: 'strType', mapping: 'field:nth(12)'},
-	// {name: 'iRating', mapping: 'field:nth(13)'},
-// ]);
-
-// var AlbumInfoStore = new Ext.data.GroupingStore({
-	// sortInfo: {field: 'idAlbumInfo', direction: "ASC"},
-	// reader: new Ext.data.JsonXBMCReader({
-		// root:'data'	       
-       // }, AlbumInfoRecord),
-	// url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idAlbumInfo, idAlbum, iYear, idGenre, strExtraGenres, strMoods, strStyles, strThemes, strReview, strImage, strLabel, strType, iRating FROM albuminfo)' 
-// });
-
-// --------------------------------------------
-
-
 // ------------ Track information -------------
 
 function convertTime(val) {
@@ -331,13 +302,6 @@ var SongStore = new Ext.data.Store({
 	}, SongRecord)
 });
 
-// var SongStore = new Ext.data.GroupingStore({
-	// sortInfo: {field: 'iTrack', direction: "ASC"},
-	// reader: new Ext.data.JsonXBMCReader({
-		// root:'data'	       
-       // }, SongRecord),
-	// url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strGenre FROM songview WHERE idSong = -1)' 
-// });
 
 SongGrid = new Ext.grid.GridPanel({
 	cm: SongcolModel,
@@ -360,8 +324,6 @@ SongGrid = new Ext.grid.GridPanel({
 
 Ext.onReady(function() {
 
-	//AlbumInfoStore.load();
-	
 	menuBar.add({
 			xtype: 'tbbutton',
 			text: 'Tools',
