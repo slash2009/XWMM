@@ -37,4 +37,6 @@ XWMM Change log
 
 2.0.3
 - Fixes:
--- Update Movie Genres updates
+-- Movie Genres updates
+-- TvShow save
+-- Music save
