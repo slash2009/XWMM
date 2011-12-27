@@ -279,19 +279,12 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		selectedMovie = r.data.idMovie;
 		currentRecord = r;
 		
+		GetMovieGenres(r);
+		GetMovieDetails(r);
+		Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
+		
 		storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": selectedMovie, "properties": ["cast"]},"id": 1};
-		storeActor.reload();
-		
-		if (r.data.details == undefined){
-			GetMovieGenres(r);
-			GetMovieDetails(r);
-			Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
-		}
-		else{ 
-			updateGenreGrid(r.data.genres);
-			updateAllForms(r)
-		};
-		
+		storeActor.reload();	
 		
 	}
 });

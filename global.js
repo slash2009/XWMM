@@ -7,6 +7,10 @@ function mergeJson(object1, object2) {
 		object1[i]=object2[i];
 }
 
+function removeSpace(string) {
+	string = string.replace(/^\s*|\s*$/g,'');
+	return string;
+}
 
 var menuBar = new Ext.Toolbar({
 	region: "north",

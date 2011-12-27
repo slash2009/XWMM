@@ -183,7 +183,6 @@ function updateXBMCMovieDetails() {
 }
 
 function movieGenreChange(sm){
-
 	var sel = sm.getSelections();
 	var strTemp = "";
 	for (var i = 0; i < sel.length; i++) {
@@ -229,32 +228,14 @@ function updateXBMCGenreMovie(){
 	}
 }
 
-// Query XBMC DB genrelinkmovie
 function GetMovieGenres(record){
-	if (record.data.genres == undefined){
-		// get movie genre once
-			var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre FROM genrelinkmovie where idmovie='+record.data.idMovie+')'
-			Ext.Ajax.request({
-				url: inputUrl,
-				method: 'GET',
-				async: false,
-				success: function (t){
-						var responseArr = TrimXbmcXml(t);
-						responseArr = responseArr.split("<record>");
-						//first field is always empty
-						responseArr.remove("");
-						
-						for (var i = 0; i < responseArr.length; i++) {
-							responseArr[i]= storegenre.findExact('genreid',responseArr[i],0,false,false)
-						};		
-						record.data.genres = responseArr;
-						updateGenreGrid(record.data.genres);
-				},
-				failure: function(t){},
-				timeout: 2000
-			});
-	}
-	else{updateGenreGrid(record.data.genres)};
+	var responseArr = [];
+	var myGenres = record.data.Moviegenres.split('/');
+	
+	for (var i = 0; i < myGenres.length; i++) {
+		responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false)
+	};	
+	updateGenreGrid(responseArr);
 }
 
 function checkWatched(val) {

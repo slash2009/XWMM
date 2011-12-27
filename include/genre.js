@@ -71,8 +71,6 @@ var storegenre = new Ext.data.Store({
 	}
 });
 
-
-
 var editor = new Ext.ux.grid.RowEditor({
 	saveText: 'Update',
 	listeners: {
