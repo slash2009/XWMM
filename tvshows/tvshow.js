@@ -8,7 +8,7 @@
 Ext.ns('TVShow');
 
 var tvShowRecord = Ext.data.Record.create([
-   {name: 'title'},	{name: 'genre'}, {name: 'year'}, {name: 'plot'}, {name: 'fanart'}, {name: 'thumbnail'},
+   {name: 'title'},	{name: 'genre'}, {name: 'year'}, {name: 'plot'}, {name: 'fanart'}, {name: 'thumbnail'}, {name: 'tvshowid'}, 
    {name: 'studio'}, {name: 'episode'}, {name: 'rating'}, {name: 'premiered'}, {name: 'tvshowid'}, {name: 'playcount'}
 ]);
 
@@ -18,7 +18,7 @@ var seasonRecord = Ext.data.Record.create([
 
 var episodeRecord = Ext.data.Record.create([
 	{name: 'episode'}, {name: 'title'}, {name: 'rating'}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
-	{name: 'streamdetails'}, {name: 'playcount'}
+	{name: 'streamdetails'}, {name: 'playcount'}, {name: 'episodeid'}
 ]);
 
 var tvshowStars = new Ext.ux.XbmcStars ({

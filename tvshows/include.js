@@ -55,13 +55,13 @@ function updateXBMCAll() {
 			if (v == 1) {
 				myText = 'Checking changes...';
 				if (EpisodedetailPanel.getForm().isDirty()) {
-					updateXBMCTables(EpisodedetailPanel, 'episode');
+					updateXBMCTables(EpisodedetailPanel.getForm(), 'episode');
 					myText = 'updating Episode info';
 				};
 			};
                if (v == 10) {
 				if (TVShowdetailPanel.getForm().isDirty()) {
-					updateXBMCTables(TVShowdetailPanel, 'tvshow');
+					updateXBMCTables(TVShowdetailPanel.getForm(), 'tvshow');
 					myText = 'updating TV Show info';
 						//need commit here
 				};
@@ -97,7 +97,7 @@ function updateTvShowForms(r) {
 
 	tvshowStars.updateSrc(r);
 	Ext.getCmp('tvshowcover').updateSrc(r.data.thumbnail)
-	Ext.getCmp('seasoncover').updateSrc(r, -1);
+	//Ext.getCmp('seasoncover').updateSrc(r, -1);
 	var myForm = Ext.getCmp('tvShowdetailPanel');
 	myForm.getForm().loadRecord(r)
 }

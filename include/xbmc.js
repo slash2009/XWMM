@@ -437,16 +437,16 @@ function updateXBMCTables(myForm, myTable) {
 	}
 	if (myTable == 'episode') {
 		var idEpisode = EpisodeGrid.getSelectionModel().getSelected().data.episodeid;
-		var myIndex = 'idEpisode='+idEpisode;
+		var myIndex = 'idEpisode='+idEpisode
 	};
 	if (myTable == 'tvshow') {
 		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;	
-		var myIndex = 'idShow='+idShow;
+		var myIndex = 'idShow='+idShow
 	};
 	
 	if (myTable == 'movie') {
 		var idMovie = selectedMovie;	
-		var myIndex = 'idMovie='+idMovie;
+		var myIndex = 'idMovie='+idMovie
 	};
 
 	if ((myTable == 'album') || (myTable == 'albuminfo')) {
