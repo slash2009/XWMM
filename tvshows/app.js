@@ -51,6 +51,7 @@ Ext.onReady(function() {
 		});
 		
 		storeTvshow.load();
+		storegenre.load();
 
 	}
 }); 

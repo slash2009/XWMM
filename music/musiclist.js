@@ -9,7 +9,7 @@
 // ------------ Artist information -------------
 
 var CheckArtist = new Ext.grid.CheckboxSelectionModel({
-	dataIndex:'idArtist',
+	dataIndex:'artistid',
 	alwaysSelectOnCheck: 'true',
 	header: false,
 	listeners: {
@@ -108,8 +108,8 @@ var standardInfo = new Ext.FormPanel({
 				fieldLabel: 'artist',
 				store: ArtistStore,
 				id: 'albumartistfield',
-				displayField: 'strArtist',
-				valueField : 'idArtist',
+				displayField: 'artist',
+				valueField : 'artistid',
 				//mode: 'local',
 				//typeAhead: true,
 				name: 'strArtist',

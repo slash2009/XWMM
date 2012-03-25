@@ -2,11 +2,6 @@
 
 //------------ Movie All Sets (including orphans) ----------------
 
-var MovieSetcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'setid', hidden: true},
-		{header: "Set Name", dataIndex: 'set', width: 200}
-    ]);
-
 var MovieSetRecord = Ext.data.Record.create([
    {name: 'idSet', mapping: 'field:nth(1)', type: 'int'},
    {name: 'strSet', mapping: 'field:nth(2)'}
@@ -26,25 +21,24 @@ var MoviesInSetcolModel = new Ext.grid.ColumnModel([
 		{header: "Movie Title", dataIndex: 'movieinset', width: 200}
     ]);
 
+
 var MoviesInSetRecord = Ext.data.Record.create([
-   {name: 'idmovie'},		
-   {name: 'movieinset', mapping: 'label'}	
+   {name: 'idMovie', mapping: 'field:nth(1)'},		
+   {name: 'movieinset', mapping: 'field:nth(2)'}	
 ]);
 
-var MoviesInSetStore = new Ext.data.Store({
-	//sortInfo: {field: 'set', direction: "ASC"},
+var MoviesInSetStore = new Ext.data.GroupingStore({
+	sortInfo: {field: 'movieinset', direction: "ASC"},
 	id: 'moviesinsetstore',
-	proxy: new Ext.data.XBMCProxy({
-		url: "/jsonrpc"
-	}),
-	reader: new Ext.data.JsonReader({
-		root:'result.setdetails.items.movies'	       
-		}, MoviesInSetRecord)
+	reader: new Ext.data.JsonXBMCReader({
+		root:'data'	       
+       }, MoviesInSetRecord),
+	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie)' 
 });
 
 
 var MovieInSetGrid = new Ext.grid.GridPanel({
-	width:250,
+	width:230,
 	height: 290,
 	cm: MoviesInSetcolModel,
 	title: 'Movies in Set',
@@ -83,7 +77,7 @@ var MovieSetEditor = new Ext.ux.grid.RowEditor({
 				MovieSetStore.reload()
 			}
 			else {
-				updateXBMCMovieSetString(record);
+				updateXBMCMovieSet(record);
 				MovieSetStore.reload()
 			}							
  		}
@@ -105,8 +99,8 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 	selModel: new Ext.grid.RowSelectionModel({
 		singleSelect: true,
 		listeners : {
-			rowselect: function(sm, row, rec) {
-				MoviesInSetStore.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": rec.data.idSet, "properties": ["title", "thumbnail"]}, "id": 1};
+		rowselect: function(sm, row, rec) {
+				MoviesInSetStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie WHERE idSet = '+rec.data.idSet+')';
 				MoviesInSetStore.load();
 			}
 		}

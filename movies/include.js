@@ -144,7 +144,7 @@ function GetMovieDetails(r){
 
 	mergeJson(r.data, jsonResponse.moviedetails);
 
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select c20, c08 from movie where idMovie='+r.data.idMovie+')';
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select c20, c08, idFile from movie where idMovie='+r.data.idMovie+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',

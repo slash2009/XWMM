@@ -84,6 +84,11 @@ function downloadXBMCFile(url,myFile) {
 	});
 };
 
+function updateXBMCMovieSet(record) {
+	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE sets SET strSet = "'+record.data.strSet+'" WHERE idSet = "'+record.data.idSet+'")';
+	XBMCExecSql(inputUrl)
+}
+
 function AddXBMCNewMovieSet(record) {
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO sets (strSet) VALUES ("'+record.data.strSet+'"))';
 	Ext.Ajax.request({
@@ -98,15 +103,8 @@ function AddXBMCNewMovieSet(record) {
 }
 
 function AddXBMCNewGenre(record) {
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genre (strGenre) VALUES ("'+record.data.strGenre+'"))';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
+	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genre (strGenre) VALUES ("'+record.data.label+'"))';
+	XBMCExecSql(inputUrl)
 }
 
 function updateXBMCAlbumInfo(record) {
@@ -174,21 +172,14 @@ function removeXBMCMovieSet(rec) {
 }
 
 function removeXBMCGenre(record) {
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM genre WHERE idGenre='+record.data.idGenre+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
+	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM genre WHERE idGenre='+record.data.genreid+')';
+	XBMCExecSql(inputUrl);
 }
 
 function checkXBMCGenreUsed(record) {
 	var found = false;
 	// check if genre is used in movie
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idMovie FROM genrelinkmovie where idGenre='+record.data.idGenre+')';
+	var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idMovie FROM genrelinkmovie where idGenre='+record.data.genreid+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',
@@ -200,7 +191,7 @@ function checkXBMCGenreUsed(record) {
 		timeout: 2000
 	});
 	
-	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idShow FROM genrelinktvshow where idGenre='+record.data.idGenre+')';
+	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idShow FROM genrelinktvshow where idGenre='+record.data.genreid+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',
@@ -218,37 +209,50 @@ function checkXBMCGenreUsed(record) {
 function updateXBMCGenreString(record) {
 
 	//update strGenre in Genre Table
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE genre SET strGenre = "'+record.data.strGenre+'" WHERE idGenre='+record.data.idGenre+')';
+	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE genre SET strGenre = "'+record.data.label+'" WHERE idGenre='+record.data.genreid+')';
+	XBMCExecSql(inputUrl)
+	
+	var oldValue = record.modified.label;
+	var newValue = record.data.label;
+	
+	//get and update all movies with that genre
+	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT movie.idMovie, movie.c14 FROM movie inner join genrelinkmovie on (genrelinkmovie.idMovie = movie.idMovie) where genrelinkmovie.idGenre = '+record.data.genreid+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',
 		async: false,
-		success: function (t){},
+		success: function (t){
+			var temp = TrimXmltofields(t);
+			temp = temp.replace(/<record>/g, "");
+			temp = temp.split("<field>"); // temp contain idMovie, genrestring, idMovie, genrestring, etc ...
+			for (var i=1; i < temp.length; i=i+2) {
+				var myString = temp[i+1].replace(oldValue, newValue);
+				var myMovieId = temp[i];
+			inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE movie SET c14 = "'+myString+'" where idMovie = '+myMovieId+')';
+			XBMCExecSql(inputUrl)
+			}
+		},
 		failure: function(t){},
 		timeout: 2000
 	});
-	
-	var oldValue = record.modified.strGenre;
-	var newValue = record.data.strGenre;
-	
-	//update strGenre in movie Table
-	inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE movie SET c08 = replace(c08,"'+oldValue+'","'+newValue+'") where c08 like "'+oldValue+'" or c08 like "%/ '+oldValue+'" or c08 like "'+oldValue+' /%" or c08 like "%/ '+oldValue+' /%")';
+		
+	//get and update all TVShows with that genre
+	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT tvshow.idShow, tvshow.c08 FROM tvshow inner join genrelinktvshow on (genrelinktvshow.idShow = tvshow.idShow) where genrelinktvshow.idGenre = '+record.data.genreid+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',
 		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
-	
-	//update strGenre in tvshow Table
-	inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE tvshow SET c08 = replace(c08,"'+oldValue+'","'+newValue+'") where c08 like "'+oldValue+'" or c08 like "%/ '+oldValue+'" or c08 like "'+oldValue+' /%" or c08 like "%/ '+oldValue+' /%")';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
+		success: function (t){
+			var temp = TrimXmltofields(t);
+			temp = temp.replace(/<record>/g, "");
+			temp = temp.split("<field>"); // temp contain idMovie, genrestring, idMovie, genrestring, etc ...
+			for (var i=1; i < temp.length; i=i+2) {
+				var myString = temp[i+1].replace(oldValue, newValue);
+				var myMovieId = temp[i];
+			inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE tvshow SET c08 = "'+myString+'" where idShow = '+myMovieId+')';
+			XBMCExecSql(inputUrl)
+			}
+		},
 		failure: function(t){},
 		timeout: 2000
 	});
@@ -264,7 +268,7 @@ function updateXBMCGenreString(record) {
 	return temp;
  }
  
-function TrimXbmcXml(t){
+function TrimXmltofields(t) {
 	var temp = t.responseText.replace(/<html>/g, "");
 	temp = temp.replace(/<\/html>/g, "");
 	temp = temp.replace(/<recordset>/g, "");
@@ -272,6 +276,12 @@ function TrimXbmcXml(t){
 	temp = temp.replace(/<\/recordset>/g, "");
 	temp = temp.replace(/\n/g, '');
 	temp = temp.replace(/<\/field>/g, "");
+	
+	return temp;
+}
+ 
+function TrimXbmcXml(t){
+	var temp = TrimXmltofields(t);
 	temp = temp.replace(/<field>/g, "");
 
 	return temp;
@@ -362,6 +372,7 @@ function XBMCgetMoviesFields(resp, r) {
 	temp = temp.split("<field>");
 	r.data.MovieFanartUrl = getFanartList(temp[1]);
 	r.data.MovieCoverUrl = getCoverList(temp[2], r);
+	r.data.idFile = temp[3];
 	
 }
 

@@ -52,7 +52,6 @@ var fileDetailsPanel = new Ext.FormPanel({
 	},{
 		fieldLabel: 'imdb',
 		name: 'imdbnumber',
-		readOnly: true,
 		XBMCName: 'c09'
 	},{
 		xtype: 'combo',

@@ -84,6 +84,7 @@ Ext.onReady(function() {
 		});
 		
 		storeMovie.load();
+		storegenre.load();
 		
 		Ext.QuickTips.init();
 		

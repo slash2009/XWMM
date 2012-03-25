@@ -1,26 +1,7 @@
 
-//to be deleted ?
-var MoviedetailSet = new Ext.form.FieldSet({
-	columnWidth:0.56,
-    title: 'Movie details',
-	id: 'details',
-	labelWidth: 65,
-	bodyStyle:'padding:5px 10px 5'
-});
-
-//to be deleted ?
-var MoviePicture = new Ext.form.FieldSet({
-	columnWidth:0.44,
-	//layout: 'form',
-	bodyStyle:'padding:5px 10px 0',
-	defaults:{xtype:'container'},
-	title: 'Rating and Cover',
-	cls: 'center-align'
-});
-
 var genreRecord = Ext.data.Record.create([	
-   {name: 'genreid', type: 'string'},
-   {name: 'label'}
+   {name: 'genreid', mapping: 'field:nth(1)', type: 'string'},
+   {name: 'label', mapping: 'field:nth(2)'}
 ]);
 
 var Checkgenre = new Ext.grid.CheckboxSelectionModel({
@@ -50,26 +31,24 @@ var GenrecolModel = new Ext.grid.ColumnModel([
 		{header: "Genre", width: 200, dataIndex: 'label'}
 ]);
 
+
 var storegenre = new Ext.data.Store({
 	id: 'storegenre',
 	sortInfo: {field: 'label', direction: "ASC"},
-	autoLoad: true,
-	proxy: new Ext.data.XBMCProxy({
-		url: "/jsonrpc",
-		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1}
-	}),
-	reader: new Ext.data.JsonReader({
-		root:'result.genres'	       
+	reader: new Ext.data.JsonXBMCReader({
+		root:'data'
 	}, genreRecord),
+	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)',
 	selectFromString :function(string){ // select genre rows according to movie genre field 
 		var myArray = string.split('/');
 		Genregrid.getSelectionModel().clearSelections(false);
 		for (var i = 0; i < myArray.length; i++) {
 			var index = storegenre.findExact('label',removeSpace(myArray[i]),0,false,false);
-			Genregrid.getSelectionModel().selectRow(index, true);
+			Genregrid.getSelectionModel().selectRow(index, true)
 		}
 	}
 });
+
 
 var editor = new Ext.ux.grid.RowEditor({
 	saveText: 'Update',
