@@ -23,3 +23,7 @@ XWMM Change log
 
 - Added
 -- imdb number movie field can now be changed
+
+2.0.5
+- fixes:
+-- changed xbmc.gui version to 3.00 for compatibility
