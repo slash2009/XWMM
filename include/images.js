@@ -1,4 +1,3 @@
-
 var coverTpl = new Ext.XTemplate(
 	'<tpl for=".">',
     '<div class="thumb-wrap" id="{title}">',
@@ -15,7 +14,9 @@ var fanartTpl = new Ext.XTemplate(
     '</tpl>'
 );
 
-window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
+Ext.onReady(function() {
+	window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
+});
 
 function ChangeImages(record) {
 
