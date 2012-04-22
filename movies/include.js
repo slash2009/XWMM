@@ -106,7 +106,7 @@ function updateXBMCAll() {
         };
     };
     for(var i = 1; i < 31; i++){
-        setTimeout(f(i), i*100);
+        setTimeout(f(i), i*100)
     }
 }
 
@@ -168,7 +168,7 @@ function updateXBMCMovieDetails() {
 		f = itemsList[i];
 		if(f.isDirty()){
 			var data = f.getName()+' : '+f.getValue();
-			changedData.push(data);
+			changedData.push(data)
 		}
 	}
 	// also check additional fields
@@ -177,7 +177,7 @@ function updateXBMCMovieDetails() {
 		f = itemsList[i];
 		if(f.isDirty()){
 			var data = f.getName()+' : '+f.getValue();
-			changedData.push(data);
+			changedData.push(data)
 		}
 	}
 }
@@ -235,7 +235,7 @@ function GetMovieGenres(record){
 	for (var i = 0; i < myGenres.length; i++) {
 		responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false)
 	};	
-	updateGenreGrid(responseArr);
+	updateGenreGrid(responseArr)
 }
 
 function checkWatched(val) {
@@ -254,6 +254,6 @@ var MoviecolModel = new Ext.grid.ColumnModel([
 		{header: "Title", dataIndex: 'Movietitle', width: 210},
 		{header: "S", dataIndex: 'strSet', width: 26, hidden: false, renderer: checkSet},
 		{header: "Genre", dataIndex: 'strGenre', hidden: true},
-		{header: "W", dataIndex: 'watched', width: 26, hidden: false, renderer: checkWatched},
+		{header: "W", dataIndex: 'watched', width: 26, hidden: false, renderer: checkWatched}
 		
     ]);

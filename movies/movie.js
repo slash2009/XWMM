@@ -40,7 +40,6 @@ var fileDetailsPanel = new Ext.FormPanel({
 		fieldLabel: 'Name',
 		name: 'strFilename',
 		readOnly: true
-		//XBMCName: 'c00'
 	},{
 		fieldLabel: 'Original',
 		name: 'originaltitle',
@@ -199,7 +198,6 @@ var MoviedetailPanel = new Ext.FormPanel({
 			text: 'View Trailer',
 			handler: function(){
 				if (Ext.getCmp('trailer').getValue() != '') {
-				//var w = (window.open(urlstring, wname, wfeatures, false));
 						window.open(Ext.getCmp('trailer').getValue(),'')
 				}
 			},
@@ -212,14 +210,11 @@ var MoviedetailPanel = new Ext.FormPanel({
 		items: [MovieFanart]
 	},{
 		width: 160,
-		//frame : false,
 		items: [AudioFlagsPanel]
-		// height : 200
 	},{
 		width : 255,
-		//frame : false,
 		items: [VideoFlagsPanel]
-		// heigth :
+
 	}]
 })
 
@@ -270,7 +265,7 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		});
 		
 		var element2 = MovieFanart.getEl();
-		element2.on('dblclick', function(){ChangeImages(currentRecord)});
+		element2.on('dblclick', function(){ChangeImages(currentRecord)})
 	},
 
 	onRowSelect: function(sm, rowIdx, r) {

@@ -27,3 +27,9 @@ XWMM Change log
 2.0.5
 - fixes:
 -- changed xbmc.gui version to 3.00 for compatibility
+
+2.0.6
+- fixes:
+-- images caching (thanks to niiko)
+-- load Mask display (thanks to niiko)
+-- syntax error for compatibility with IE 8
