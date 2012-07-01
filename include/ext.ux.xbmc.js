@@ -1,3 +1,4 @@
+
 function xbmcJsonRPC(params) {
 	var inputUrl = '/jsonrpc'
 	var myjson = '';
@@ -35,18 +36,7 @@ Ext.ux.XbmcImages = function(config) {
 Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 	// refresh image
 	refreshMe : function(){
-		src = this.el.dom.src;
-		
-		// kills the cached image by re-requesting and ignoring cache
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', src, true);
-		xhr.setRequestHeader('Cache-Control', 'no-cache');
-		xhr.setRequestHeader('Pragma', 'no-cache');
-		xhr.send();
-		
-		// reloads image
-		this.el.dom.src = "";
-		this.el.dom.src = src;
+		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime()
 	},
 	// set source image
 	updateSrc :function(imagePath){

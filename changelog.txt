@@ -33,3 +33,8 @@ XWMM Change log
 -- images caching (thanks to niiko)
 -- load Mask display (thanks to niiko)
 -- syntax error for compatibility with IE 8
+
+2.0.7
+- fixes:
+-- fixed ajax request with firefox
+

@@ -1,3 +1,4 @@
+
 function XBMCExecSql(inputUrl) {
 	Ext.Ajax.request({
 		url: inputUrl,
@@ -71,13 +72,13 @@ function downloadNewXBMCFile(url,myFile) {
 
 };
 
-function downloadXBMCFile(url,myFile,callback) {
+function downloadXBMCFile(url,myFile) {
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=FileDownloadFromInternet('+url+'; '+myFile+')';
 	Ext.Ajax.request({
 		url: inputUrl,
 		method: 'GET',
-		async: callback || false,
-		success: callback || function (t){},
+		async: false,
+		success: function (t){},
 		failure: function(t){},
 		timeout: 2000
 	});
