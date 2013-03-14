@@ -4,6 +4,10 @@ function xbmcJsonRPC(params) {
 	var myjson = '';
 	Ext.Ajax.request({
 		url: inputUrl,
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json' 
+    	},
 		params : params,
 		method: "POST",
 		async: false,
@@ -40,7 +44,7 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 	},
 	// set source image
 	updateSrc :function(imagePath){
-		this.el.dom.src = "/vfs/"+imagePath
+		this.el.dom.src = "/image/"+imagePath
 	}
 }); 
 

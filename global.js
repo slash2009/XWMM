@@ -1,5 +1,5 @@
 
-var myVersion = '2.0.9'
+var myVersion = '2.1.0'
 
 function mergeJson(object1, object2) {
 	var i;
@@ -27,6 +27,7 @@ var menuBar = new Ext.Toolbar({
 				handler: function(){window.location = '../movies/index.html'}
 			},{
 				text: 'Movies by Genre',
+				disabled: 'true',
 				iconCls: 'silk-grid',
 				handler: function(){window.location = '../movies/moviegenre.html'}
 			},{

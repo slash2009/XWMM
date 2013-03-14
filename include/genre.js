@@ -1,7 +1,7 @@
 
 var genreRecord = Ext.data.Record.create([	
-   {name: 'genreid', mapping: 'field:nth(1)', type: 'string'},
-   {name: 'label', mapping: 'field:nth(2)'}
+   {name: 'genreid', type: 'string'},
+   {name: 'label'}
 ]);
 
 var Checkgenre = new Ext.grid.CheckboxSelectionModel({
@@ -35,18 +35,20 @@ var GenrecolModel = new Ext.grid.ColumnModel([
 var storegenre = new Ext.data.Store({
 	id: 'storegenre',
 	sortInfo: {field: 'label', direction: "ASC"},
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'
-	}, genreRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre, strGenre FROM genre)',
-	selectFromString :function(string){ // select genre rows according to movie genre field 
-		var myArray = string.split('/');
-		Genregrid.getSelectionModel().clearSelections(false);
-		for (var i = 0; i < myArray.length; i++) {
-			var index = storegenre.findExact('label',removeSpace(myArray[i]),0,false,false);
-			Genregrid.getSelectionModel().selectRow(index, true)
-		}
-	}
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.genres'
+	}, genreRecord)
+//	selectFromString :function(string){ // select genre rows according to movie genre field 
+//		var myArray = string.split('/');
+//		Genregrid.getSelectionModel().clearSelections(false);
+//		for (var i = 0; i < myArray.length; i++) {
+//			var index = storegenre.findExact('label',removeSpace(myArray[i]),0,false,false);
+//			Genregrid.getSelectionModel().selectRow(index, true)
+//		}
+//	}
 });
 
 

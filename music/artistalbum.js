@@ -2,7 +2,7 @@
 var AlbumRecord = Ext.data.Record.create([
    {name: 'albumid'},
    {name: 'strAlbum', mapping:'label'},	
-   {name: 'strArtist', mapping:'artist'},	
+   {name: 'strArtist', mapping:'displayartist'},	
    {name: 'strGenre', mapping:'genre'},	
    {name: 'year'}, {name: 'currentThumbnail', mapping:'thumbnail'}
 ]);
@@ -14,14 +14,12 @@ var AlbumStore = new Ext.data.GroupingStore({
 	groupField: 'strArtist',
 	proxy: new Ext.data.XBMCProxy({
 		url: "/jsonrpc",
-		xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["genre", "artist", "year", "thumbnail"]},"id": 1}
+		xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["genre", "displayartist", "year", "thumbnail"]},"id": 1}
 	}),
 	reader: new Ext.data.JsonReader({
 		root:'result.albums'	       
 		}, AlbumRecord)
 });
-
-setXBMCResponseFormat();
 
 
 var AlbumcolModel = new Ext.grid.ColumnModel([

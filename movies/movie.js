@@ -7,7 +7,7 @@ var MovieFanart = new Ext.ux.XbmcImages ({
 	border: 0,
 	width: 295,
 	height:165,
-	autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg", qtip:'Double-click to change'}
+	autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg"}//, qtip:'Double-click to change'}
 });
 
 var Stars = new Ext.ux.XbmcStars ({
@@ -23,7 +23,7 @@ var MovieCover = new Ext.ux.XbmcImages ({
 	border: 0,
 	width: 250,
 	height:375,
-	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg", qtip:'Double-click to change'}
+	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg"}//, qtip:'Double-click to change'}
 });
 
 Ext.ns('Movie');
@@ -106,7 +106,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 			fieldLabel: 'Title',
-			name: 'Movietitle',
+			name: 'title',
 			XBMCName: 'c00',
 			allowBlank: false
 		},{
@@ -192,7 +192,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 			fieldLabel: 'Trailer',
 			id: 'trailer',
 			XBMCName: 'c19',
-			name: 'MovieTrailer'
+			name: 'trailer'
 		},{
 			xtype: 'button',
 			text: 'View Trailer',
@@ -260,12 +260,12 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		
 		currentMovie.on('rowselect', this.onRowSelect, this);
 		
-		MovieCover.getEl().on('dblclick', function(){
-		  ChangeImages(currentRecord);
-		});
+//		MovieCover.getEl().on('dblclick', function(){
+//		  ChangeImages(currentRecord);
+//		});
 		
-		var element2 = MovieFanart.getEl();
-		element2.on('dblclick', function(){ChangeImages(currentRecord)})
+//		var element2 = MovieFanart.getEl();
+//		element2.on('dblclick', function(){ChangeImages(currentRecord)})
 	},
 
 	onRowSelect: function(sm, rowIdx, r) {

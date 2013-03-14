@@ -14,10 +14,12 @@ Ext.onReady(function() {
 			menu: [{
 				text: 'Manage Genres',
 				iconCls: 'silk-plugin',
+				disabled: 'true',
 				handler: function(){winGenre.show()}
 			},{
 				text: 'Manage Actors',
 				iconCls: 'silk-plugin',
+				disabled: 'true',
 				handler: function(){window.location = '../actors/index.html'}
 			},{
 				text: 'Manage Movie Sets',
@@ -70,7 +72,6 @@ Ext.onReady(function() {
 			text: myVersion
     });
 	
-	setXBMCResponseFormat();
 
 	MovieSetStore.load();
 	
@@ -83,6 +84,7 @@ Ext.onReady(function() {
 			renderTo: Ext.getBody()	 
 		});
 		
+		storegenre.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1};
 		storeMovie.load();
 		storegenre.load();
 		
@@ -118,18 +120,7 @@ Ext.onReady(function() {
 						var value = this.getValue().replace(/^\s+|\s+$/g, "");
 						if (value=="")
 							return;
-						storeMovie.filterBy(function(r) {
-							valueArr = value.split(/\ +/);
-							for (var i=0; i<valueArr.length; i++) {
-								re = new RegExp(Ext.escapeRe(valueArr[i]), "i");
-								if (re.test(r.data['Movietitle'])==false
-									//&& re.test(r.data['light'])==false) {
-									) {
-									return false;
-								};
-							}
-							return true;
-						});
+						storeMovie.filter('Movietitle', value, true, false);
 					}
 		};
 		

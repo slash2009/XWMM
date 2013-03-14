@@ -8,16 +8,17 @@
 Ext.ns('TVShow');
 
 var tvShowRecord = Ext.data.Record.create([
-   {name: 'title'},	{name: 'genre'}, {name: 'year'}, {name: 'plot'}, {name: 'fanart'}, {name: 'thumbnail'}, {name: 'tvshowid'}, 
-   {name: 'studio'}, {name: 'episode'}, {name: 'rating'}, {name: 'premiered'}, {name: 'tvshowid'}, {name: 'playcount'}
+   {name: 'title'},	{name: 'TVGenre', mapping: 'genre', convert: genreConvert}, {name: 'year'}, {name: 'plot'}, {name: 'fanart', mapping: 'art', convert: fanartConvert},
+   {name: 'banner', mapping: 'art', convert: bannerConvert}, {name: 'tvshowid'}, {name: 'studio'}, {name: 'episode'}, {name: 'rating'}, {name: 'premiered'}, {name: 'tvshowid'},
+   {name: 'playcount'}, {name: 'watchedepisodes'}
 ]);
 
 var seasonRecord = Ext.data.Record.create([
-   {name: 'season'}, {name: 'label'}, {name: 'thumbnail'}
+   {name: 'season'}, {name: 'label'}, {name: 'thumbnail', convert: thumbConvert}
 ]);
 
 var episodeRecord = Ext.data.Record.create([
-	{name: 'episode'}, {name: 'title'}, {name: 'rating'}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
+	{name: 'episode'}, {name: 'title'}, {name: 'rating', convert: ratingConvert}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
 	{name: 'streamdetails'}, {name: 'playcount'}, {name: 'episodeid'}
 ]);
 
@@ -50,11 +51,31 @@ var SeasonCover = new Ext.ux.XbmcImages({
 	autoEl: {tag: 'img', src: "../images/nobanner.png"}
 });
 
+function genreConvert(v, record) {
+	return record.genre.join(' / ')
+}
+
+function thumbConvert(v, record) {
+	return record.thumbnail.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function bannerConvert(v, record) {
+	return v.banner.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function fanartConvert(v, record) {
+	return v.fanart.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function ratingConvert(v, record) {
+	return v.toFixed(1);
+}
+
 var storeTvshow = new Ext.data.Store({
 	sortInfo: {field: 'title', direction: "ASC"},
 	proxy: new Ext.data.XBMCProxy({
 		url: "/jsonrpc",
-		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "fanart", "thumbnail", "file" ]},"id": 1}
+		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "art", "file", "watchedepisodes" ]},"id": 1}
 	}),
 	reader: new Ext.data.JsonReader({
 		root:'result.tvshows'	       
@@ -120,7 +141,7 @@ var TVShowdetailPanel = new Ext.FormPanel({
 				allowBlank: false
 			},{
 				fieldLabel: 'Genres',
-				name: 'genre',
+				name: 'TVGenre',
 				XBMCName: 'c08',
 				readOnly: true,
 				id: 'genreString'
@@ -136,7 +157,9 @@ var TVShowdetailPanel = new Ext.FormPanel({
 
 		},{ 
 			columnWidth:0.50,
-			defaults:{xtype:'container', width: 260},
+			defaults:{ xtype:'container', 
+				width: 260,
+				listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}},
 			items: [{
 				xtype:'textarea',
 				fieldLabel: 'Description',
@@ -350,7 +373,7 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 
 		selectedTvShow = r
 		var myTvShow = r.data.tvshowid;
-		TVShowdetailPanel.setTitle("<div align='center'>"+r.data.title+" ( "+r.data.episode+" Episodes / "+r.data.watchedCount+" watched )</div>");
+		TVShowdetailPanel.setTitle("<div align='center'>"+r.data.title+" ( "+r.data.episode+" Episodes / "+r.data.watchedepisodes+" watched )</div>");
 		EpisodedetailPanel.setTitle("<div align='center'>Select Episode</div>");
 		
 		SeasonGrid.setTitle("<div align='center'> "+r.data.title+" Seasons</div>");

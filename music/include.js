@@ -34,7 +34,7 @@ function updateMusicAlbum() {
 			};
             if (v == 19) {
 				if ((extraInfo.getForm().isDirty()) || (albumDescription.getForm().isDirty())) {
-					ValidateAlbuminfo(record);
+//					ValidateAlbuminfo(record);
 					updateXBMCTables(extraInfo.form, 'albuminfo');
 					updateXBMCTables(albumDescription.form, 'albuminfo');
 					myText = 'updating Extra info'
@@ -103,40 +103,6 @@ function GetAlbumDetails(r) {
 
 	mergeJson(r.data, jsonResponse.albumdetails);
 
+	r.data.currentThumbnail = r.data.currentThumbnail.replace(/image:\/\//g, "").slice(0,-1);
 	r.data.details = true;
-
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(SELECT idAlbumInfo, iYear, genre.strGenre, strExtraGenres, strLabel, strImage from albuminfo JOIN genre ON albuminfo.idGenre = genre.idGenre WHERE idAlbum = '+r.data.albumid+')';
-    var resp = "";
-	Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-		async: false,
-        success: function (t){
-			resp = t;
-			},
-        failure: function (t){},
-		timeout: 2000
-    });
-
-	var temp = resp.responseText.replace(/<\/record>/g, "");
-	temp = temp.replace(/<record>/g, "");
-	temp = temp.replace(/<recordset>/g, "");
-	temp = temp.replace(/<\/recordset>/g, "");
-	temp = temp.replace(/<html>/g, "");
-	temp = temp.replace(/<\/html>/g, "");
-	temp = temp.replace(/<\/field>/g, "");
-	temp = temp.split("<field>");
-	
-	// If the ajax request returns an empty record, flag the album to create and albuminfo record when saving
-	if (typeof temp[1] === "undefined") 
-		r.data.scraperInfo = false
-	else
-	{
-		r.data.idAlbumInfo = temp[1];
-		r.data.iYearScraper = temp[2];
-		r.data.strGenreScraper = temp[3];
-		r.data.strExtraGenres = temp[4];	
-		r.data.strLabel = temp[5];
-		r.data.MusicCoverUrl = getMusicCoverList(temp[6], r)
-	}
 }

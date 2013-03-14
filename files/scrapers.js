@@ -4,6 +4,10 @@
 		Ext.Ajax.request({
 			url: inputUrl,
 			params : params,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json' 
+			},
 			method: "POST",
 			async: false,
 			success: function (t){
