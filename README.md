@@ -16,8 +16,7 @@ Features not yet working Todo list:
 
 I have tested these changes under Firefox, Chrome and Opera and all features are functional. I have no way of testing Internet Explorer or Safari.
 
-This updated version is not available in the repo, but the zip file can be downloaded from the following link and then installed via the "install addon from zip file" option in settings.
-https://www.dropbox.com/s/kr1k8hh5u2pury...-2.1.0.zip
+This updated version is not available in the repo, but the zip file can be downloaded from the following link and then installed via the "install addon from zip file" from repo
 
 Please test out and post any issues you run into. I will be providing all my changes back to Slash for him to incorporate into the next official release if he chooses.
 
