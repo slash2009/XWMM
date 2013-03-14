@@ -5,11 +5,13 @@ XBMC Web Media Manager
 
 Zernable created an "unofficial" version of XWMM for Frodo. Most of the functionality of the Eden version is working including editing of movie, TV and music metadata.
 
-Features not yet working
+Features not yet working Todo list:
 
-    Changing artwork
-    Managing movie sets, genres and actors (although these can be changed on a per movie/TV/music basis)
-    The "Files" tab
+[] -Changing artwork
+
+[] -Managing movie sets, genres and actors (although these can be changed on a per movie/TV/music basis)
+
+[] -The "Files" tab
 
 
 I have tested these changes under Firefox, Chrome and Opera and all features are functional. I have no way of testing Internet Explorer or Safari.
