@@ -1,5 +1,5 @@
 XWMM
-====
+=
 
 XBMC Web Media Manager
 
@@ -7,12 +7,14 @@ Zernable created an "unofficial" version of XWMM for Frodo. Most of the function
 
 Features not yet working Todo list:
 
-[] -Changing artwork
+[ ] -Changing artwork
 
-[] -Managing movie sets, genres and actors (although these can be changed on a per movie/TV/music basis)
+[ ] -Managing movie sets, genres and actors (although these can be changed on a per movie/TV/music basis)
 
-[] -The "Files" tab
+[ ] -The "Files" tab
 
+Download https://github.com/uNiversaI/XWMM/archive/Frodo.zip
+========
 
 >I have tested these changes under Firefox, Chrome and Opera and all features are functional. I have no way of testing Internet Explorer or Safari.
 
