@@ -14,12 +14,12 @@ Features not yet working Todo list:
 [] -The "Files" tab
 
 
-I have tested these changes under Firefox, Chrome and Opera and all features are functional. I have no way of testing Internet Explorer or Safari.
+>I have tested these changes under Firefox, Chrome and Opera and all features are functional. I have no way of testing Internet Explorer or Safari.
 
-This updated version is not available in the repo, but the zip file can be downloaded from the following link and then installed via the "install addon from zip file" from repo
+>This updated version is not available in the repo, but the zip file can be downloaded from the following link and then installed via the "install addon from zip file" from repo
 
-Please test out and post any issues you run into. I will be providing all my changes back to Slash for him to incorporate into the next official release if he chooses.
+>Please test out and post any issues you run into. I will be providing all my changes back to Slash for him to incorporate into the next official release if he chooses.
 
-Enjoy! 
+>Enjoy!
 
-[![lgplv3](https://f.cloud.github.com/assets/3521959/153710/2745bbea-7601-11e2-8b61-c8ff3ef97d32.png)](http://www.gnu.org/licenses/lgpl.txt)
+> Zernable
