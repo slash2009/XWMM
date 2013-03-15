@@ -8,138 +8,100 @@
 Ext.ns('TVShow');
 
 var tvShowRecord = Ext.data.Record.create([
-   {name: 'idShow', mapping: 'field:nth(1)'},		
-   {name: 'ShowTitle', mapping: 'field:nth(2)'},	//c00
-   {name: 'Showgenres', mapping: 'field:nth(3)'},	//c08
-   {name: 'totalCount', mapping: 'field:nth(4)'},
-   {name: 'watchedCount', mapping: 'field:nth(5)'},
-   {name: 'watched', mapping: 'field:nth(6)'}
+   {name: 'title'},	{name: 'TVGenre', mapping: 'genre', convert: genreConvert}, {name: 'year'}, {name: 'plot'}, {name: 'fanart', mapping: 'art', convert: fanartConvert},
+   {name: 'banner', mapping: 'art', convert: bannerConvert}, {name: 'tvshowid'}, {name: 'studio'}, {name: 'episode'}, {name: 'rating'}, {name: 'premiered'}, {name: 'tvshowid'},
+   {name: 'playcount'}, {name: 'watchedepisodes'}
+]);
+
+var seasonRecord = Ext.data.Record.create([
+   {name: 'season'}, {name: 'label'}, {name: 'thumbnail', convert: thumbConvert}
 ]);
 
 var episodeRecord = Ext.data.Record.create([
-	{name: 'idEpisode', mapping: 'field:nth(1)'},		
-	{name: 'EpisodeTitle', mapping: 'field:nth(2)'},	//c00
-	{name: 'EpisodeSeason', type: 'int', mapping: 'field:nth(3)'},	//c12
-	{name: 'EpisodeNumber', type: 'int', mapping: 'field:nth(4)'},
-	{name: 'watched', type: 'int', mapping: 'field:nth(5)'}
+	{name: 'episode'}, {name: 'title'}, {name: 'rating', convert: ratingConvert}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
+	{name: 'streamdetails'}, {name: 'playcount'}, {name: 'episodeid'}
 ]);
 
-var TVShowstars = new Ext.Container ({
-	id: 'tvshowrating',
+var tvshowStars = new Ext.ux.XbmcStars ({
 	border: 0,
 	width: 96,
-	height:27,
-	autoEl: {tag: 'img', src: "../images/stars/0.png"},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = r.data.ShowStars
-		}
-		else {
-			var value = Math.round(r.data.ShowRating);
-			r.data.ShowStars =  '../images/stars/'+value+'.png';
-			this.el.dom.src = r.data.ShowStars;
-		}
-	}
+	height:27
 });
 
-var EpisodeStars = new Ext.Container ({
-	id: 'episoderating',
-	border: 0,
+var episodeStars = new Ext.ux.XbmcStars ({
 	width: 72,
-	height:20,
-	autoEl: {tag: 'img', src: "../images/stars/0.png"},
-		updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = r.data.EpisodeRatingStars
-		}
-		else {
-			var value = Math.round(r.data.EpisodeRating);
-			r.data.EpisodeRatingStars =  '../images/stars/'+value+'.png';
-			this.el.dom.src = r.data.EpisodeRatingStars;
-		}
-	}
-
+	height:20
 });
 
-var TVShowCover = new Ext.Container ({
+var TVShowCover = new Ext.ux.XbmcImages({
 	id: 'tvshowcover',
 	cls: 'center-align',
 	border: 0,
 	width: 380,
 	height:70,
-	autoEl: {tag: 'img', src: "../images/nobanner.png"},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = '../../vfs/'+ r.data.cover;
-		}
-		else {	
-			thumbCrc = FindCRC(r.data.ShowPath);
-			r.data.cover = 'special://masterprofile/Thumbnails/Video/'+thumbCrc.substring(0,1)+'/'+thumbCrc+'.tbn';
-			this.el.dom.src = '../../vfs/'+ r.data.cover;
-			// this.el.dom.src = '../../vfs/special://masterprofile/Thumbnails/Video/'+thumbCrc.substring(0,1)+'/'+thumbCrc+'.tbn';
-			// r.data.cover = this.el.dom.src
-			//copyXBMCVideoThumb(thumbCrc,r, this, "cover");			
-		}
-	}
+	autoEl: {tag: 'img', src: "../images/nobanner.png"}
 });
 
-var SeasonCover = new Ext.Container ({
+var SeasonCover = new Ext.ux.XbmcImages({
 	id: 'seasoncover',
 	cls: 'center-align',
 	border: 0,
 	width: 160,
 	height:231,
-	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg"},
-	updateSrc :function(r, season){
-		
-		var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
-
-		if (season == -1) {
-			if (selectedTVShow.data.allseason == undefined) {
-				thumbCrc = FindCRC("season"+selectedTVShow.data.ShowPath+"* All Seasons");
-				this.el.dom.src = '../../vfs/special://masterprofile/Thumbnails/Video/'+thumbCrc.substring(0,1)+'/'+thumbCrc+'.tbn';
-				selectedTVShow.data.allSeason = this.el.dom.src;
-				//copyXBMCVideoBanner(thumbCrc, selectedTVShow, this, season)
-			}
-			else {this.el.dom.src = selectedTVShow.data.allSeason}
-			}
-		else {
-			if (selectedTVShow.data.seasonCover == undefined){selectedTVShow.data.seasonCover =[]};
-			if (selectedTVShow.data.seasonCover[season] == undefined) {
-				thumbCrc = FindCRC("season"+selectedTVShow.data.ShowPath+"Season "+season);
-				this.el.dom.src = '../../vfs/special://masterprofile/Thumbnails/Video/'+thumbCrc.substring(0,1)+'/'+thumbCrc+'.tbn';
-				selectedTVShow.data.seasonCover[season] = this.el.dom.src;
-				//copyXBMCVideoBanner(thumbCrc, selectedTVShow, this, season)
-			}
-			else {this.el.dom.src = selectedTVShow.data.seasonCover[season]}
-		}	
-	}
+	autoEl: {tag: 'img', src: "../images/nobanner.png"}
 });
 
-TVShow.Store = function(config) {
-	var config = config || {};
-	Ext.applyIf(config, {
-		sortInfo: {field: 'ShowTitle', direction: "ASC"},
-		reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, tvShowRecord)
-	});
-	TVShow.Store.superclass.constructor.call(this, config)
-};
-Ext.extend(TVShow.Store, Ext.data.GroupingStore);
+function genreConvert(v, record) {
+	return record.genre.join(' / ')
+}
 
-TVShow.EpiStore = function(config) {
-	var config = config || {};
-	Ext.applyIf(config, {
-		sortInfo: {field: 'EpisodeNumber', direction: "ASC"},
-		groupField: 'EpisodeSeason',
-		reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, episodeRecord)
-	});
-	TVShow.EpiStore.superclass.constructor.call(this, config)
-};
-Ext.extend(TVShow.EpiStore, Ext.data.GroupingStore);
+function thumbConvert(v, record) {
+	return record.thumbnail.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function bannerConvert(v, record) {
+	return v.banner.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function fanartConvert(v, record) {
+	return v.fanart.replace(/image:\/\//g, "").slice(0,-1)
+}
+
+function ratingConvert(v, record) {
+	return v.toFixed(1);
+}
+
+var storeTvshow = new Ext.data.Store({
+	sortInfo: {field: 'title', direction: "ASC"},
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": [ "title", "genre", "year", "rating", "plot","studio", "mpaa", "playcount", "episode", "imdbnumber", "premiered", "votes", "lastplayed", "art", "file", "watchedepisodes" ]},"id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.tvshows'	       
+		}, tvShowRecord)
+});
+
+
+var storeSeason = new Ext.data.Store({
+	sortInfo: {field: 'season', direction: "ASC"},
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc"
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.seasons'	       
+	}, seasonRecord)
+});
+
+var storeEpisode = new Ext.data.Store({
+	sortInfo: {field: 'episode', direction: "ASC"},
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc"
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.episodes'	       
+	}, episodeRecord)
+})
 
 var TVShowdetailPanel = new Ext.FormPanel({
 	region: 'north',
@@ -157,7 +119,7 @@ var TVShowdetailPanel = new Ext.FormPanel({
 			},{
 			columnWidth : 0.30,
 			layout: 'form',
-			items: [TVShowstars]
+			items: [tvshowStars]
 		}]
 		},{
 		layout:'column',
@@ -174,32 +136,34 @@ var TVShowdetailPanel = new Ext.FormPanel({
 			},
 			items: [{
 				fieldLabel: 'Title',
-				name: 'ShowTitle',
+				name: 'title',
 				XBMCName: 'c00',
 				allowBlank: false
 			},{
-				fieldLabel: 'Genre',
-				name: 'ShowGenre',
+				fieldLabel: 'Genres',
+				name: 'TVGenre',
 				XBMCName: 'c08',
 				readOnly: true,
-				id: 'showgenres'
+				id: 'genreString'
 			},{
 				fieldLabel: 'First aired',
 				XBMCName: 'c05',
-				name: 'showAired'
+				name: 'premiered'
 			},{
 				fieldLabel: 'Channel',
 				XBMCName: 'c14',
-				name: 'showChannel'
+				name: 'studio'
 			}]
 
 		},{ 
 			columnWidth:0.50,
-			defaults:{xtype:'container', width: 260},
+			defaults:{ xtype:'container', 
+				width: 260,
+				listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}},
 			items: [{
 				xtype:'textarea',
 				fieldLabel: 'Description',
-				name: 'ShowDescr',
+				name: 'plot',
 				XBMCName: 'c01',
 				height: 100
 			}]
@@ -227,31 +191,31 @@ var EpisodedetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 			fieldLabel: 'Title',
-			name: 'EpisodeTitle',
+			name: 'title',
 			XBMCName: 'c00',
 			allowBlank: false
 		},{
 			fieldLabel: 'Aired',
-			name: 'EpisodeAired',
+			name: 'firstaired',
 			XBMCName: 'c05'
 		},{
 			xtype:'textarea',
 			fieldLabel: 'Description',
-			name: 'EpisodeDescr',
+			name: 'plot',
 			XBMCName: 'c01',
 			height: 145
 		},{
 			fieldLabel: 'Director',
-			name: 'EpisodeDirector',
+			name: 'director',
 			XBMCName: 'c10'
 		},{
 			fieldLabel: 'Rating',
-			name: 'EpisodeRating',
+			name: 'rating',
 			XBMCName: 'c03'
 		}]
 	},{
 		width:170,
-		items: [EpisodeStars, SeasonCover]
+		items: [episodeStars, SeasonCover]
 	},{
 		items: [VideoFlagsPanel]
 	},{
@@ -260,7 +224,7 @@ var EpisodedetailPanel = new Ext.FormPanel({
 })
 
 // grid with list of movies
-tvShowGrid = new Ext.grid.GridPanel({
+TvShowGrid = new Ext.grid.GridPanel({
 	cm: tvShowcolModel,
 	id: 'tvshowgrid',
 	title: 'TV Shows List',
@@ -268,32 +232,31 @@ tvShowGrid = new Ext.grid.GridPanel({
 	stripeRows: true,
 	viewconfig: {forceFit: true},
 	sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
-	region: 'west',
-	//height: 180,
-	width: 200,
-	split: true,
-	store: new TVShow.Store({
-	storeId: 'gridtvshowstore',
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select tvshow.idShow, tvshow.c00, tvshow.c08, counts.totalcount, counts.watchedcount, counts.totalcount=counts.watchedcount from tvshow join tvshowlinkpath on tvshow.idShow=tvshowlinkpath.idShow join path on path.idpath=tvshowlinkpath.idPath left outer join (    select tvshow.idShow as idShow,count(1) as totalcount,count(files.playCount) as watchedcount from tvshow     join tvshowlinkepisode on tvshow.idShow = tvshowlinkepisode.idShow JOIN episode on episode.idEpisode = tvshowlinkepisode.idEpisode     join files on files.idFile = episode.idFile     group by tvshow.idShow) counts on tvshow.idShow = counts.idShow)'
-	})
+	height: 300,
+	store: storeTvshow
+});
+
+SeasonGrid = new Ext.grid.GridPanel({
+	cm: seasoncolModel,
+	title: 'Seasons',
+	enableDragDrop: false,
+	stripeRows: true,
+	viewconfig: {forceFit: true},
+	sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
+	height: 300,
+	store: storeSeason
 });
 
 EpisodeGrid = new Ext.grid.GridPanel({
 	cm: episodecolModel,
-	id: 'episodegrid',
+	frame: true,
+	rowspan: 2,
+	height: 600,
 	loadMask: true,
 	title: 'Episodes List',
 	enableDragDrop: false,
 	viewconfig: {forceFit: true},
-	view: new Ext.grid.GroupingView({
-		forceFit:true,
-		startCollapsed: true,
-		//enableGrouping: false,
-		enableGroupingMenu : false,
-		//enableNoGroups: false,
-		groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'}),
 	sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
-	region: 'center',
 	listeners:{
         rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
             gridContextMenu.showAt(e.getXY());    
@@ -301,26 +264,7 @@ EpisodeGrid = new Ext.grid.GridPanel({
             return false;
         }}
 	},
-	split: true,
-	store: new TVShow.EpiStore({
-		storeId: 'gridepisodestore',
-		listeners:{
-			load: function() {
-				if (currentRecord.data.details == undefined){
-					GetTvshowGenres(currentRecord);
-					GettvShowDetails(currentRecord);
-				}
-				else {
-					updateTvShowForms(currentRecord);
-					updateGenreGrid(currentRecord.data.selectedGenre);
-					Ext.getCmp('filedetailPanel').getForm().loadRecord(currentRecord);
-				}
-				storeActor.proxy.conn.url = "/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT strActor, strRole FROM actorlinktvshow JOIN actors ON (actorlinktvshow.idActor = actors.idActor) where idShow ="+currentRecord.data.idShow+")";
-				storeActor.load();
-			}
-		},
-		url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idEpisode, c00, c12, c13, playCount FROM episodeview WHERE idShow=-1)' 
-	})
+	store: storeEpisode
 });
 
 var fileDetailsPanel = new Ext.FormPanel({
@@ -375,11 +319,13 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 			xtype : 'panel',
 			region: "west",
 			width: 450,
-			layout: 'border',
-			split: true,
+			layout: {type: 'table',	columns: 2},
+			defaults: {frame:true, width:225},
+			//width: 450,
 			items: [
-				tvShowGrid,
-				EpisodeGrid
+				TvShowGrid,
+				EpisodeGrid,
+				SeasonGrid
 			]
 		},{
 			xtype: 'panel',
@@ -412,36 +358,63 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
 	
 	initEvents: function() {
 		TVShow.Mainpanel.superclass.initEvents.call(this);
-		var currentShow = Ext.getCmp('tvshowgrid').getSelectionModel();
+		
+		var currentShow = TvShowGrid.getSelectionModel();
 		currentShow.on('rowselect', this.tvShowSelect, this);
 		
-		var currentEpisode = Ext.getCmp('episodegrid').getSelectionModel();
+		var currentSeason = SeasonGrid.getSelectionModel();
+		currentSeason.on('rowselect', this.seasonSelect, this);
+		
+		var currentEpisode = EpisodeGrid.getSelectionModel();
 		currentEpisode.on('rowselect', this.episodeSelect, this);
 	},
 
 	tvShowSelect: function(sm, rowIdx, r) {
 
-		TVShowdetailPanel.setTitle("<div align='center'>"+r.data.ShowTitle+" ( "+r.data.totalCount+" Episodes / "+r.data.watchedCount+" watched )</div>");
-		selectedMovie = r.data.idShow;
-		currentRecord = r;
-
-		//Ext.StoreMgr.get('gridepisodestore').proxy.conn.url = "/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT episode.idEpisode, episode.c00, episode.c12, episode.c13, episode.playCount FROM episode JOIN tvshowlinkepisode ON (episode.idEpisode = tvshowlinkepisode.idEpisode) where tvshowlinkepisode.idShow="+r.data.idShow+")";
-		Ext.StoreMgr.get('gridepisodestore').proxy.conn.url= "/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idEpisode, c00, c12, c13, playCount FROM episodeview WHERE idShow="+r.data.idShow+")"; 
-		Ext.StoreMgr.get('gridepisodestore').load();
-		
-		//EpisodedetailPanel.getForm().reset();
+		selectedTvShow = r
+		var myTvShow = r.data.tvshowid;
+		TVShowdetailPanel.setTitle("<div align='center'>"+r.data.title+" ( "+r.data.episode+" Episodes / "+r.data.watchedepisodes+" watched )</div>");
 		EpisodedetailPanel.setTitle("<div align='center'>Select Episode</div>");
-			
+		
+		SeasonGrid.setTitle("<div align='center'> "+r.data.title+" Seasons</div>");
+
+		GetTvshowGenres(selectedTvShow);
+		
+		GettvShowDetails(r);
+		updateTvShowForms(r);
+		// corriger ici le refresh de la grille des genres
+		
+		//storegenre.selectFromString(r.data.genre);
+		storeSeason.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", "params": {"tvshowid": myTvShow, "properties": [ "season", "thumbnail"]},"id": 1};
+		storeSeason.load();
+
+	},
+	
+	seasonSelect: function(sm, rowIdx, r) {
+
+		selectedSeason = r
+		var mySeason = r.data.season;
+		var myTvShow = selectedTvShow.data.tvshowid;
+		
+		EpisodedetailPanel.setTitle("<div align='center'> Season "+mySeason+" / Select Episode</div>");
+		SeasonCover.updateSrc(r.data.thumbnail);
+		EpisodedetailPanel.getForm().reset();
+		//Ext.getCmp('episodedetailPanel').getForm().reset(); does not work
+
+		storeEpisode.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": myTvShow, "season": mySeason, "properties": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount"]},"id": 1};
+		storeEpisode.load();
+		
+		storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVshowDetails", "params": {"tvshowid": myTvShow, "properties": ["cast"]},"id": 1};
+		storeActor.load();
 	},
 	
 	episodeSelect: function(sm, rowIdx, r) {		
-		r.data.EpisodeShowPath = currentShowPath;
-		currentEpisode = r;
-		EpisodedetailPanel.setTitle("<div align='center'> Season "+r.data.EpisodeSeason+" / Episode "+r.data.EpisodeNumber+"</div>");
-		if (r.data.details == undefined){
-			GetepisodeDetails(r);
-		}
-		else {updateEpisodeForms(r)};
+
+		selectedEpisode = r;
+		var mySeason = selectedSeason.data.season;
+		//GetepisodeDetails(r);
+		EpisodedetailPanel.setTitle("<div align='center'> Season "+mySeason+" / Episode "+r.data.episode+"</div>");
+		updateEpisodeForms(r)
 	}
 
 	

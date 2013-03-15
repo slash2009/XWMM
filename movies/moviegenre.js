@@ -1,36 +1,77 @@
 
-
-// -----------------------------------------
-// movie.js
-// last modified : 31-12-2009
-// 
-//------------------------------------------ 
-
 Ext.ns('Movie');
 
 var MovieRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'field:nth(1)'},		//idMovie
-   {name: 'strFilename', mapping: 'field:nth(2)'},	//strFilename
-   {name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
-   {name: 'Movietitle', mapping: 'field:nth(4)'},	//c00
-   {name: 'strPath', mapping: 'field:nth(5)'},		//strPath
-   {name: 'Moviegenres', mapping: 'field:nth(6)'},	//c14
-   {name: 'idFile', mapping: 'field:nth(7)'},
-   {name: 'watched', mapping: 'field:nth(8)'},
-   {name: 'idSet', mapping: 'field:nth(9)'},
-   {name: 'strSet', mapping: 'field:nth(10)'},
-   {name: 'MovieRelease', mapping: 'field:nth(11)'}
+   {name: 'idMovie'},
+   {name: 'strFilename'},
+   {name: 'strGenre'},
+   {name: 'Movietitle'},
+   //{name: 'strPath', mapping: 'field:nth(5)'},		//strPath
+   {name: 'Moviegenres'},
+   //{name: 'idFile', mapping: 'field:nth(7)'},
+   {name: 'watched'},
+   //{name: 'idSet', mapping: 'field:nth(9)'},
+   {name: 'strSet'},
+   {name: 'MovieRelease'}
 ]);
 
-var storeMovie = new Ext.data.GroupingStore({
+var tempMovieRecord = Ext.data.Record.create([
+   {name: 'idMovie', mapping: 'movieid'},
+   {name: 'strFilename', mapping: 'file'},
+   {name: 'Movietitle', mapping: 'title'},
+   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},
+   {name: 'watched', mapping: 'playcount'},
+   {name: 'strSet', mapping: 'set'},
+   {name: 'MovieRelease', mapping: 'year'}
+]);
+
+function genreConvert(v, record) {
+	return record.genre.join(' / ')
+}
+
+var storeMovie = new Ext.data.GroupingStore( {
 	sortInfo: {field: 'Movietitle', direction: "ASC"},
 	groupField: 'strGenre',
-	reader: new Ext.data.JsonXBMCReader({
-          // records will have a "record" tag
-		root:'data'	       
-       }, MovieRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, strFilename, strGenre, c00, strPath, c14, movie.idFile, playCount, sets.idSet, strSet, c07 FROM movie JOIN files ON (movie.idFile = files.idFile) Join path ON (files.idPath = path.idPath) LEFT OUTER Join genrelinkmovie ON (genrelinkmovie.idMovie = movie.idMovie) LEFT OUTER JOIN genre ON (genrelinkmovie.idGenre = genre.idGenre) LEFT OUTER JOIN setlinkmovie ON movie.idMovie = setlinkmovie.idMovie LEFT OUTER JOIN sets ON setlinkmovie.idSet = sets.idSet)' 
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+	}),
 });
+
+var tempMovieStore = new Ext.data.Store( {
+	sortInfo: {field: 'Movietitle', direction: "ASC"},
+	autoLoad: true,
+	listeners: {
+		'load': function(records) {
+				var genres = [];
+				for (var i = 0; i < records.data.length; i++) {
+					genres = records.data.items[i].data.Moviegenres.split(" / ");
+					for (var j = 0; j < genres.length; j++) {
+						var record = new MovieRecord({
+							idMovie: records.data.items[i].data.idMovie,
+							strFilename: records.data.items[i].data.strFilename,
+							strGenre: genres[j],
+							Movietitle: records.data.items[i].data.Movietitle,
+							Moviegenres: records.data.items[i].data.Moviegenres,
+							watched: records.data.items[i].data.watched,
+							strSet: records.data.items[i].data.strSet,
+							MovieRelease: records.data.items[i].data.MovieRelease
+		  				});
+						storeMovie.add(record);
+					}
+				}
+				storeMovie.commitChanges();
+			}
+   },
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set"]},"id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root: 'result.movies'
+	}, tempMovieRecord)
+});
+
+//storeMovie.load();
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({
