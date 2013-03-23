@@ -1,15 +1,31 @@
+var AlbumRecord = Ext.data.Record.create([
+   {name: 'albumid'},
+   {name: 'strAlbum', mapping:'label'},	
+   {name: 'strArtist', mapping:'artist'},	
+   {name: 'strGenre', mapping:'genre'},	
+   {name: 'year'}, {name: 'currentThumbnail', mapping:'thumbnail'}
+]);
 
 var AlbumStore = new Ext.data.GroupingStore({
 	sortInfo: {field: 'strAlbum', direction: "ASC"},
-	groupField: 'iYear',
-	reader: new Ext.data.JsonXBMCReader({
- 		root:'data'	       
-       }, AlbumRecord),
-	listeners: {
-        beforeload: function(){ setXBMCResponseFormat() }
-    },
-	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idAlbum, strAlbum, idArtist, idGenre, strArtist, strGenre, iYear, strThumb, iRating, strReview FROM albumview WHERE strAlbum <> "")' 
+	autoLoad: true,
+	groupField: 'year',
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["genre", "artist", "year", "thumbnail"]},"id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.albums'	       
+		}, AlbumRecord)
 });
+
+var AlbumcolModel = new Ext.grid.ColumnModel([
+		{header: "#", dataIndex: 'albumid', hidden: true},
+		{header: "Album", dataIndex: 'strAlbum', width: 150},
+		{header: "Artist", dataIndex: 'strArtist', hidden: true},
+		{header: "Genre", dataIndex: 'strGenre', hidden: true},
+		{header: "Year", dataIndex: 'year', hidden: true}
+    ]);
 
 AlbumGrid = new Ext.grid.GridPanel({
 	cm: AlbumcolModel,

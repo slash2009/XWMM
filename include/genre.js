@@ -1,40 +1,54 @@
 
-
-var genreRecord = Ext.data.Record.create([
-   {name: 'idGenre', mapping: 'genreid'},		
-   {name: 'strGenre', mapping: 'label'}
+var genreRecord = Ext.data.Record.create([	
+   {name: 'genreid', type: 'string'},
+   {name: 'label'}
 ]);
 
 var Checkgenre = new Ext.grid.CheckboxSelectionModel({
-	dataIndex:'idGenre',
+	dataIndex:'genreid',
 	alwaysSelectOnCheck: 'true',
 	header: false,
 	listeners: {
 		selectionchange: function(sm) {
 			movieGenreChange(sm);
 			var bt = Ext.getCmp('savebutton');
-			bt.enable();
+			bt.enable()
 		}
 	}
 });
 
+
+function updateGenreGrid(t){
+	Genregrid.getSelectionModel().clearSelections(false);
+	Genregrid.getSelectionModel().selectRows(t, true);
+	// var bt = Ext.getCmp('savebutton');
+	// bt.disable()
+};
+
 var GenrecolModel = new Ext.grid.ColumnModel([
 		Checkgenre,
-		{header: "#", dataIndex: 'idGenre', hidden: true},
-		{header: "Genre", dataIndex: 'strGenre'}
+		{header: "#", dataIndex: 'genreid', hidden: true},
+		{header: "Genre", width: 200, dataIndex: 'label'}
 ]);
 
-var GenreStore = new Ext.data.Store({
-	sortInfo: {field: 'strGenre', direction: "ASC"},
-	autoLoad: true,
+
+var storegenre = new Ext.data.Store({
+	id: 'storegenre',
+	sortInfo: {field: 'label', direction: "ASC"},
 	proxy: new Ext.data.XBMCProxy({
 		url: "/jsonrpc",
-		xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "id": 1}
 	}),
 	reader: new Ext.data.JsonReader({
-		root:'result.genres'	       
-		}, genreRecord),
-	url: '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idGenre, strGenre FROM genre)'
+		root:'result.genres'
+	}, genreRecord)
+//	selectFromString :function(string){ // select genre rows according to movie genre field 
+//		var myArray = string.split('/');
+//		Genregrid.getSelectionModel().clearSelections(false);
+//		for (var i = 0; i < myArray.length; i++) {
+//			var index = storegenre.findExact('label',removeSpace(myArray[i]),0,false,false);
+//			Genregrid.getSelectionModel().selectRow(index, true)
+//		}
+//	}
 });
 
 
@@ -43,14 +57,13 @@ var editor = new Ext.ux.grid.RowEditor({
 	listeners: {
 		afteredit: function(roweditor, changes, record, rowIndex) {
 			if (record.data.idGenre == -1) {
-				AddXBMCNewMusicGenre(record);
-				GenreStore.reload();
+				AddXBMCNewGenre(record);
+				storegenre.reload();
 			}
 			else {
-				updateXBMCMusicGenreString(record);
-				GenreStore.reload();
-			}
-								
+				updateXBMCGenreString(record);
+				storegenre.reload();
+			}								
  		 }
 	}
 });
@@ -60,8 +73,8 @@ var editor = new Ext.ux.grid.RowEditor({
 var GenreMgmtGrid = new Ext.grid.GridPanel({
 			id: 'genremgmtgrid',
 			columns: [
-				{header: "#", dataIndex: 'idGenre', hidden: true},
-				{header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strGenre'}
+				{header: "#", dataIndex: 'genreid', hidden: true},
+				{header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'label'}
 			],
 			clicksToEdit: 1,
 			title: 'Genre Management',
@@ -69,7 +82,7 @@ var GenreMgmtGrid = new Ext.grid.GridPanel({
 			//sm : Checkgenre,
 			stripeRows: true,
 			plugins: [editor],
-			store: GenreStore,
+			store: storegenre,
 			tbar: [{
 				text: 'Add',
 				iconCls: 'silk-add',
@@ -101,7 +114,6 @@ function onDelete() {
     
 	if (checkXBMCGenreUsed(rec)){
 		Ext.Msg.alert('Error', 'this genre is still in use');
-		console.log('cannot remove');
 	}
 	else {
 		removeXBMCGenre(rec);
@@ -113,12 +125,12 @@ function onDelete() {
 var Genregrid = new Ext.grid.GridPanel({
 			id: 'Genregrid',
 			cm: GenrecolModel,
-			title: 'Extra Genres',
+			title: 'Genres',
 			enableDragDrop: false,
 			sm : Checkgenre,
 			stripeRows: true,
 			viewconfig: {forceFit: true},
-			store: GenreStore
+			store: storegenre
 });
 
 var winGenre = new Ext.Window({

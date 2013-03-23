@@ -1,49 +1,51 @@
 
 
-//------------ Movie Sets ----------------
-
-var MovieSetcolModel = new Ext.grid.ColumnModel([
-		{header: "#", dataIndex: 'idSet', hidden: true},
-		{header: "Set Name", dataIndex: 'strSet', width: 200}
-    ]);
+//------------ Movie All Sets (including orphans) ----------------
 
 var MovieSetRecord = Ext.data.Record.create([
-   {name: 'idSet', mapping: 'field:nth(1)'},		
-   {name: 'strSet', mapping: 'field:nth(2)'}	
+   {name: 'idSet', mapping: 'setid', type: 'int'},
+   {name: 'strSet', mapping: 'title'}
 ]);
 
 var MovieSetStore = new Ext.data.GroupingStore({
 	sortInfo: {field: 'strSet', direction: "ASC"},
-	id: 'moviesetstore',
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
-       }, MovieSetRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idSet, strSet FROM sets)' 
+	//autoLoad: true,
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSets", "params": {"properties": ["title"]},"id": 1}
+	}),
+	reader: new Ext.data.JsonReader({
+		root: 'result.sets'
+	}, MovieSetRecord)
 });
-
-//------- Movies in a Set
 
 var MoviesInSetcolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'idMovie', hidden: true},
-		{header: "Movie Title", dataIndex: 'c00', width: 200}
+		{header: "Movie Title", dataIndex: 'movieinset', width: 200}
     ]);
 
+
 var MoviesInSetRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'field:nth(1)'},		
-   {name: 'c00', mapping: 'field:nth(2)'}	
+   {name: 'idMovie', mapping: 'movieid'},		
+   {name: 'movieinset', mapping: 'title'}	
 ]);
 
+
 var MoviesInSetStore = new Ext.data.GroupingStore({
-	sortInfo: {field: 'c00', direction: "ASC"},
+	sortInfo: {field: 'movieinset', direction: "ASC"},
 	id: 'moviesinsetstore',
-	reader: new Ext.data.JsonXBMCReader({
-		root:'data'	       
-       }, MoviesInSetRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie WHERE idSet = -1)' 
+	proxy: new Ext.data.XBMCProxy({
+		url: "/jsonrpc",
+		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": 2147483647, "movies": {"properties": ["title"]} }, "id": 1} //dummy ID will be replaced by selected setid when set selected
+	}),
+	reader: new Ext.data.JsonReader({
+		root:'result.setdetails.movies'  
+       }, MoviesInSetRecord)
 });
 
+
 var MovieInSetGrid = new Ext.grid.GridPanel({
-	width:250,
+	width:230,
 	height: 290,
 	cm: MoviesInSetcolModel,
 	title: 'Movies in Set',
@@ -57,7 +59,7 @@ var MovieInSetGrid = new Ext.grid.GridPanel({
 
 function onAddMovieSet(btn, ev) {
         var u = new MovieSetMgmtGrid.store.recordType({
-            	strSet: 'New Set',
+            	set: 'New Set',
 		idSet: '-1' // flag as new record
         });
         editor.stopEditing();
@@ -82,7 +84,7 @@ var MovieSetEditor = new Ext.ux.grid.RowEditor({
 				MovieSetStore.reload()
 			}
 			else {
-				updateXBMCMovieSetString(record);
+				updateXBMCMovieSet(record);
 				MovieSetStore.reload()
 			}							
  		}
@@ -104,8 +106,8 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 	selModel: new Ext.grid.RowSelectionModel({
 		singleSelect: true,
 		listeners : {
-			rowselect: function(sm, row, rec) {
-				MoviesInSetStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select movie.idMovie, c00 FROM setlinkmovie JOIN movie ON setlinkmovie.idMovie = movie.idMovie WHERE idSet = '+rec.data.idSet+')';
+		rowselect: function(sm, row, rec) {
+				MoviesInSetStore.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": rec.data.idSet, "movies": {"properties": ["title"]} }, "id": 1};
 				MoviesInSetStore.load();
 			}
 		}
@@ -114,10 +116,12 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 	store: MovieSetStore,
 	tbar: [{
 		text: 'Add',
+		disabled: 'true', //disabled as no method of adding new sets via JSON currently
 		iconCls: 'silk-add',
 		handler: onAddMovieSet
 	}, '-', {
 		text: 'Delete',
+		disabled: 'true', //disabled as no method of deleting sets via JSON currently
 		iconCls: 'silk-delete',
 		handler: onDeleteMovieSet
 	}, '-'],
