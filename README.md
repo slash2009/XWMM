@@ -14,6 +14,6 @@ Features not yet working - Todo list:
 Install Via Zip mode in XBMC.
 
 Download:
-=
-https://github.com/uNiversaI/XWMM/archive/Frodo.zip
-=
+=========
+https://github.com/slash2009/XWMM/archive/frodo.zip
+===
