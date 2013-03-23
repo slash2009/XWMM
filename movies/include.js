@@ -22,13 +22,13 @@ var gridContextMenu = new Ext.menu.Menu({
 });
 
 function setWatched() {
-		setXBMCwatched(currentRecord.data.idFile);
+		setXBMCwatched(currentRecord.data.idMovie, "movie");
 		currentRecord.data.watched ="1";
 		Moviegrid.getView().refresh()
 };
 
 function setUnwatched() {
-		setXBMCunwatched(currentRecord.data.idFile);
+		setXBMCunwatched(currentRecord.data.idMovie, "movie");
 		currentRecord.data.watched = "";
 		Moviegrid.getView().refresh()
 };
@@ -39,23 +39,14 @@ function updateXBMCSet(item) {
 	if (item.value == "") {
 	// remove existing record in setlinkmovie
 		myId = "";
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'")';
+		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": ""}, "id": 1}');
 	}
 	else {
 		var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', item.value)).data.idSet;
 		if (item.value != item.originalValue) {
-			if (item.originalValue == "") {
-				// Add new record in setlinkmovie
-				var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ('+myId+','+currentMovie.data.idMovie+'))';				
-			}
-			else {
-				// modify existing record in setlinkmovie
-				var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ("'+record.data.idMovie+'"))';
-			}
-
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": "' + item.value + '"}, "id": 1}');
 		}
 	}
-	XBMCExecSql(inputUrl);
 	item.IsDirty = false;
 	item.originalValue = item.getValue();
 	currentMovie.data.idSet = myId;
@@ -140,22 +131,16 @@ function updateAllForms(r) {
 
 function GetMovieDetails(r){
 
-	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "premiered", "productioncode", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file", "sorttitle"]}, "id": 1}');
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file", "sorttitle"]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.moviedetails);
 
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select c20, c08, idFile from movie where idMovie='+r.data.idMovie+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function(resp,opt) {		
-			XBMCgetMoviesFields(resp,r);	
-		},
-		failure: function(t){},
-		timeout: 2000
-	});	
-	
+	//fix up some data retrieved
+	r.data.fanart = jsonResponse.moviedetails.fanart.replace(/image:\/\//g, "").slice(0,-1);
+	r.data.thumbnail = jsonResponse.moviedetails.thumbnail.replace(/image:\/\//g, "").slice(0,-1);
+	r.data.rating = r.data.rating.toFixed(1);
+	r.data.runtime = Math.round(r.data.runtime / 60);
+
 	updateAllForms(r);
 	r.data.details = true;
 }
@@ -195,37 +180,24 @@ function movieGenreChange(sm){
 }
 	
 function updateXBMCGenreMovie(){
-
+	var parmArray = [];
+	var jsParam = '';
 	var modifiedGenre = Genregrid.getSelectionModel().getSelections();
 	
 	currentRecord.data.selectedGenre = modifiedGenre;
 	
 	idMovie = currentRecord.data.idMovie;
 
-	// remove any existing genre for the movie idMovie
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM genrelinkmovie WHERE idMovie='+idMovie+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: true,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});	
-	// remove associated records from StoreMovie
-	// insert selected genres 
 	for (var i = 0; i < modifiedGenre.length; i++){
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genrelinkmovie (idGenre, idMovie) VALUES ('+modifiedGenre[i].data.genreid+','+idMovie+'))';
-		Ext.Ajax.request({
-			url: inputUrl,
-			method: 'GET',
-			async: true,
-			success: function (t){},
-			failure: function(t){},
-			timeout: 2000
-		});
-	// add associated records from StoreMovie
+		parmArray[i] = modifiedGenre[i].data.label;
 	}
+	if (parmArray.length == 1) {
+		jsParam = '"' + parmArray[0] + '"';
+		}
+	else {
+		jsParam = '"' + parmArray.join('","') + '"';
+		}
+	xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMovie+', "genre": ['+jsParam+']}, "id": 1}');
 }
 
 function GetMovieGenres(record){

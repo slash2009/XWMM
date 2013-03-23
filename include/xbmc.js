@@ -35,28 +35,20 @@ function setXBMCResponseFormat() {
 	});
 }
 
-function setXBMCwatched(myfile) {
-var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE files SET playCount = "1" WHERE idFile='+myfile+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
+function setXBMCwatched(idMedia,media) {
+	if (media == "movie") {
+		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMedia+', "playcount": 1}, "id": 1}');
+	} else {
+		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idMedia+', "playcount": 1}, "id": 1}');
+	}
 }
 
-function setXBMCunwatched(myfile) {
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE files SET playCount = "" WHERE idFile='+myfile+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
+function setXBMCunwatched(idMedia,media) {
+	if (media == "movie") {
+		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMedia+', "playcount": 0, "lastplayed": ""}, "id": 1}');
+	} else {
+		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idMedia+', "playcount": 0, "lastplayed": ""}, "id": 1}');
+	}
 }
 
 function downloadNewXBMCFile(url,myFile) {
@@ -358,7 +350,7 @@ function getCoverList(String, r) {
 	 return result;
 }
 
-function XBMCgetMoviesFields(resp, r) {
+function XBMCgetMoviesFields(resp, r) { //This function is no longer being called
 
 	//var temp = TrimXbmcXml(resp);
 
@@ -436,53 +428,112 @@ function removeXbmcActorMovie(record) {
 	});
 }
 
+
 function updateXBMCTables(myForm, myTable) {				
+	//TODO: Clean quotes entered into fields so they don't break JSON query
 	var sqlData = '';
+	var jsParam = '';
+	var parmValue = '';
+	var parmArray = [];
 	var itemsList = myForm.items.items;
 	for (var i = 0; i < itemsList.length; i++){
 		f = itemsList[i]; 
 		if(f.isDirty()){
-			if (sqlData == '') {sqlData = f.XBMCName+'="'+f.getValue()+'"';}
-				else {sqlData = sqlData+' ,'+f.XBMCName+'="'+f.getValue()+'"';}
+			switch(f.name) {
+				case "Moviegenres":
+				case "TVGenre":
+					continue; //We don't want to save genres here
+					break;
+				case "runtime":
+					parmValue = parseInt(f.getValue()) * 60; //JSON uses runtime as # of seconds.
+					break;
+				case "rating":
+				case "year":
+					parmValue = f.getValue(); //integer
+					break;
+				case "country":
+				case "studio":
+				case "director":
+				case "genre":
+				case "theme":
+				case "mood":
+				case "style":
+				case "artist":
+					parmArray = f.getValue().split(","); //array.string
+					break;
+				default:
+					parmValue = JSON.stringify(f.getValue(), escape); //string
+					break;
+			}
+			
+			if (parmArray != undefined && parmArray.length == 1 && parmArray[0] != "") {
+				if (jsParam == '') {
+					jsParam = '"' + f.name + '": ["' + parmArray[0] + '"]'; }
+				else {
+					jsParam = jsParam + ', "' + f.name + '": ["' + parmArray[0] + '"]'; }
+			}
+			else if (parmArray != undefined && parmArray.length == 1 && parmArray[0] == "") {
+				if (jsParam == '') {
+					jsParam = '"' + f.name + '": []'; }
+				else {
+					jsParam = jsParam + ', "' + f.name + '": []'; }
+			}
+			else if (parmArray.length > 1) {
+				if (jsParam == '') {
+					jsParam = '"' + f.name + '": ["' + parmArray.join('","') + '"]'; }
+				else {
+					jsParam = jsParam + ', "' + f.name + '": ["' + parmArray.join('","') + '"]'; }
+			}
+			else {
+				if (jsParam == '') {
+					jsParam = '"' + f.name + '": ' + parmValue; }
+				else {
+					jsParam = jsParam + ', "' + f.name + '": ' + parmValue; }
+			}
 		}
+		//clear out values before looping
+		parmValue = '';
+		parmArray = [];
 	}
 	if (myTable == 'episode') {
 		var idEpisode = EpisodeGrid.getSelectionModel().getSelected().data.episodeid;
 		var myIndex = 'idEpisode='+idEpisode
+		if (jsParam != "") {
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idEpisode+', '+jsParam+'}, "id": 1}'); }
 	};
 	if (myTable == 'tvshow') {
 		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;	
 		var myIndex = 'idShow='+idShow
+		if (jsParam != "") {
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetTVShowDetails", "params": {"tvshowid": '+idShow+', '+jsParam+'}, "id": 1}'); }
 	};
 	
 	if (myTable == 'movie') {
 		var idMovie = selectedMovie;	
 		var myIndex = 'idMovie='+idMovie
+		if (jsParam != "") {
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMovie+', '+jsParam+'}, "id": 1}'); }
 	};
 
 	if ((myTable == 'album') || (myTable == 'albuminfo')) {
 		var idAlbum = AlbumGrid.getSelectionModel().getSelected().data.albumid;	
-		var myIndex = 'idAlbum='+idAlbum;
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE '+myTable+' SET '+sqlData+' WHERE '+myIndex+')';
-		Ext.Ajax.request({
-			url: inputUrl,
-			method: 'GET',
-			success: function (t){},
-			failure: function(t){},
-			timeout: 2000
-		})
-	return
+		if (jsParam != "") {
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.SetAlbumDetails", "params": {"albumid": '+idAlbum+', '+jsParam+'}, "id": 1}'); }
 	}
-	
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE '+myTable+' SET '+sqlData+' WHERE '+myIndex+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	})
-	
+}
+
+function escape (key, val) {
+    if (typeof(val)!="string") return val;
+    return val
+      .replace(/[\"]/g, '\\"')
+      .replace(/[\\]/g, '\\\\')
+      .replace(/[\/]/g, '\\/')
+      .replace(/[\b]/g, '\\b')
+      .replace(/[\f]/g, '\\f')
+      .replace(/[\n]/g, '\\n')
+      .replace(/[\r]/g, '\\r')
+      .replace(/[\t]/g, '\\t')
+    ; 
 }
 
 

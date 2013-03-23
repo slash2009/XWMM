@@ -10,7 +10,7 @@ var MovieRecord = Ext.data.Record.create([
    //{name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
    {name: 'Movietitle', mapping: 'title'},	//c00
    //{name: 'strPath', mapping: 'field:nth(5)'},		//strPath
-   {name: 'Moviegenres', mapping: 'genre'},	//c14
+   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},	//c14
    //{name: 'idFile', mapping: 'field:nth(7)'},
    {name: 'watched', mapping: 'playcount'},
    {name: 'MovieRelease', mapping: 'year'},
@@ -19,7 +19,11 @@ var MovieRecord = Ext.data.Record.create([
    {name: 'strSet', mapping: 'set'}
 ]);
 
-var storeMovie = new Ext.data.GroupingStore({
+function genreConvert(v, record) {
+	return record.genre.join(' / ')
+}
+
+var storeMovie = new Ext.data.GroupingStore( {
 	sortInfo: {field: 'Movietitle', direction: "ASC"},
 	//autoLoad: true,
 	proxy: new Ext.data.XBMCProxy({

@@ -19,8 +19,6 @@ var AlbumStore = new Ext.data.GroupingStore({
 		}, AlbumRecord)
 });
 
-setXBMCResponseFormat();
-
 var AlbumcolModel = new Ext.grid.ColumnModel([
 		{header: "#", dataIndex: 'albumid', hidden: true},
 		{header: "Album", dataIndex: 'strAlbum', width: 150},

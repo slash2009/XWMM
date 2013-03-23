@@ -37,12 +37,12 @@ function writeHtmlLine(window, index) {
 		if  (movieList[index].data.streamdetails == null) 
 			window.document.write("<td> </td><td> </td>")
 		else {
-			if (movieList[index].data.streamdetails.video != null)
+			if (movieList[index].data.streamdetails.video.length != 0)
 				window.document.write("<td>"+movieList[index].data.streamdetails.video[0].codec+"</td>");
 			else
 				window.document.write("<td> </td>");
 				
-			if (movieList[index].data.streamdetails.audio != null)
+			if (movieList[index].data.streamdetails.audio.length != 0)
 				window.document.write("<td>"+movieList[index].data.streamdetails.audio[0].codec+"</td>")
 			else
 				window.document.write("<td> </td>");

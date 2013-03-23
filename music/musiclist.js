@@ -98,10 +98,10 @@ var standardInfo = new Ext.FormPanel({
 				store: GenreStore,
 				displayField: 'strGenre',
 				id: 'albumgenrefield',
-				valueField : 'idGenre',
+				valueField : 'strGenre',
 				//mode: 'local',
 				//typeAhead: true,
-				name: 'strGenre',
+				name: 'genre',
 				XBMCName: 'idGenre'
 			},{
 				xtype: 'combo',
@@ -329,6 +329,7 @@ Ext.onReady(function() {
 			text: 'Tools',
 			menu: [{
 				text: 'Manage Genres',
+				disabled: 'true',
 				iconCls: 'silk-plugin',
 				handler: function(){winGenre.show()}
 			}]
@@ -350,7 +351,7 @@ Ext.onReady(function() {
         handler: function() {
             if (searchBox.getValue().length!=0) {
                 searchBox.setValue('');
-                storeMovie.clearFilter();
+                ArtistStore.clearFilter();
             }
         }
     });
@@ -395,23 +396,15 @@ Ext.onReady(function() {
     var onFilteringBeforeQuery = function(e) {
 	//grid.getSelectionModel().clearSelections();
         if (this.getValue().length==0) {
-                    storeMovie.clearFilter();
+                    ArtistStore.clearFilter();
                 } else {
-                    var value = this.getValue().replace(/^\s+|\s+$/g, "");
-                    if (value=="")
+                    var strSearch = this.getValue().replace(/^\s+|\s+$/g, "");
+                    if (strSearch=="")
                         return;
-                    storeMovie.filterBy(function(r) {
-                        valueArr = value.split(/\ +/);
-                        for (var i=0; i<valueArr.length; i++) {
-                            re = new RegExp(Ext.escapeRe(valueArr[i]), "i");
-                            if (re.test(r.data['Movietitle'])==false
-                                //&& re.test(r.data['light'])==false) {
-								) {
-                                return false;
-                            };
-                        }
-                        return true;
-                    });
+                    AlbumStore.filterBy(function(r, id) {
+                    		var regex = RegExp(strSearch, 'i');
+									return regex.test(String(r.get('strAlbum'))) || regex.test(String(r.get('strArtist')))
+							});
                 }
     };
     var onQuickSearchBeforeQuery = function(e) {

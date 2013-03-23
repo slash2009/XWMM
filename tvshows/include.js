@@ -96,7 +96,7 @@ function movieGenreChange(sm){
 function updateTvShowForms(r) {
 
 	tvshowStars.updateSrc(r);
-	Ext.getCmp('tvshowcover').updateSrc(r.data.thumbnail)
+	Ext.getCmp('tvshowcover').updateSrc(r.data.banner)
 	//Ext.getCmp('seasoncover').updateSrc(r, -1);
 	var myForm = Ext.getCmp('tvShowdetailPanel');
 	myForm.getForm().loadRecord(r)
@@ -124,13 +124,18 @@ function GettvShowDetails(r){
 	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTvShowDetails", "params": {"tvshowid": '+r.data.tvshowid+', "properties": ["title", "genre", "year", "rating",  "plot", "playcount", "studio", "mpaa",  "premiered", "votes", "fanart", "thumbnail", "file", "episodeguide" ]}, "id": 1}');
 
 	mergeJson(r.data, jsonResponse.tvshowdetails);
+	
+	//fix up some data retrieved
+	r.data.fanart = jsonResponse.tvshowdetails.fanart.replace(/image:\/\//g, "").slice(0,-1);
+	r.data.thumbnail = jsonResponse.tvshowdetails.thumbnail.replace(/image:\/\//g, "").slice(0,-1);
 	updateTvShowForms(r);
 	r.data.details = true
 }
 
 
 function updateXBMCGenreTvshow(){
-
+	var parmArray = [];
+	var jsParam = '';
 	var modifiedGenre = Genregrid.getSelectionModel().getSelections();
 	
 	//update current.selected genres
@@ -139,55 +144,27 @@ function updateXBMCGenreTvshow(){
 	currentTVShow.data.selectedGenre = modifiedGenre;
 	tvshowid = currentTVShow.data.tvshowid;
 
-	// remove any existing genre for the movie idMovie
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM genrelinktvshow WHERE idShow='+tvshowid+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});	
-	// insert selected genres 
 	for (var i = 0; i < modifiedGenre.length; i++){
-		var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genrelinktvshow (idGenre, idShow) VALUES ('+modifiedGenre[i].data.genreid+','+tvshowid+'))';
-		Ext.Ajax.request({
-			url: inputUrl,
-			method: 'GET',
-			//async: false,
-			success: function (t){},
-			failure: function(t){},
-			timeout: 2000
-		});
+		parmArray[i] = modifiedGenre[i].data.label;
 	}
+	if (parmArray.length == 1) {
+		jsParam = '"' + parmArray[0] + '"';
+		}
+	else {
+		jsParam = '"' + parmArray.join('","') + '"';
+		}
+	xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetTVShowDetails", "params": {"tvshowid": '+tvshowid+', "genre": ['+jsParam+']}, "id": 1}');
 }
 
 // Query XBMC DB genrelinktvshow
 function GetTvshowGenres(record){
-	if (record.data.selectedGenre == undefined){
-		// get movie genre once
-			var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idGenre FROM genrelinktvshow where idShow='+record.data.tvshowid+')'
-			Ext.Ajax.request({
-				url: inputUrl,
-				method: 'GET',
-				async: false,
-				success: function (t){
-						var responseArr = TrimXbmcXml(t);					
-						responseArr = responseArr.split("<record>");						
-						//first field is always empty
-						responseArr.remove("");
-						for (var i = 0; i < responseArr.length; i++) {
-							responseArr[i]= storegenre.findExact('genreid',responseArr[i],0,false,false)
-						};
-						record.data.selectedGenre = responseArr;
-						updateGenreGrid(record.data.selectedGenre);
-				},
-				failure: function(t){},
-				timeout: 2000
-			});
-	}
-	else{updateGenreGrid(record.data.selectedGenre)};
+	var responseArr = [];
+	var myGenres = record.data.TVGenre.split('/');
+	
+	for (var i = 0; i < myGenres.length; i++) {
+		responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false)
+	};	
+	updateGenreGrid(responseArr)
 }
 
 
@@ -209,7 +186,7 @@ var episodecolModel = new Ext.grid.ColumnModel([
 	
 var tvShowcolModel = new Ext.grid.ColumnModel([
 	{header: "Title", width: 155, dataIndex: 'title'},
-	{header: "", dataIndex: 'playcount', width: 25, renderer: checkWateched}
+	{header: "W", dataIndex: 'playcount', width: 25, renderer: checkWateched}
 ]);
 
 var seasoncolModel = new Ext.grid.ColumnModel([

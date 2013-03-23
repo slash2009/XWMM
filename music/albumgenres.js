@@ -12,7 +12,7 @@ var AlbumRecord = Ext.data.Record.create([
    {name: 'albumid'},
    {name: 'strAlbum', mapping:'label'},	
    {name: 'strArtist', mapping:'artist'},	
-   {name: 'strGenre', mapping:'genre'},	
+   {name: 'strGenre', mapping:'genre', convert:convertGenre},	
    {name: 'year'}, {name: 'currentThumbnail', mapping:'thumbnail'}
 ]);
 
@@ -29,7 +29,9 @@ var AlbumStore = new Ext.data.GroupingStore({
 		}, AlbumRecord)
 });
 
-setXBMCResponseFormat();
+function convertGenre(v, record) {
+	return v.join(",");
+}
 
 AlbumGrid = new Ext.grid.GridPanel({
 	cm: AlbumcolModel,

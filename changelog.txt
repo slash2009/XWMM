@@ -38,3 +38,6 @@ XWMM Change log
 - fixes:
 -- fixed ajax request with firefox
 
+2.1.0
+- Updated to use JSON
+
