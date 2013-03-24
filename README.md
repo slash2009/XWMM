@@ -7,6 +7,16 @@ Tagged repositories Like Frodo for e.g.
 
 Information should be posted here and some rudimentary wiki formation about XWMM etc if its needed.
 
+### SUBMITTING PATCHES AND PR's
+The best idea is to fork this and make a PR to this repo (Master Repo) it should contain some of the follwoing:
+
+* What Patch addresses, if its a bug-fix a feature or something else.
+* Any commnets to code for what is not immediatly obvious.
+* It will be reviewd and merged as soon as possible by someone who understands whats going on.
+
+Thank you for Submitting Patches or PR's to XWMM
+================================================
+
 - - -
 Features not yet working - Todo list:
 
