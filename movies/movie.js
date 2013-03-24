@@ -2,104 +2,56 @@
 // movie.js
 //------------------------------------------ 
 
-Ext.ns('Movie');
-
-var Stars = new Ext.Container ({
-	id: 'movierating',
-	border: 0,
-	width: 96,
-	height:27,
-	autoEl: {tag: 'img', src: "../images/stars/0.png"},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = r.data.ratingstars
-		}
-		else {
-			var value = Math.round(r.data.MovieRating);
-			r.data.ratingstars =  '../images/stars/'+value+'.png';
-			this.el.dom.src = r.data.ratingstars;
-		}
-	}
-});
-
-var MovieFanart = new Ext.Container ({
+var MovieFanart = new Ext.ux.XbmcImages ({
 	id: 'fanart',
 	border: 0,
 	width: 295,
 	height:165,
-	autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg", qtip:'Double-click to change'},
-		refreshMe : function(){
-		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
-	},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = '../../vfs/'+r.data.fanart
-		}
-		else {	
-			var file = r.data.strFilename;
-			var path = r.data.strPath;
-			if (file.substr(0,6) == 'stack:'){	//it is a stack
-				file = file.replace(/stack:\/\//g, "");
-				var tempArr = file.split(" , ");
-				file = tempArr[0];
-				path=""
-			}
-			thumbCrc = FindCRC(path+file);
-			r.data.fanart = 'special://masterprofile/Thumbnails/Video/Fanart/'+thumbCrc+'.tbn';
-			this.el.dom.src = '../../vfs/'+ r.data.fanart;
-		}
-	}
+	autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg"}//, qtip:'Double-click to change'}
 });
 
-var MovieCover = new Ext.Container ({
+var Stars = new Ext.ux.XbmcStars ({
+	id: 'movierating',
+	border: 0,
+	width: 96,
+	height:27
+});
+
+var MovieCover = new Ext.ux.XbmcImages ({
 	id: 'cover',
 	cls: 'center-align',
 	border: 0,
 	width: 250,
 	height:375,
-	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg", qtip:'Double-click to change'},
-	refreshMe : function(){
-		this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
-	},
-	updateSrc :function(r){
-		if (r.data.details)	{
-			this.el.dom.src = '../../vfs/'+r.data.cover
-		}
-		else {	
-			var file = r.data.strFilename;
-			var path = r.data.strPath;
-			if (file.substr(0,6) == 'stack:'){	//it is a stack
-				file = file.replace(/stack:\/\//g, "");
-				var tempArr = file.split(" , ");
-				file = tempArr[0];
-				path=""
-			}
-			thumbCrc = FindCRC(path+file);
-			r.data.cover = 'special://masterprofile/Thumbnails/Video/'+thumbCrc.substring(0,1)+'/'+thumbCrc+'.tbn';
-			this.el.dom.src = '../../vfs/'+ r.data.cover;
-			// copyXBMCVideoThumb(thumbCrc, r, this);
-		}
-	}
-
+	autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg"}//, qtip:'Double-click to change'}
 });
+
+Ext.ns('Movie');
 
 var fileDetailsPanel = new Ext.FormPanel({
 	id: 'filedetailPanel',
 	title: 'Other details',
+	trackResetOnLoad : true,
 	labelWidth:50,
 	frame: true,
 	bodyStyle:'padding:5px',
-	defaults: {width: 140, xtype: 'textfield'},
+	defaults: {width: 140, xtype: 'textfield', listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}},
 	items: [{
 		fieldLabel: 'Name',
 		name: 'strFilename',
-		readOnly: true,
-		XBMCName: 'c00'
+		readOnly: true
 	},{
-		fieldLabel: 'Directory',
-		name: 'strPath',
-		readOnly: true,
-		XBMCName: 'c05'
+		fieldLabel: 'Original',
+		name: 'originaltitle',
+		XBMCName: 'c16'
+	},{
+		fieldLabel: 'Country',
+		name: 'country',
+		XBMCName: 'c21'
+	},{
+		fieldLabel: 'imdb',
+		name: 'imdbnumber',
+		XBMCName: 'c09'
 	},{
 		xtype: 'combo',
 		fieldLabel: 'Set',
@@ -112,30 +64,8 @@ var fileDetailsPanel = new Ext.FormPanel({
 		name: 'strSet',
 		listeners: {
 			change: function(combo, newValue, oldValue) {
-				var currentMovie = Moviegrid.getSelectionModel().getSelected();
-				if (newValue == "") {
-					// remove existing record in setlinkmovie
-					myId = "";
-					var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idMovie = "'+currentMovie.data.idMovie+'"))';
-				}
-				else {
-					var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', newValue)).data.idSet;
-					if (newValue != oldValue) {
-						if (oldValue == "") {
-							// Add new record in setlinkmovie
-							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ('+myId+','+currentMovie.data.idMovie+'))';				
-						}
-						else {
-							// modify existing record in setlinkmovie
-							var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO setlinkmovie (idSet, idMovie) VALUES ("'+record.data.idMovie+'"))';
-						}
-
-					}
-				}
-				XBMCExecSql(inputUrl);
-				currentMovie.data.idSet = myId;
-				currentMovie.data.strSet = newValue;
-				Moviegrid.getView().refresh();
+				if (newValue != oldValue)
+					Ext.getCmp('savebutton').enable()
 			}
 		}
 	}]
@@ -154,7 +84,7 @@ var MoviedetailPanel = new Ext.FormPanel({
 		id: 'savebutton',
 		handler: function(){	
 			updateXBMCAll();
-			this.disable();
+			this.disable()
 		}
 	},{
 		text:'Cancel',
@@ -176,12 +106,12 @@ var MoviedetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 			fieldLabel: 'Title',
-			name: 'Movietitle',
+			name: 'title',
 			XBMCName: 'c00',
 			allowBlank: false
 		},{
 			fieldLabel: 'Sort Title',
-			name: 'sortTitle',
+			name: 'sorttitle',
 			XBMCName: 'c10'
 
 		},{
@@ -204,15 +134,15 @@ var MoviedetailPanel = new Ext.FormPanel({
 		items:[{
 			fieldLabel: 'Release',
 			XBMCName: 'c07',
-			name: 'MovieRelease'
+			name: 'year'
 		},{	
 			fieldLabel: 'Rating',
-			name: 'MovieRating',
+			name: 'rating',
 			XBMCName: 'c05'
 		},{
 			fieldLabel: 'Duration',
 			XBMCName: 'c11',
-			name: 'MovieRuntime'
+			name: 'runtime'
 		}]
 	},{
 		rowspan:2,
@@ -230,45 +160,44 @@ var MoviedetailPanel = new Ext.FormPanel({
 		},
 		items: [{
 			xtype:'textarea',
-			name:'Moviedescr',
+			name:'plot',
 			XBMCName: 'c01',
-			fieldLabel:'Description',
+			fieldLabel:'Plot',
 			height: 95
 		},{
 			xtype:'textarea',
 			height: 34,
-			name:'MovieOutline',
+			name:'plotoutline',
 			XBMCName: 'c02',
-			fieldLabel:'Abstract'
+			fieldLabel:'Outline'
 		},{
 			xtype:'textarea',
-			name:'MovieTagline',
+			name:'tagline',
 			XBMCName: 'c03',
-			fieldLabel:'Tag Line',
+			fieldLabel:'Tagline',
 			height: 34
 		},{	
 			fieldLabel: 'Director',
 			XBMCName: 'c15',
-			name: 'MovieDirector'
+			name: 'director'
 		},{
 			fieldLabel: 'Viewers',
 			XBMCName: 'c12',
-			name: 'MovieViewers'
+			name: 'mpaa'
 		},{
 			fieldLabel: 'Studio',
 			XBMCName: 'c18',
-			name: 'MovieStudio'
+			name: 'studio'
 		},{	
 			fieldLabel: 'Trailer',
 			id: 'trailer',
 			XBMCName: 'c19',
-			name: 'MovieTrailer'
+			name: 'trailer'
 		},{
 			xtype: 'button',
 			text: 'View Trailer',
 			handler: function(){
 				if (Ext.getCmp('trailer').getValue() != '') {
-				//var w = (window.open(urlstring, wname, wfeatures, false));
 						window.open(Ext.getCmp('trailer').getValue(),'')
 				}
 			},
@@ -281,14 +210,11 @@ var MoviedetailPanel = new Ext.FormPanel({
 		items: [MovieFanart]
 	},{
 		width: 160,
-		//frame : false,
 		items: [AudioFlagsPanel]
-		// height : 200
 	},{
 		width : 255,
-		//frame : false,
 		items: [VideoFlagsPanel]
-		// heigth :
+
 	}]
 })
 
@@ -325,7 +251,7 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		]
 		})
 			
-		Movie.Mainpanel.superclass.initComponent.call(this);
+		Movie.Mainpanel.superclass.initComponent.call(this)
 	},
 	
 	initEvents: function() {
@@ -334,34 +260,25 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 		
 		currentMovie.on('rowselect', this.onRowSelect, this);
 		
-		// add double-click event to cover object
-		var element = MovieCover.getEl();
-		element.on('dblclick', function(){ChangeImages(currentRecord)});
+//		MovieCover.getEl().on('dblclick', function(){
+//		  ChangeImages(currentRecord);
+//		});
 		
-		var element2 = MovieFanart.getEl();
-		element2.on('dblclick', function(){ChangeImages(currentRecord)});
+//		var element2 = MovieFanart.getEl();
+//		element2.on('dblclick', function(){ChangeImages(currentRecord)})
 	},
 
 	onRowSelect: function(sm, rowIdx, r) {
 		
 		selectedMovie = r.data.idMovie;
 		currentRecord = r;
-		storeActor.proxy.conn.url = "/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT strActor, strRole FROM actorlinkmovie JOIN actors ON (actorlinkmovie.idActor = actors.idActor) where idMovie ="+r.data.idMovie+")";
-
 		
-		if (r.data.details == undefined){
-			GetMovieGenres(r);
-			GetMovieDetails(r);
-			storeActor.load();
-			//storeActor.load({params: {id: r.data.idMovie}});
-			Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
-		}
-		else{ 
-			updateGenreGrid(r.data.genres);
-			storeActor.load();
-			updateAllForms(r)
-		};
+		GetMovieGenres(r);
+		GetMovieDetails(r);
+		Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
 		
+		storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": selectedMovie, "properties": ["cast"]},"id": 1};
+		storeActor.reload();	
 		
 	}
 });

@@ -1,19 +1,16 @@
 
-var myVersion = '1.9.4'
+var myVersion = '2.1.0'
 
-var videoFlagsRecord = Ext.data.Record.create([
-   {name: 'idFile', mapping: 'field:nth(1)'},		
-   {name: 'strVideoCodec', mapping: 'field:nth(2)'},
-   {name: 'fVideoAspect', mapping: 'field:nth(3)'},	
-   {name: 'iVideoWidth', mapping: 'field:nth(4)'},
-   {name: 'iVideoHeight', mapping: 'field:nth(5)'}
-]);
+function mergeJson(object1, object2) {
+	var i;
+	for (i in object2)	
+		object1[i]=object2[i];
+}
 
-var audioFlagsRecord = Ext.data.Record.create([
-   {name: 'idFile', mapping: 'field:nth(1)'},		
-   {name: 'strAudioCodec', mapping: 'field:nth(2)'},
-   {name: 'iAudioChannels', mapping: 'field:nth(3)'}
-]);
+function removeSpace(string) {
+	string = string.replace(/^\s*|\s*$/g,'');
+	return string;
+}
 
 var menuBar = new Ext.Toolbar({
 	region: "north",
@@ -30,6 +27,7 @@ var menuBar = new Ext.Toolbar({
 				handler: function(){window.location = '../movies/index.html'}
 			},{
 				text: 'Movies by Genre',
+				disabled: 'true',
 				iconCls: 'silk-grid',
 				handler: function(){window.location = '../movies/moviegenre.html'}
 			},{
@@ -70,27 +68,9 @@ var menuBar = new Ext.Toolbar({
 			text: 'Files',
 			width: 60,
 			handler: function(){window.location = '../files/index.html'}
-
-	
 	}]
-
 })
 
-var storeVideoFlags = new Ext.data.Store({
-	id: 'storevideoflags',
-	reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, videoFlagsRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strVideoCodec, fVideoAspect, iVideoWidth, iVideoHeight from streamdetails where iStreamType=0)' 
-});
-
-var storeAudioFlags = new Ext.data.Store({
-	id: 'storeaudioflags',
-	reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, audioFlagsRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, strAudioCodec, iAudioChannels from streamdetails where iStreamType=1)' 
-});
 
 Number.prototype.unsign = function(bytes) {
   return this >= 0 ? this : this - Number.MIN_VALUE*2;
@@ -104,7 +84,6 @@ function parseXBMCXml(xmlString) {
 	var x = tempTable.pop();
 	return tempTable;
 }
-
 
 // Credit to Fiasco from the xbmc forum
 function FindCRC(data) {
@@ -198,8 +177,6 @@ var AudioFlagsPanel = new Ext.Panel({
 	}]
 });
 
-
-
 function findResolution(iWidth) {
 
 if (iWidth == 0)
@@ -235,33 +212,6 @@ else
 	return "2.35";
 }
 
-function GetVideoStreams(record){
-	var index = storeVideoFlags.find('idFile',record.data.idFile,0,false,false);
-	if (index == -1){
-		record.data.strVideoCodec = "default";
-		record.data.fVideoAspect = 0;
-		record.data.iVideoWidth = 0;
-	}
-	else {
-		var mydetails = storeVideoFlags.getAt(index);
-		record.data.strVideoCodec = mydetails.data.strVideoCodec;
-		record.data.fVideoAspect = mydetails.data.fVideoAspect;
-		record.data.iVideoWidth = mydetails.data.iVideoWidth;
-	}
-};
-
-function GetAudioStreams(record) {
-	var index = storeAudioFlags.find('idFile',record.data.idFile,0,false,false);
-	if (index == -1){
-		record.data.strAudioCodec = "defaultsound";
-		record.data.iAudioChannels = 0;
-	}
-	else {
-		var mydetails = storeAudioFlags.getAt(index);
-		record.data.strAudioCodec = mydetails.data.strAudioCodec;
-		record.data.iAudioChannels = mydetails.data.iAudioChannels;
-	}
-}
 
 var savingMessage = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
 

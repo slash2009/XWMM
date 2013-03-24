@@ -1,4 +1,3 @@
-
 var actorRecord = Ext.data.Record.create([
    {name: 'name'}, {name: 'role'}
 ]);
@@ -8,13 +7,10 @@ var ActorcolModel = new Ext.grid.ColumnModel([
 		{header: "Role", dataIndex: 'role'}
 ]);
 
-var storeActor = new Ext.data.Store({
+var storeActor = new Ext.ux.XbmcStore({
 	sortInfo: {field: 'name', direction: "ASC"},
-	proxy: new Ext.data.XBMCProxy({
-		url: "/jsonrpc"
-	}),
 	reader: new Ext.data.JsonReader({
-		root:'result.moviedetails.cast'	       
+		root:'moviedetails.cast'	       
 		}, actorRecord)
 });
 
