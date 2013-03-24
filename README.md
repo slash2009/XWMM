@@ -1,8 +1,11 @@
 XWMM - XBMC Web Media Manager
 ====
 
-### Frodo Version:
-Zernable Contributed a version of XWMM for Frodo. Most of the functionality of the Eden version is working including editing of movie, TV and music metadata.
+### DEVELOPMENT REPO:
+Will contain both Zernables and Slashes work which should come as patches from all corners and merged in other
+Tagged repositories Like Frodo for e.g.
+
+Information should be posted here and some rudimentary wiki formation about XWMM etc if its needed.
 
 - - -
 Features not yet working - Todo list:
