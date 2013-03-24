@@ -9,49 +9,55 @@ function updateMusicAlbum() {
 
 	var record = Ext.getCmp('albumGrid').getSelectionModel().getSelected();
 	
-	if (Ext.getCmp('scrapertype').isDirty() || Ext.getCmp('scraperlabel').isDirty() || Ext.getCmp('scraperextgenre').isDirty() || Ext.getCmp('scraperstyles').isDirty() || Ext.getCmp('scrapermoods').isDirty() || Ext.getCmp('scraperthemes').isDirty()) {
-		// check if record exists otherwise create it
-		if (AlbumInfoStore.find('idAlbum',record.data.idAlbum,0,false,false) == -1) {
-			var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.idAlbum+'"," '+record.data.iYear+'", "'+record.data.idGenre+'"))';		
-			XBMCExecSql(inputUrl);	
-		}
-		
-		record.data.strMoods = Ext.getCmp('scrapermoods').getValue();
-		record.data.strStyles = Ext.getCmp('scraperstyles').getValue();
-		record.data.strThemes = Ext.getCmp('scraperthemes').getValue();
-		record.data.strLabel = Ext.getCmp('scraperlabel').getValue();
-		record.data.strType = Ext.getCmp('scrapertype').getValue();
-		updateXBMCAlbumScraperInfo(record)
+		Ext.MessageBox.show({
+		title: 'Please wait',
+		msg: 'Saving changes',
+		progressText: 'Checking changes...',
+		width:300,
+		progress:true,
+		closable:false,
+		animEl: 'samplebutton'
+	});
+	
+	var f = function(v){
+        return function(){
+		if(v == 30){
+            Ext.MessageBox.hide();
+        }else{
+            var i = v/29;
+			if (v == 1) {
+				myText = 'Checking changes...';
+				if (standardInfo.getForm().isDirty()) {
+					updateXBMCTables(standardInfo.form, 'album');
+					myText = 'updating Album info'
+				}
+			};
+            if (v == 19) {
+				if ((extraInfo.getForm().isDirty()) || (albumDescription.getForm().isDirty())) {
+//					ValidateAlbuminfo(record);
+					updateXBMCTables(extraInfo.form, 'albuminfo');
+					updateXBMCTables(albumDescription.form, 'albuminfo');
+					myText = 'updating Extra info'
+				}					
+			};
+			Ext.MessageBox.updateProgress(i, myText);
+        }
+        };
+    };
+    for(var i = 1; i < 31; i++){
+        setTimeout(f(i), i*100);
+    }
+}
+	
+function ValidateAlbuminfo (record) {
+	// check if record exists otherwise create it
+	// AlbumInfoStore.reload();
+	// if (AlbumInfoStore.find('idAlbum',record.data.albumid,0,false,false) == -1) {
+	if (record.data.scraperInfo = false) {
+		var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.albumid+'"," '+record.data.year+'", "'+record.data.genre+'"))';		
+		XBMCExecSql(inputUrl);
+		record.data.scraperInfo = true
 	}
-	
-	if (Ext.getCmp('albumratingfield').isDirty() || Ext.getCmp('albumreviewfield').isDirty()) {
-		record.data.iRating = Ext.getCmp('albumratingfield').getValue();
-		record.data.strReview = Ext.getCmp('albumreviewfield').getValue();
-		updateXBMCAlbumInfo(record)
-	};
-	
-	if (Ext.getCmp('albumartistfield').isDirty() || Ext.getCmp('albumtitlefield').isDirty() || Ext.getCmp('albumgenrefield').isDirty() || Ext.getCmp('albumyearfield').isDirty()) {
-		//get the Artist id from combobox
-		var x = ArtistStore.findExact('strArtist', Ext.getCmp('albumartistfield').getValue(),0, false, false);
-		record.data.idArtist = ArtistStore.getAt(x).data.idArtist;
-		record.data.strArtist = Ext.getCmp('albumartistfield').getValue();
-		
-		//get the Genre id from combobox
-		var x = GenreStore.findExact('strGenre', Ext.getCmp('albumgenrefield').getValue(),0, false, false);
-		record.data.idGenre = GenreStore.getAt(x).data.idGenre;
-		record.data.strGenre = Ext.getCmp('albumgenrefield').getValue();
-		
-		record.data.strAlbum = Ext.getCmp('albumtitlefield').getValue();
-		record.data.iYear = Ext.getCmp('albumyearfield').getValue();		
-		
-		updateXBMCAlbum(record);
-		//update Album store
-		AlbumStore.remove(record);
-		AlbumStore.add(record);
-		AlbumGrid.getStore().reload()
-
-	};
-			
 }
 
 function getMusicCoverList(String, r) {
@@ -73,7 +79,7 @@ function getMusicCoverList(String, r) {
 	 {
 	  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 	  xmlDoc.async="false";
-	  xmlDoc.loadXML(String);
+	  xmlDoc.loadXML(String)
 	 } 
 	 
 	 var MasterUrl = getTagAttribute(xmlDoc.documentElement, 'url');
@@ -88,42 +94,15 @@ function getMusicCoverList(String, r) {
 		
 		result.push([previewUrl, downloadUrl, "Remote", ""]);
 	}
-	 return result;
+	 return result
 }
 
 function GetAlbumDetails(r) {
 
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(SELECT idAlbumInfo, iYear, genre.strGenre, strExtraGenres, strMoods, strStyles, strThemes, strReview, strLabel, strType, strImage from albuminfo JOIN genre ON albuminfo.idGenre = genre.idGenre WHERE idAlbum = '+r.data.idAlbum+')';
-    var resp = "";
-	Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-		async: false,
-        success: function (t){
-			resp = t;
-			},
-        failure: function (t){},
-		timeout: 2000
-    });
+	var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "properties": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description", "albumlabel"]}, "id": 1}');
 
-	var temp = resp.responseText.replace(/<\/record>/g, "");
-	temp = temp.replace(/<record>/g, "");
-	temp = temp.replace(/<recordset>/g, "");
-	temp = temp.replace(/<\/recordset>/g, "");
-	temp = temp.replace(/<html>/g, "");
-	temp = temp.replace(/<\/html>/g, "");
-	temp = temp.replace(/<\/field>/g, "");
-	temp = temp.split("<field>");
+	mergeJson(r.data, jsonResponse.albumdetails);
 
-	r.data.idAlbumInfo = temp[1];
-	r.data.iYearScraper = temp[2];
-	r.data.strGenreScraper = temp[3];
-	r.data.strExtraGenres = temp[4];	
-	r.data.strMoods = temp[5];
-	r.data.strStyles = temp[6];
-	r.data.strThemes = temp[7];
-	r.data.strReview = temp[8];
-	r.data.strLabel = temp[9];
-	r.data.strType = temp[10];
-	r.data.MusicCoverUrl = getMusicCoverList(temp[11], r)
+	r.data.currentThumbnail = r.data.currentThumbnail.replace(/image:\/\//g, "").slice(0,-1);
+	r.data.details = true;
 }

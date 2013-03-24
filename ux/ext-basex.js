@@ -1006,16 +1006,16 @@
                         (r.onprogress = this.onStateChange.createDelegate(this, [o, callback, 'progress'], 0));
                         
                     //IE8/other? evolving timeout callback support
-	                if(callback && callback.timeout){
-                        ('timeout' in r) && (r.timeout = callback.timeout);
-                        ('ontimeout' in r) && 
-                           (r.ontimeout = this.abort.createDelegate(this, [o, callback, true], 0));
-                        ('ontimeout' in r) ||
-                           // Timers for syncro calls won't work here, as it's a blocking call
-                           (options.async && (this.timeout[o.tId] = window.setInterval(
-                                function() {A.abort(o, callback, true);
-                            }, callback.timeout)));
-                    }
+	                // if(callback && callback.timeout){
+                        // ('timeout' in r) && (r.timeout = callback.timeout);
+                        // ('ontimeout' in r) && 
+                           // (r.ontimeout = this.abort.createDelegate(this, [o, callback, true], 0));
+                        // ('ontimeout' in r) ||
+                           // //Timers for syncro calls won't work here, as it's a blocking call
+                           // (options.async && (this.timeout[o.tId] = window.setInterval(
+                                // function() {A.abort(o, callback, true);
+                            // }, callback.timeout)));
+                    // }
                     
                     if (this.useDefaultXhrHeader && !options.xdomain) {
 	                    this.defaultHeaders['X-Requested-With'] ||
