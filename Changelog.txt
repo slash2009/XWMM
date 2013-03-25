@@ -1,18 +1,24 @@
 XWMM Change log
 
-2.0.1
-- Fixes:
--- Changed most request from http to JSON-RPC
+2.1.0
+- Updated to use JSON
 
-2.0.2
-- Fixes:
--- Compatibility with XBMC Addons standards
+2.0.9
+-- minor fixes
 
-2.0.3
-- Fixes:
--- Movie Genres updates
--- TvShow save
--- Music save
+2.0.7
+- fixes:
+-- fixed ajax request with firefox
+
+2.0.6
+- fixes:
+-- images caching (thanks to niiko)
+-- load Mask display (thanks to niiko)
+-- syntax error for compatibility with IE 8
+
+2.0.5
+- fixes:
+-- changed xbmc.gui version to 3.00 for compatibility
 
 2.0.4
 - Fixes:
@@ -24,20 +30,16 @@ XWMM Change log
 - Added
 -- imdb number movie field can now be changed
 
-2.0.5
-- fixes:
--- changed xbmc.gui version to 3.00 for compatibility
+2.0.3
+- Fixes:
+-- Movie Genres updates
+-- TvShow save
+-- Music save
 
-2.0.6
-- fixes:
--- images caching (thanks to niiko)
--- load Mask display (thanks to niiko)
--- syntax error for compatibility with IE 8
+2.0.2
+- Fixes:
+-- Compatibility with XBMC Addons standards
 
-2.0.7
-- fixes:
--- fixed ajax request with firefox
-
-2.1.0
-- Updated to use JSON
-
+2.0.1
+- Fixes:
+-- Changed most request from http to JSON-RPC
