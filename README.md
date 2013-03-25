@@ -8,11 +8,11 @@ Tagged repositories Like Frodo for e.g.
 Information should be posted here and some rudimentary wiki formation about XWMM etc if its needed.
 
 ### SUBMITTING PATCHES AND PR's
-The best idea is to fork this and make a PR to this repo (Master Repo) it should contain some of the follwoing:
+The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM master Repo, it should contain some of the follwoing:
 
-* What Patch addresses, if its a bug-fix a feature or something else.
-* Any commnents to code for what is not immediatly obvious.
-#### What will happen then
+* What Patch addresses, if its a bug-fix a feature or improvemnet or something else.
+* Any comments in code for what is not immediatly obvious.
+#### What will happen to Patches & PR's
 
 * It will be reviewed and merged as soon as possible by someone who understands whats going on.
 
@@ -21,9 +21,8 @@ For Discussion and support with XVMM see:
 
 XBMC Thread [XWMM - XBMC Web Media Manager](http://forum.xbmc.org/showthread.php?tid=60643 "Title")
 
-#####Bug reports:
-Github issue tracker [Click here to open a issue](https://github.com/slash2009/XWMM/issues "Title")
-
+##### Bug reports/Feature requests:
+Github issue tracker [Click here to submit an issue](https://github.com/slash2009/XWMM/issues "Title")
 
 - - -
 Features not yet working - Todo list:
