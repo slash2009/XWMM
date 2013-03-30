@@ -2,6 +2,7 @@ XWMM Change log
 
 2.1.0
 - Updated to use JSON
+- Minor updates to addon.xml
 
 2.0.9
 -- minor fixes
