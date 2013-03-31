@@ -2,10 +2,14 @@ XWMM - XBMC Web Media Manager
 ====
 
 ### DEVELOPMENT REPO:
-Will contain both Zernables and Slashes work which should come as patches from all corners and merged in other
-Tagged repositories Like Frodo for e.g.
+Will contain both Zernables and Slashes and other contributors work which should come as patches from all corners and merged in other
+Branched repositories like Frodo for e.g.
 
-Information should be posted here and some rudimentary wiki formation about XWMM etc if its needed.
+Information should be posted here and some rudimentary wiki format about XWMM etc and extented as necessary.
+- - -
+###DEVELOPERS WANTED - We Don't pay either hehe ;)
+Please join in XWMM, Help this webinterface be nr-1, we need skilled Developers which can help add exciting new fetures to XWMM.
+- - -
 
 ### SUBMITTING PATCHES AND PR's
 The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM master Repo, it should contain some of the follwoing:
