@@ -8,7 +8,7 @@ Branched repositories like Frodo for e.g.
 Information should be posted here and some rudimentary wiki format about XWMM etc and extented as necessary.
 - - -
 ###DEVELOPERS WANTED - We Don't pay either hehe ;)
-Please join in XWMM, Help this webinterface be nr-1, we need skilled Developers which can help improve and add exciting new fetures to XWMM.
+Please join XWMM, Help this XBMC webinterface be nr#1, we need skilled developers which can help improve and add exciting new fetures to XWMM.
 - - -
 
 ### SUBMITTING PATCHES AND PR's
