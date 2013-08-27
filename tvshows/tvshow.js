@@ -1,4 +1,3 @@
-
 // -----------------------------------------
 // tvshow.js
 // last modified : 31-12-2009
@@ -56,16 +55,20 @@ function genreConvert(v, record) {
 }
 
 function thumbConvert(v, record) {
+	if (record.thumbnail == undefined){return "";}
 	return record.thumbnail.replace(/image:\/\//g, "").slice(0,-1)
 }
 
 function bannerConvert(v, record) {
+	if (v.banner == undefined){return "";}
 	return v.banner.replace(/image:\/\//g, "").slice(0,-1)
 }
 
 function fanartConvert(v, record) {
+	if (v.fanart == undefined){return "";}
 	return v.fanart.replace(/image:\/\//g, "").slice(0,-1)
 }
+
 
 function ratingConvert(v, record) {
 	return v.toFixed(1);
