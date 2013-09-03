@@ -42,14 +42,15 @@ function updateXBMCSet(item) {
 		xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": ""}, "id": 1}');
 	}
 	else {
-		var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', item.value)).data.idSet;
+		//var myId = MovieSetStore.getAt(MovieSetStore.findExact('strSet', item.value)).data.idSet;
 		if (item.value != item.originalValue) {
 			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": "' + item.value + '"}, "id": 1}');
 		}
 	}
+
 	item.IsDirty = false;
 	item.originalValue = item.getValue();
-	currentMovie.data.idSet = myId;
+	currentMovie.data.idSet = "";
 	currentMovie.data.strSet = item.value;
 	Moviegrid.getView().refresh()
 }
