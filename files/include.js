@@ -42,6 +42,7 @@ function myExpend(node, event) {
 			var mypath = normalizeString(node.attributes.data);
 			var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"'+mypath+'\"}, \"id\": 1}';
 			var tempStr = xbmcJsonRPC(myParams);
+			if (tempStr == undefined){return;}
 			if (tempStr.files != undefined) {
 				for (var i = 0; i < tempStr.files.length; i++) {
 					if (tempStr.files[i].filetype == "directory") {
@@ -102,7 +103,7 @@ function clickListener(node,event){
 	else {
 		scraperImage.clearSrc();
 	}
-};
+}
 
 function checkWatched(val) {
 
@@ -117,32 +118,44 @@ var filesRecord = Ext.data.Record.create([
    {name: 'watched', mapping: 'field:nth(4)'}
 ]);
 
+var storeFiles = new Ext.data.Store({
+    id: 'storefiles',
+    reader: new Ext.data.JsonXBMCReader({
+        root:'data'
+    }, filesRecord),
+
+    url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)'
+});
+
 var pathRecord = Ext.data.Record.create([
-   {name: 'idPath', mapping: 'field:nth(1)'},		
+
+    {name: 'file'},
+    {name: 'strPath', mapping: 'label'}
+   /*
+   {name: 'idPath', mapping: 'field:nth(1)'},
    {name: 'strPath', mapping: 'field:nth(2)'},
    {name: 'strContent', mapping: 'field:nth(3)'},
    {name: 'strScraper', mapping: 'field:nth(4)'},
    {name: 'scanRecursive', mapping: 'field:nth(5)'},
    {name: 'useFolderNames', mapping: 'field:nth(6)'},
    {name: 'noUpdate', mapping: 'field:nth(7)'}
+   */
 ]);
-
-var storeFiles = new Ext.data.Store({
-	id: 'storefiles',
-	reader: new Ext.data.JsonXBMCReader({
-			root:'data'	       
-       }, filesRecord),
-
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)'
-});
 
 var storePath = new Ext.data.Store({
 	id: 'storepath',
+    autoLoad : true,
+    proxy: new Ext.data.XBMCProxy({
+        url: "/jsonrpc",
+        xbmcParams : {"jsonrpc": "2.0", "method": "Files.GetSources", "params": {"media" : "files", "sort" : {'order':'ascending','method':'label'}},"id": 1}
+    }),
 	reader: new Ext.data.JsonXBMCReader({
 			root:'data'	       
-       }, pathRecord),
-	url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, strScraper FROM path)'
+       }, pathRecord)
+	//url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, strScraper FROM path)'
 });
+
+console.log(storePath);
 
 function createJsonRootDirectory(tablestring) {
 
