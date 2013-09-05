@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="webinterface.XWMM"
-  version="2.1.0"
+  version="3.0.0"
   name="XWMM"
-  provider-name="slash">
+  provider-name="MokuJinJin">
   <requires>
     <import addon="xbmc.gui" version="4.0.0"/>
   </requires>
@@ -13,7 +13,7 @@
     <summary>Web Interface to manage media library</summary>
     <description>XWMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
     <platform>all</platform>
-    <source>https://github.com/slash2009/XWMM</source>
+    <source>https://github.com/MokuJinJin/XWMM</source>
     <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum> 
   </extension>
 </addon>
