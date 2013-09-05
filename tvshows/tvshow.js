@@ -1,25 +1,45 @@
-
 // -----------------------------------------
 // tvshow.js
-// last modified : 31-12-2009
+// last modified : 27-08-2013
+// modified by : MokuJinJin
 // 
 //------------------------------------------ 
 
 Ext.ns('TVShow');
 
 var tvShowRecord = Ext.data.Record.create([
-   {name: 'title'},	{name: 'TVGenre', mapping: 'genre', convert: genreConvert}, {name: 'year'}, {name: 'plot'}, {name: 'fanart', mapping: 'art', convert: fanartConvert},
-   {name: 'banner', mapping: 'art', convert: bannerConvert}, {name: 'tvshowid'}, {name: 'studio'}, {name: 'episode'}, {name: 'rating'}, {name: 'premiered'}, {name: 'tvshowid'},
-   {name: 'playcount'}, {name: 'watchedepisodes'}
+   {name: 'title'},
+   {name: 'TVGenre', mapping: 'genre', convert: genreConvert},
+   {name: 'year'},
+   {name: 'plot'},
+   {name: 'fanart', mapping: 'art', convert: fanartConvert},
+   {name: 'banner', mapping: 'art', convert: bannerConvert},
+   {name: 'tvshowid'},
+   {name: 'studio'},
+   {name: 'episode'},
+   {name: 'rating'},
+   {name: 'premiered'},
+   {name: 'tvshowid'},
+   {name: 'playcount'},
+   {name: 'watchedepisodes'}
 ]);
 
 var seasonRecord = Ext.data.Record.create([
-   {name: 'season'}, {name: 'label'}, {name: 'thumbnail', convert: thumbConvert}
+   {name: 'season'},
+   {name: 'label'},
+   {name: 'thumbnail', convert: thumbConvert}
 ]);
 
 var episodeRecord = Ext.data.Record.create([
-	{name: 'episode'}, {name: 'title'}, {name: 'rating', convert: ratingConvert}, {name: 'plot'}, {name: 'firstaired'}, {name: 'director'},
-	{name: 'streamdetails'}, {name: 'playcount'}, {name: 'episodeid'}
+	{name: 'episode'},
+    {name: 'title'},
+    {name: 'rating', convert: ratingConvert},
+    {name: 'plot'},
+    {name: 'firstaired'},
+    {name: 'director'},
+	{name: 'streamdetails'},
+    {name: 'playcount'},
+    {name: 'episodeid'}
 ]);
 
 var tvshowStars = new Ext.ux.XbmcStars ({
@@ -56,16 +76,20 @@ function genreConvert(v, record) {
 }
 
 function thumbConvert(v, record) {
+	if (record.thumbnail == undefined){return "";}
 	return record.thumbnail.replace(/image:\/\//g, "").slice(0,-1)
 }
 
 function bannerConvert(v, record) {
+	if (v.banner == undefined){return "";}
 	return v.banner.replace(/image:\/\//g, "").slice(0,-1)
 }
 
 function fanartConvert(v, record) {
+	if (v.fanart == undefined){return "";}
 	return v.fanart.replace(/image:\/\//g, "").slice(0,-1)
 }
+
 
 function ratingConvert(v, record) {
 	return v.toFixed(1);
@@ -101,7 +125,7 @@ var storeEpisode = new Ext.data.Store({
 	reader: new Ext.data.JsonReader({
 		root:'result.episodes'	       
 	}, episodeRecord)
-})
+});
 
 var TVShowdetailPanel = new Ext.FormPanel({
 	region: 'north',
