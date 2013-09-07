@@ -509,7 +509,6 @@ function updateXBMCTables(myForm, myTable) {
 	};
 
 	if (myTable == 'movie') {
-		console.log(jsParam);
 		var idMovie = selectedMovie;
 		var myIndex = 'idMovie='+idMovie
 		if (jsParam != "") {
