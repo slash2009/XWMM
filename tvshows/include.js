@@ -26,7 +26,7 @@ function setWatched() {
 		selectedEpisode.data.watched ="1";
 		EpisodeGrid.getView().refresh();
 	}
-};
+}
 
 function setUnwatched() {
 	if (selectedEpisode.data.watched != "") {
@@ -34,7 +34,7 @@ function setUnwatched() {
 		selectedEpisode.data.watched = "";
 		EpisodeGrid.getView().refresh()
 	}
-};
+}
 
 function updateXBMCAll() {
 	Ext.MessageBox.show({
@@ -45,7 +45,7 @@ function updateXBMCAll() {
 		progress:true,
 		closable:false,
 		animEl: 'samplebutton'
-	})
+	});
 	var f = function(v){
         return function(){
 		if(v == 30){
@@ -57,21 +57,21 @@ function updateXBMCAll() {
 				if (EpisodedetailPanel.getForm().isDirty()) {
 					updateXBMCTables(EpisodedetailPanel.getForm(), 'episode');
 					myText = 'updating Episode info';
-				};
-			};
+				}
+			}
                if (v == 10) {
 				if (TVShowdetailPanel.getForm().isDirty()) {
 					updateXBMCTables(TVShowdetailPanel.getForm(), 'tvshow');
 					myText = 'updating TV Show info';
 						//need commit here
-				};
-			};
+				}
+			}
 			if (v == 20) {
 				if (Ext.getCmp('genreString').isDirty()) {
 					updateXBMCGenreTvshow();		
 					myText = 'updating Genres'
-				};
-			};
+				}
+			}
 			Ext.MessageBox.updateProgress(i, myText);
         }
         }
@@ -132,7 +132,6 @@ function GettvShowDetails(r){
 	r.data.details = true
 }
 
-
 function updateXBMCGenreTvshow(){
 	var parmArray = [];
 	var jsParam = '';
@@ -163,30 +162,38 @@ function GetTvshowGenres(record){
 	
 	for (var i = 0; i < myGenres.length; i++) {
 		responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false)
-	};	
+	}
 	updateGenreGrid(responseArr)
 }
 
 
-function checkWateched(val) {
- if (val != "")
-	return '<img src=../images/icons/checked.png>';
-};
+function checkWatched(val) {
+    if (val != "")
+    {
+        return '<img src=../images/icons/checked.png>';
+    }
+
+    return "";
+}
 
 function checkWatechedInt(val) {
- if (val != "0")
-	return '<img src=../images/icons/checked.png>';
-};
+    if (val != "0")
+    {
+        return '<img src=../images/icons/checked.png>';
+    }
+
+    return "";
+}
 
 var episodecolModel = new Ext.grid.ColumnModel([
 	{header: "#", dataIndex: 'episode', width: 30},
 	{header: "title", dataIndex: 'title', width: 130},
-	{header: "W", dataIndex: 'playcount', width: 25, renderer: checkWateched}
+	{header: "W", dataIndex: 'playcount', width: 25, renderer: checkWatched}
 ]);
 	
 var tvShowcolModel = new Ext.grid.ColumnModel([
 	{header: "Title", width: 155, dataIndex: 'title'},
-	{header: "W", dataIndex: 'playcount', width: 25, renderer: checkWateched}
+	{header: "W", dataIndex: 'playcount', width: 25, renderer: checkWatched}
 ]);
 
 var seasoncolModel = new Ext.grid.ColumnModel([

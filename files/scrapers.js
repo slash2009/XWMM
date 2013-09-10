@@ -1,28 +1,28 @@
-	function xbmcJsonRPC(params) {
-		var inputUrl = '/jsonrpc'
-		var myjson = '';
-		Ext.Ajax.request({
-			url: inputUrl,
-			params : params,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json' 
-			},
-			method: "POST",
-			async: false,
-			success: function (t){
-				myjson = Ext.util.JSON.decode(t.responseText);
-				},
-			failure: function(t){},
-				timeout: 2000
-		});	
-		return myjson.result;
-	}
+function xbmcJsonRPC(params) {
+    var inputUrl = '/jsonrpc';
+    var myjson = '';
+    Ext.Ajax.request({
+        url: inputUrl,
+        params : params,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        async: false,
+        success: function (t){
+            myjson = Ext.util.JSON.decode(t.responseText);
+            },
+        failure: function(t){},
+            timeout: 2000
+    });
+    return myjson.result;
+}
 
 function getAddonList(myDir) {
 	for (var i=0; i<myDir.files.length; i++) {
 		if (myDir.files[i].label.match("metadata") == "metadata") {
-			var mytest = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"'+myDir.files[i].file+'"}, \"id\": 1}';				
+			//var mytest = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"'+myDir.files[i].file+'"}, \"id\": 1}';
 			//IsScraper('/vfs/'+myDir.directories[i].file+'addon.xml')
 				Ext.Ajax.request({
 					url: '/vfs/'+myDir.files[i].file+'addon.xml',
@@ -40,7 +40,7 @@ function getAddonList(myDir) {
 }
 	
 function parseAddonXML(string, path) {
-		xmlDoc = string
+		var xmlDoc = string;
 		var addonCategory = xmlDoc.getElementsByTagName("extension")[0].attributes[0].value;
 		var addonId = xmlDoc.getElementsByTagName("addon")[0].attributes[0].value;
 		var addonLang = xmlDoc.getElementsByTagName("extension")[0].attributes[1].value;
@@ -56,8 +56,7 @@ function parseAddonXML(string, path) {
 	}
 
 function parseScrapers() {
-	
-	var myParams = '{\"jsonrpc\": \"2.0\", \"method\": \"Files.GetDirectory\", \"params\": {\"directory\": \"special://home/addons"}, \"id\": 1}';
+	var myParams = '{"jsonrpc": "2.0", "method": "Files.GetDirectory", "params": {"directory": "special://home/addons"}, "id": 1}';
 	var myShares = xbmcJsonRPC(myParams);
 
 	getAddonList(myShares);
@@ -88,7 +87,7 @@ function scraperRecord() {
 function setValue(node) {
 	this.xbmcContent = node.xbmcContent;
 	this.xbmcScraper = node.xbmcScraper;
-};
+}
 	
 function setEmpty() {
 	this.xbmcContent ="None";
@@ -118,7 +117,7 @@ var scraperStore = new Ext.data.SimpleStore({
 				//parseScrapers();
 			}
 		}
-    })
+    });
 
 var ScraperGrid = new Ext.grid.GridPanel({
 	height: 500,
@@ -151,7 +150,14 @@ var scraperImage = new Ext.Container ({
 		this.el.dom.src = "../images/noscraper.png"
 	},
 	updateSrc :function(r){
-		this.el.dom.src = "../images/scrapers/"+r.data.image;
+		if (r == undefined)
+		{
+		    this.el.dom.src = this.autoEl.src;
+		}
+		else
+		{
+		    this.el.dom.src = "../images/scrapers/"+r.data.image;
+		}
 	}
 	
 });
@@ -200,14 +206,14 @@ var ScraperSettings = new Ext.FormPanel({
 		}]
 		
 	}]
-})
+});
 
 var scraperDetailPanel = new Ext.FormPanel({
 	region: 'north',
 	frame:true,
 	height:400,
 	width: 400,
-	title: "<div align='center'>Scraper Info</div>",
+	title: '<div style="text-align:center">Scraper Info</div>',
 		items: [{
 		layout: 'column',
 		items:[{
@@ -216,7 +222,7 @@ var scraperDetailPanel = new Ext.FormPanel({
 			bodyStyle: 'padding:5px 10px 0',
 			labelWidth: 100,
 			defaults: {	xtype:'textfield', labelWidth: 100,
-				listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
+				listeners:{'change' : function(){var DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
 			},
 			items: [combo, scraperImage]
 		},{ 
@@ -227,4 +233,4 @@ var scraperDetailPanel = new Ext.FormPanel({
 			items: [ScraperGrid]
 		}]
 	}]
-})
+});

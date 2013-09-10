@@ -23,8 +23,8 @@ Ext.onReady(function() {
 	var myjson = '';
 
 	var storesToLoad = [
-	   {store : 'storepath', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, scanRecursive, useFolderNames, noUpdate strScraper FROM path)' },
-	   {store : 'storefiles', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)' }
+	   //{store : 'storepath', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, scanRecursive, useFolderNames, noUpdate strScraper FROM path)' },
+	   //{store : 'storefiles', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)' }
 	];
 
 	loadStartupStores = function(record, options, success){
