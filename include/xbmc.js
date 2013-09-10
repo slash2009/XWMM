@@ -100,7 +100,7 @@ function AddXBMCNewGenre(record) {
 }
 
 function updateXBMCAlbumInfo(record) {
-	
+
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE albuminfo SET strReview = "'+record.data.strReview+'" ,iRating = "'+record.data.iRating+'" WHERE idAlbum='+record.data.idAlbum+')';
 	Ext.Ajax.request({
 		url: inputUrl,
@@ -124,7 +124,7 @@ function updateXBMCAlbumScraperInfo(record) {
 		timeout: 2000
 	});
 }
-	
+
 function updateXBMCAlbum(record) {
 
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE album SET idArtist = "'+record.data.idArtist+'", iYear = "'+record.data.iYear+'", idGenre = "'+record.data.idGenre+'", strAlbum = "'+record.data.strAlbum+'" WHERE idAlbum='+record.data.idAlbum+')';
@@ -150,7 +150,7 @@ function removeXBMCMovieSet(rec) {
 		failure: function(t){},
 		timeout: 2000
 	});
-	
+
 	// Delete linked movies
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idSet='+rec.data.idSet+')';
 	Ext.Ajax.request({
@@ -182,7 +182,7 @@ function checkXBMCGenreUsed(record) {
 		failure: function(t){},
 		timeout: 2000
 	});
-	
+
 	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idShow FROM genrelinktvshow where idGenre='+record.data.genreid+')';
 	Ext.Ajax.request({
 		url: inputUrl,
@@ -203,10 +203,10 @@ function updateXBMCGenreString(record) {
 	//update strGenre in Genre Table
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE genre SET strGenre = "'+record.data.label+'" WHERE idGenre='+record.data.genreid+')';
 	XBMCExecSql(inputUrl)
-	
+
 	var oldValue = record.modified.label;
 	var newValue = record.data.label;
-	
+
 	//get and update all movies with that genre
 	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT movie.idMovie, movie.c14 FROM movie inner join genrelinkmovie on (genrelinkmovie.idMovie = movie.idMovie) where genrelinkmovie.idGenre = '+record.data.genreid+')';
 	Ext.Ajax.request({
@@ -227,7 +227,7 @@ function updateXBMCGenreString(record) {
 		failure: function(t){},
 		timeout: 2000
 	});
-		
+
 	//get and update all TVShows with that genre
 	inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT tvshow.idShow, tvshow.c08 FROM tvshow inner join genrelinktvshow on (genrelinktvshow.idShow = tvshow.idShow) where genrelinktvshow.idGenre = '+record.data.genreid+')';
 	Ext.Ajax.request({
@@ -250,8 +250,8 @@ function updateXBMCGenreString(record) {
 	});
 }
 
- function getTagAttribute(xmlString, tag) {	
-	var temp ="";		
+ function getTagAttribute(xmlString, tag) {
+	var temp ="";
  	for (var i=0 ; i < xmlString.attributes.length; i++) {
 		if (xmlString.attributes[i].nodeName == tag) {
 			temp = xmlString.attributes[i].nodeValue
@@ -259,7 +259,7 @@ function updateXBMCGenreString(record) {
 	}
 	return temp;
  }
- 
+
 function TrimXmltofields(t) {
 	var temp = t.responseText.replace(/<html>/g, "");
 	temp = temp.replace(/<\/html>/g, "");
@@ -268,10 +268,10 @@ function TrimXmltofields(t) {
 	temp = temp.replace(/<\/recordset>/g, "");
 	temp = temp.replace(/\n/g, '');
 	temp = temp.replace(/<\/field>/g, "");
-	
+
 	return temp;
 }
- 
+
 function TrimXbmcXml(t){
 	var temp = TrimXmltofields(t);
 	temp = temp.replace(/<field>/g, "");
@@ -283,7 +283,7 @@ function getFanartList (String) {
 
 	var result = [];
 	if (String == "") return result;
-	
+
 	if (window.DOMParser)
 	 {
 	  parser=new DOMParser();
@@ -294,12 +294,12 @@ function getFanartList (String) {
 	  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 	  xmlDoc.async="false";
 	  xmlDoc.loadXML(String);
-	 } 
-	 
+	 }
+
 	 var MasterUrl = xmlDoc.getElementsByTagName("fanart")[0].getAttribute("url");
 	 if (MasterUrl == null){ MasterUrl = ""};
-	 
-	 
+
+
 	 for (var i=0 ; i < xmlDoc.documentElement.childNodes.length; i++) {
 		var downloadUrl = MasterUrl + xmlDoc.getElementsByTagName("thumb")[i].childNodes[0].nodeValue;
 		var previewUrl = xmlDoc.getElementsByTagName("thumb")[i].getAttribute("preview");
@@ -307,15 +307,15 @@ function getFanartList (String) {
 			else { previewUrl = MasterUrl + previewUrl};
 		result.push([previewUrl, downloadUrl, "Remote", ""]);
 	}
-	 
+
 	 return result;
 }
 
 function getCoverList(String, r) {
-	
+
 	var result = [];
 	if (String == "") return result;
-	
+
 	if (String.match("<thumb><thumb>") == null) {
 		String = '<test>'+String+'</test>'
 	};
@@ -331,10 +331,10 @@ function getCoverList(String, r) {
 	  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 	  xmlDoc.async="false";
 	  xmlDoc.loadXML(String);
-	 } 
-	 
+	 }
+
 	// result.push(['../cache/Video/'+r.data.cover, "", "Current", ""]);
-	 
+
 	 var MasterUrl = getTagAttribute(xmlDoc.documentElement, 'url');
 	 if (MasterUrl == null){ MasterUrl = ""};
 	 for (var i=0 ; i < xmlDoc.documentElement.childNodes.length; i++) {
@@ -344,7 +344,7 @@ function getCoverList(String, r) {
 			else { previewUrl = MasterUrl + previewUrl};
 		// need to change preview url for impawards links
 		if (previewUrl.match("impaward") != null) {previewUrl = previewUrl.replace(/posters\//g,"thumbs/imp_")};
-		
+
 		result.push([previewUrl, downloadUrl, "Remote", ""]);
 	}
 	 return result;
@@ -365,7 +365,7 @@ function XBMCgetMoviesFields(resp, r) { //This function is no longer being calle
 	r.data.MovieFanartUrl = getFanartList(temp[1]);
 	r.data.MovieCoverUrl = getCoverList(temp[2], r);
 	r.data.idFile = temp[3];
-	
+
 }
 
 
@@ -429,7 +429,7 @@ function removeXbmcActorMovie(record) {
 }
 
 
-function updateXBMCTables(myForm, myTable) {				
+function updateXBMCTables(myForm, myTable) {
 	//TODO: Clean quotes entered into fields so they don't break JSON query
 	var sqlData = '';
 	var jsParam = '';
@@ -437,7 +437,7 @@ function updateXBMCTables(myForm, myTable) {
 	var parmArray = [];
 	var itemsList = myForm.items.items;
 	for (var i = 0; i < itemsList.length; i++){
-		f = itemsList[i]; 
+		f = itemsList[i];
 		if(f.isDirty()){
 			switch(f.name) {
 				case "Moviegenres":
@@ -465,7 +465,7 @@ function updateXBMCTables(myForm, myTable) {
 					parmValue = JSON.stringify(f.getValue(), escape); //string
 					break;
 			}
-			
+
 			if (parmArray != undefined && parmArray.length == 1 && parmArray[0] != "") {
 				if (jsParam == '') {
 					jsParam = '"' + f.name + '": ["' + parmArray[0] + '"]'; }
@@ -502,21 +502,21 @@ function updateXBMCTables(myForm, myTable) {
 			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idEpisode+', '+jsParam+'}, "id": 1}'); }
 	};
 	if (myTable == 'tvshow') {
-		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;	
+		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;
 		var myIndex = 'idShow='+idShow
 		if (jsParam != "") {
 			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetTVShowDetails", "params": {"tvshowid": '+idShow+', '+jsParam+'}, "id": 1}'); }
 	};
-	
+
 	if (myTable == 'movie') {
-		var idMovie = selectedMovie;	
+		var idMovie = selectedMovie;
 		var myIndex = 'idMovie='+idMovie
 		if (jsParam != "") {
 			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMovie+', '+jsParam+'}, "id": 1}'); }
 	};
 
 	if ((myTable == 'album') || (myTable == 'albuminfo')) {
-		var idAlbum = AlbumGrid.getSelectionModel().getSelected().data.albumid;	
+		var idAlbum = AlbumGrid.getSelectionModel().getSelected().data.albumid;
 		if (jsParam != "") {
 			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.SetAlbumDetails", "params": {"albumid": '+idAlbum+', '+jsParam+'}, "id": 1}'); }
 	}
@@ -533,7 +533,7 @@ function escape (key, val) {
       .replace(/[\n]/g, '\\n')
       .replace(/[\r]/g, '\\r')
       .replace(/[\t]/g, '\\t')
-    ; 
+    ;
 }
 
 
@@ -549,7 +549,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
      * a cache of Ext.data.Records.
      */
     read : function(response){
-	
+
 		var temp = response.responseText.replace(/<html>/g, "");
 		temp = temp.replace(/<\/html>/g, "");
 		temp = temp.replace(/^M/g, "");
@@ -558,12 +558,12 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 		temp = temp.replace(/<\/recordset>/g, "");
 		temp = temp.replace(/\n/g, '');
 		temp = temp.replace(/\r/g, '');
-		
+
 		var responseArr = temp;
-		
-		
+
+
 		responseArr = responseArr.split("<record>");
-		
+
 		var j = 0;
 		str = '{"data": [';
 		for (var i = 0; i < responseArr.length; i++) {
@@ -574,7 +574,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 				for (var j = 1; j < responseArr[i].length; j++) {
 					var tempstr = responseArr[i][j].replace(/\\/g,"\\\\");
 					tempstr = tempstr.replace(/\"/g,'\\\"');
-					
+
 					if (j == (responseArr[i].length - 1)){
 					str = str+'"field:nth('+j+')": "'+tempstr+'"';
 					}
@@ -588,9 +588,9 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 				else{
 					str = str+'},\n';
 				}
-			}	
-		}	
-		
+			}
+		}
+
 		var json = str+']}';
 
         var o = eval("("+json+")");
@@ -707,7 +707,7 @@ Ext.extend(Ext.data.JsonXBMCReader, Ext.data.DataReader, {
 	        var record = new Record(values, id);
 	        record.json = n;
 	        records[i] = record
-			
+
 	    }
 	    return {
 	        success : success,
@@ -760,9 +760,9 @@ Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
             callback : this.createCallback(action, rs),
             scope: this
         };
-	
+
 		o.jsonData = Ext.util.JSON.encode(this.conn.xbmcParams);
-		
+
         if (params.jsonData) {
             o.jsonData = params.jsonData;
         } else if (params.xmlData) {
@@ -772,7 +772,7 @@ Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
         }
 
         this.conn.url = this.buildUrl(action, rs);
-	
+
         if(this.useAjax){
 
             Ext.applyIf(o, this.conn);
