@@ -1,8 +1,8 @@
 // -----------------------------------------
 // movie.js
 // last modified : 04-08-2010
-// 
-//------------------------------------------ 
+//
+//------------------------------------------
 
 var MovieRecord = Ext.data.Record.create([
    {name: 'idMovie', mapping: 'movieid'},		//idMovie
@@ -24,11 +24,11 @@ function genreConvert(v, record) {
 }
 
 var storeMovie = new Ext.data.GroupingStore( {
-	sortInfo: {field: 'Movietitle', direction: "ASC"},
+	//sortInfo: {field: 'Movietitle', direction: "ASC"},
 	//autoLoad: true,
 	proxy: new Ext.data.XBMCProxy({
 		url: "/jsonrpc",
-		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}
+		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': true, 'method': 'title'}},"id": 1}
 	}),
 	reader: new Ext.data.JsonReader({
 		root: 'result.movies'
@@ -51,10 +51,10 @@ Moviegrid = new Ext.grid.GridPanel({
 	split: true,
 	listeners:{
         rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
-            gridContextMenu.showAt(e.getXY());    
+            gridContextMenu.showAt(e.getXY());
             e.stopEvent();
             return false
-        }}	
+        }}
 	},
 	store: storeMovie
-}); 
+});
