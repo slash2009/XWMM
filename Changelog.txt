@@ -1,5 +1,13 @@
 XWMM Change log
 
+3.0.0
+- MokuJinJin and nwtn PR's
+-- Some hack to get it working (not all features) with Frodo (XBMC v12) -- thanks to MokuJinJin
+-- Unable to load tvshow, because of a little bug, just check undefined var -- thanks to MokuJinJin
+-- Allow creation of new set in Movie>Other details -- thanks to nwtn
+-- Added flag for 4.0 audio -- thanks to nwtn
+-- Minor fixes
+
 2.1.0
 - Updated to use JSON
 - Minor updates to addon.xml
