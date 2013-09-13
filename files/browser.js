@@ -1,9 +1,10 @@
 
 // -----------------------------------------
-// files.js
-// last modified : 31-12-2009
+// tvshow.js
+// last modified : 27-08-2013
+// modified by : MokuJinJin
 // 
-//------------------------------------------ 
+// ------------------------------------------
 
 
 Ext.onReady(function() {
@@ -23,8 +24,8 @@ Ext.onReady(function() {
 	var myjson = '';
 
 	var storesToLoad = [
-	   {store : 'storepath', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, scanRecursive, useFolderNames, noUpdate strScraper FROM path)' },
-	   {store : 'storefiles', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)' }
+	   //{store : 'storepath', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idPath, strPath, strContent, scanRecursive, useFolderNames, noUpdate strScraper FROM path)' },
+	   //{store : 'storefiles', url: '/xbmcCmds/xbmcHttp?command=queryvideodatabase(select idFile, idPath, strFilename, playCount FROM files)' }
 	];
 
 	loadStartupStores = function(record, options, success){
