@@ -6,7 +6,7 @@ function xbmcJsonRPC(params) {
 		url: inputUrl,
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json' 
+			'Content-Type': 'application/json'
     	},
 		params : params,
 		method: "POST",
@@ -16,13 +16,13 @@ function xbmcJsonRPC(params) {
 			},
 		failure: function(t){},
 			timeout: 5000
-	});	
+	});
 	return myjson.result;
 }
 
 // Name space for XBMC objects
 
-Ext.namespace('Ext.ux'); 
+Ext.namespace('Ext.ux');
 
 /**
   * Ext.ux.XbmcImages Extension Class
@@ -35,7 +35,7 @@ Ext.namespace('Ext.ux');
 
 Ext.ux.XbmcImages = function(config) {
     Ext.ux.XbmcImages.superclass.constructor.call(this, config)
-}; 
+};
 
 Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 	// refresh image
@@ -44,9 +44,11 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 	},
 	// set source image
 	updateSrc :function(imagePath){
-		this.el.dom.src = "/image/"+imagePath
+		if (imagePath) {
+			this.el.dom.src = "/image/"+imagePath
+		}
 	}
-}); 
+});
 
 /**
   * Ext.ux.XbmcStars Extension Class
@@ -59,7 +61,7 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 
 Ext.ux.XbmcStars = function(config) {
     Ext.ux.XbmcStars.superclass.constructor.call(this, config)
-}; 
+};
 
 Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
 	border: 0,
@@ -68,5 +70,5 @@ Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
 		var value = Math.round(r.data.rating);
 		this.el.dom.src =  '../images/stars/'+value+'.png'
 	}
-}); 
+});
 
