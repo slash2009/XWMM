@@ -23,17 +23,33 @@ function genreConvert(v, record) {
 	return record.genre.join(' / ')
 }
 
-var storeMovie = new Ext.data.GroupingStore( {
-	//sortInfo: {field: 'Movietitle', direction: "ASC"},
-	//autoLoad: true,
-	proxy: new Ext.data.XBMCProxy({
-		url: "/jsonrpc",
-		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': true, 'method': 'title'}},"id": 1}
-	}),
-	reader: new Ext.data.JsonReader({
-		root: 'result.movies'
-	}, MovieRecord)
-});
+
+var sortArticles = docCookies.getItem('sortArticles');
+if (sortArticles == '1') {
+	var storeMovie = new Ext.data.GroupingStore( {
+		//sortInfo: {field: 'Movietitle', direction: "ASC"},
+		//autoLoad: true,
+		proxy: new Ext.data.XBMCProxy({
+			url: "/jsonrpc",
+			xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': true, 'method': 'title'}},"id": 1}
+		}),
+		reader: new Ext.data.JsonReader({
+			root: 'result.movies'
+		}, MovieRecord)
+	});
+} else {
+	var storeMovie = new Ext.data.GroupingStore( {
+		//sortInfo: {field: 'Movietitle', direction: "ASC"},
+		//autoLoad: true,
+		proxy: new Ext.data.XBMCProxy({
+			url: "/jsonrpc",
+			xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': false, 'method': 'title'}},"id": 1}
+		}),
+		reader: new Ext.data.JsonReader({
+			root: 'result.movies'
+		}, MovieRecord)
+	});
+}
 
 
 
