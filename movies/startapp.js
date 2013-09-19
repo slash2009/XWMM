@@ -1,7 +1,7 @@
 
 // -----------------------------------------
 // startapp.js
-//------------------------------------------ 
+//------------------------------------------
 
 Ext.onReady(function() {
 
@@ -24,7 +24,20 @@ Ext.onReady(function() {
 			},{
 				text: 'Manage Movie Sets',
 				iconCls: 'silk-plugin',
-				handler: function(){winMovieSet.show()}			
+				handler: function(){winMovieSet.show()}
+			},{
+				text: 'Toggle articles in title sort',
+				iconCls: 'silk-plugin',
+				handler: function(){
+					// extjs cookies aren't available until v3.4.0, so we'll use cookies.js
+					var sortArticles = docCookies.getItem('sortArticles');
+					if (sortArticles == '1') {
+						docCookies.removeItem('sortArticles');
+					} else {
+						docCookies.setItem('sortArticles', '1', 'Infinity');
+					}
+					window.location.reload();
+				}
 			},{
 				text: 'Export to HTML',
 				menu: [{
@@ -39,7 +52,7 @@ Ext.onReady(function() {
 					text: 'Unwatched Movies',
 					iconCls: 'silk-grid',
 					handler: function(){unwatchedMoviesHTML()}
-					
+
 				}]
 			}]
 		},{
@@ -53,7 +66,7 @@ Ext.onReady(function() {
 			value: '',
 			style: 'background: #F0F0F9;'
 	});
-	
+
 	menuBar.add({
         text: 'X',
         tooltip: 'Clear quicksearch',
@@ -65,38 +78,38 @@ Ext.onReady(function() {
             }
         }
     });
-	
-	menuBar.add({			
+
+	menuBar.add({
 			xtype: 'tbfill'
 		},{
 			text: myVersion
     });
-	
+
 
 	MovieSetStore.load();
-	
+
 	startMyApp()
 
 	function startMyApp() {
-	
+
 
 		var App = new Movie.Mainpanel({
-			renderTo: Ext.getBody()	 
+			renderTo: Ext.getBody()
 		});
-		
+
 		storegenre.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetGenres", "params": {"type": "movie"},"id": 1};
 		storeMovie.load();
 		storegenre.load();
-		
+
 		Ext.QuickTips.init();
-		
+
 		// begin search config
 
 		var searchStore = new Ext.data.SimpleStore({
 			fields: ['query'],
 		data: []
 		});
-		
+
 		var searchBox = new Ext.form.ComboBox({
 			id: 'searchBox',
 			store: searchStore,
@@ -123,7 +136,7 @@ Ext.onReady(function() {
 						storeMovie.filter('Movietitle', value, true, false);
 					}
 		};
-		
+
 		var onQuickSearchBeforeQuery = function(e) {
 			if (this.getValue().length==0) {
 			} else {
@@ -163,11 +176,11 @@ Ext.onReady(function() {
 				}
 		}
 		};
-		
+
 		searchBox.on("beforequery", onQuickSearchBeforeQuery);
 		searchBox.on("beforequery", onFilteringBeforeQuery);
-		searchBox.on("select", onFilteringBeforeQuery) 
+		searchBox.on("select", onFilteringBeforeQuery)
 		// end search
 	}
-	
-}); 
+
+});
