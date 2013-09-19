@@ -23,19 +23,6 @@ function genreConvert(v, record) {
 	return record.genre.join(' / ')
 }
 
-var xhr = new XMLHttpRequest();
-xhr.open("POST", "/jsonrpc");
-xhr.setRequestHeader('Content-Type','application/json');
-xhr.onload = function() {
-	var results = JSON.parse(this.responseText);
-}
-xhr.send(JSON.stringify({
-	'jsonrpc':	'2.0',
-	'method':	'XBMC.GetInfoLabels',
-	'params':	{'labels': ['sorting.sortAttributes']},
-	'id':		1
-}));
-
 
 var sortArticles = docCookies.getItem('sortArticles') == '1',
 storeMovie = new Ext.data.GroupingStore( {
