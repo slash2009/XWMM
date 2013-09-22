@@ -76,11 +76,6 @@ function downloadXBMCFile(url,myFile) {
 	});
 };
 
-function updateXBMCMovieSet(record) {
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE sets SET strSet = "'+record.data.strSet+'" WHERE idSet = "'+record.data.idSet+'")';
-	XBMCExecSql(inputUrl)
-}
-
 function AddXBMCNewMovieSet(record) {
 	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO sets (strSet) VALUES ("'+record.data.strSet+'"))';
 	Ext.Ajax.request({
@@ -137,30 +132,6 @@ function updateXBMCAlbum(record) {
 		timeout: 2000
 	});
 
-}
-
-function removeXBMCMovieSet(rec) {
-	// Delete Set
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM sets WHERE idSet='+rec.data.idSet+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
-
-	// Delete linked movies
-	var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM setlinkmovie WHERE idSet='+rec.data.idSet+')';
-	Ext.Ajax.request({
-		url: inputUrl,
-		method: 'GET',
-		async: false,
-		success: function (t){},
-		failure: function(t){},
-		timeout: 2000
-	});
 }
 
 function removeXBMCGenre(record) {

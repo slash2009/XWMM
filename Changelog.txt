@@ -1,5 +1,8 @@
 XWMM Change log
 
+3.0.0a
+- Slash, fixed movie set management (add, delete, rename)
+
 3.0.0
 - MokuJinJin and nwtn PR's
 -- Some hack to get it working (not all features) with Frodo (XBMC v12) -- thanks to MokuJinJin
