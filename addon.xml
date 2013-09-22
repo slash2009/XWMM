@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="webinterface.XWMM"
-  version="3.0.0"
+  version="3.0.0a"
   name="XWMM"
   provider-name="slash | Zernable | MokuJinJin | nwtn">
   <requires>

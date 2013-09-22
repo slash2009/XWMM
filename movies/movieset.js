@@ -59,7 +59,7 @@ var MovieInSetGrid = new Ext.grid.GridPanel({
 
 function onAddMovieSet(btn, ev) {
         var u = new MovieSetMgmtGrid.store.recordType({
-            	set: 'New Set',
+            	strSet: 'New Set',
 		idSet: '-1' // flag as new record
         });
         editor.stopEditing();
@@ -71,8 +71,13 @@ function onDeleteMovieSet() {
     var rec = MovieSetMgmtGrid.getSelectionModel().getSelected();
     if (!rec) {return false;}
 
-	removeXBMCMovieSet(rec);
+	
 	MovieSetStore.remove(rec)
+	MoviesInSetStore.each( function (movieRecord)
+		{
+			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": ""}, "id": 1}');
+		}, this);
+	MovieSetStore.reload()
 }
 
 var MovieSetEditor = new Ext.ux.grid.RowEditor({
@@ -80,11 +85,13 @@ var MovieSetEditor = new Ext.ux.grid.RowEditor({
 	listeners: {
 		afteredit: function(roweditor, changes, record, rowIndex) {
 			if (record.data.idSet == -1) {
-				AddXBMCNewMovieSet(record);
-				MovieSetStore.reload()
+				//should add a bubble to tell user to add movies in the set
 			}
 			else {
-				updateXBMCMovieSet(record);
+				MoviesInSetStore.each( function (movieRecord)
+					{
+						xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": "'+ changes.strSet +'"}, "id": 1}');
+					}, this);
 				MovieSetStore.reload()
 			}							
  		}
@@ -116,12 +123,12 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
 	store: MovieSetStore,
 	tbar: [{
 		text: 'Add',
-		disabled: 'true', //disabled as no method of adding new sets via JSON currently
+		//disabled: 'true', //disabled as no method of adding new sets via JSON currently
 		iconCls: 'silk-add',
 		handler: onAddMovieSet
 	}, '-', {
 		text: 'Delete',
-		disabled: 'true', //disabled as no method of deleting sets via JSON currently
+		//disabled: 'true', //disabled as no method of deleting sets via JSON currently
 		iconCls: 'silk-delete',
 		handler: onDeleteMovieSet
 	}, '-'],
