@@ -1,7 +1,7 @@
 XWMM - XBMC Web Media Manager
 ====
 
-### MAIN REPO (Master): 
+### Experimental Graphics (Master): 
 Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
 Branched repositories for e.g. Frodo
 
@@ -35,13 +35,12 @@ Github issue tracker [Click here to submit an issue](https://github.com/slash200
 - - -
 Features not yet working (incomplete list) - Todo list:
 
-* Changing artwork
-* Managing, genres and actors (although these can be changed on a per movie/TV/music basis)
-* The "Files" tab
-
+* Needs complete flags
+* New look?
+* Etc...
 - - -
 Install Via Zip mode in XBMC.
 
 ### Download:
-XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/master.zip "Title")
+XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/Experimental-graphics.zip "Title")
 - - -

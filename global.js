@@ -1,5 +1,5 @@
 
-var myVersion = '2.1.0'
+var myVersion = '3.0.0a'
 
 function mergeJson(object1, object2) {
 	var i;
