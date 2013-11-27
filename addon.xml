@@ -14,6 +14,6 @@
     <description>XWMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
     <platform>all</platform>
     <source>https://github.com/slash2009/XWMM</source>
-    <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum> 
+    <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum>
   </extension>
 </addon>

@@ -5,12 +5,12 @@
 //------------------------------------------
 
 var MovieRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'movieid'},		//idMovie
-   {name: 'strFilename', mapping: 'file'},	//strFilename
-   //{name: 'strGenre', mapping: 'field:nth(3)'},		//strGenre
-   {name: 'Movietitle', mapping: 'title'},	//c00
-   //{name: 'strPath', mapping: 'field:nth(5)'},		//strPath
-   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},	//c14
+   {name: 'idMovie', mapping: 'movieid'},       //idMovie
+   {name: 'strFilename', mapping: 'file'},  //strFilename
+   //{name: 'strGenre', mapping: 'field:nth(3)'},       //strGenre
+   {name: 'Movietitle', mapping: 'title'},  //c00
+   //{name: 'strPath', mapping: 'field:nth(5)'},        //strPath
+   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},  //c14
    //{name: 'idFile', mapping: 'field:nth(7)'},
    {name: 'watched', mapping: 'playcount'},
    {name: 'MovieRelease', mapping: 'year'},
@@ -20,40 +20,40 @@ var MovieRecord = Ext.data.Record.create([
 ]);
 
 function genreConvert(v, record) {
-	return record.genre.join(' / ')
+    return record.genre.join(' / ')
 }
 
 
 var sortArticles = docCookies.getItem('sortArticles') == '1',
 storeMovie = new Ext.data.GroupingStore( {
-	proxy: new Ext.data.XBMCProxy({
-		url: "/jsonrpc",
-		xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': sortArticles, 'method': 'title'}},"id": 1}
-	}),
-	reader: new Ext.data.JsonReader({
-		root: 'result.movies'
-	}, MovieRecord)
+    proxy: new Ext.data.XBMCProxy({
+        url: "/jsonrpc",
+        xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"], 'sort': {'order': 'ascending', 'ignorearticle': sortArticles, 'method': 'title'}},"id": 1}
+    }),
+    reader: new Ext.data.JsonReader({
+        root: 'result.movies'
+    }, MovieRecord)
 });
 
 
 // grid with list of movies
 Moviegrid = new Ext.grid.GridPanel({
-	cm: MoviecolModel,
-	id: 'Moviegrid',
-	enableDragDrop: false,
-	stripeRows: true,
-	loadMask: true,
-	viewconfig: {forceFit: true},
-	selModel: new Ext.grid.RowSelectionModel({singleSelect: true}),
-	region: 'west',
-	width: 285,
-	split: true,
-	listeners:{
+    cm: MoviecolModel,
+    id: 'Moviegrid',
+    enableDragDrop: false,
+    stripeRows: true,
+    loadMask: true,
+    viewconfig: {forceFit: true},
+    selModel: new Ext.grid.RowSelectionModel({singleSelect: true}),
+    region: 'west',
+    width: 285,
+    split: true,
+    listeners:{
         rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
             gridContextMenu.showAt(e.getXY());
             e.stopEvent();
             return false
         }}
-	},
-	store: storeMovie
+    },
+    store: storeMovie
 });
