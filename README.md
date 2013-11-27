@@ -1,7 +1,7 @@
 XWMM - XBMC Web Media Manager
 ====
 
-### MAIN REPO (Master): 
+### MAIN REPO (Master):
 Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
 Branched repositories for e.g. Frodo
 
@@ -16,7 +16,7 @@ The idea is to fork this repo work on your changes and make a pull request (PR) 
 
 * What Patch addresses, if its a bug-fix a feature or improvement or something else.
 * Any comments in code for what is not immediately obvious.
- 
+
 ## Note:
 A pull request PR should be made to MASTER, (using Branches is ok if your going to make same PR to master) by using Master then your working with latest code and fixes.
 Any work can then be easily Picked and pulled into branches if needed, especially if its a bug-fix.
