@@ -400,98 +400,117 @@ function removeXbmcActorMovie(record) {
 }
 
 
-function updateXBMCTables(myForm, myTable) {
-	//TODO: Clean quotes entered into fields so they don't break JSON query
-	var sqlData = '';
-	var jsParam = '';
-	var parmValue = '';
-	var parmArray = [];
-	var itemsList = myForm.items.items;
-	for (var i = 0; i < itemsList.length; i++){
-		f = itemsList[i];
-		if(f.isDirty()){
-			switch(f.name) {
-				case "Moviegenres":
-				case "TVGenre":
-					continue; //We don't want to save genres here
-					break;
-				case "runtime":
-					parmValue = parseInt(f.getValue()) * 60; //JSON uses runtime as # of seconds.
-					break;
-				case "rating":
-				case "year":
-					parmValue = f.getValue(); //integer
-					break;
-				case "country":
-				case "studio":
-				case "director":
-				case "genre":
-				case "theme":
-				case "mood":
-				case "style":
-				case "artist":
-					parmArray = f.getValue().split(","); //array.string
-					break;
-				default:
-					parmValue = JSON.stringify(f.getValue(), escape); //string
-					break;
-			}
-
-			if (parmArray != undefined && parmArray.length == 1 && parmArray[0] != "") {
-				if (jsParam == '') {
-					jsParam = '"' + f.name + '": ["' + parmArray[0] + '"]'; }
-				else {
-					jsParam = jsParam + ', "' + f.name + '": ["' + parmArray[0] + '"]'; }
-			}
-			else if (parmArray != undefined && parmArray.length == 1 && parmArray[0] == "") {
-				if (jsParam == '') {
-					jsParam = '"' + f.name + '": []'; }
-				else {
-					jsParam = jsParam + ', "' + f.name + '": []'; }
-			}
-			else if (parmArray.length > 1) {
-				if (jsParam == '') {
-					jsParam = '"' + f.name + '": ["' + parmArray.join('","') + '"]'; }
-				else {
-					jsParam = jsParam + ', "' + f.name + '": ["' + parmArray.join('","') + '"]'; }
-			}
-			else {
-				if (jsParam == '') {
-					jsParam = '"' + f.name + '": ' + parmValue; }
-				else {
-					jsParam = jsParam + ', "' + f.name + '": ' + parmValue; }
-			}
-		}
-		//clear out values before looping
-		parmValue = '';
-		parmArray = [];
-	}
-	if (myTable == 'episode') {
-		var idEpisode = EpisodeGrid.getSelectionModel().getSelected().data.episodeid;
-		var myIndex = 'idEpisode='+idEpisode
-		if (jsParam != "") {
-			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idEpisode+', '+jsParam+'}, "id": 1}'); }
-	};
-	if (myTable == 'tvshow') {
-		var idShow = TvShowGrid.getSelectionModel().getSelected().data.tvshowid;
-		var myIndex = 'idShow='+idShow
-		if (jsParam != "") {
-			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetTVShowDetails", "params": {"tvshowid": '+idShow+', '+jsParam+'}, "id": 1}'); }
-	};
-
-	if (myTable == 'movie') {
-		var idMovie = selectedMovie;
-		var myIndex = 'idMovie='+idMovie
-		if (jsParam != "") {
-			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMovie+', '+jsParam+'}, "id": 1}'); }
-	};
-
-	if ((myTable == 'album') || (myTable == 'albuminfo')) {
-		var idAlbum = AlbumGrid.getSelectionModel().getSelected().data.albumid;
-		if (jsParam != "") {
-			xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.SetAlbumDetails", "params": {"albumid": '+idAlbum+', '+jsParam+'}, "id": 1}'); }
-	}
+/**
+ * Convert a string list into an array.
+ * @param {string} stringList The string to split.
+ * @param {(string|RegExp)} sep The separator to split the list on.
+ * @returns {Array} The string list as an array.
+ */
+function splitStringList(stringList, sep) {
+    var inList = stringList.split(sep);
+    var outList = [];
+    for (var i = 0, len = inList.length; i < len; i++) {
+        listItem = inList[i].trim();
+        if (listItem.length > 0) {
+            outList.push(listItem);
+        }
+    }
+    return outList;
 }
+
+
+/**
+ * Save the changes back to XBMC.
+ * @param {Ext.form.BasicForm} form The form containing the record.
+ * @param {string}recordType The type of record.
+ * @param {int} recordId The id of the item record saved.
+ */
+function updateXBMCTables(form, recordType, recordId) {
+    var itemsList = form.items.items;
+    var params = {};
+
+    for (var i = 0, len = itemsList.length; i < len; i++) {
+        var f = itemsList[i];
+        if (!f.isDirty()) {
+            continue;
+        }
+
+        switch (f.name) {
+            case 'Moviegenres':
+            case 'TVGenre':
+                continue; // We don't want to save genres here
+                break;
+
+            case 'runtime':
+                params.runtime = parseInt(f.getValue()) * 60; // JSON uses runtime as # of seconds.
+                break;
+
+            case 'rating':
+                params[f.name] = parseFloat(f.getValue()).toFixed(1);
+                break;
+
+            case 'year':
+                params[f.name] = parseInt(f.getValue());
+                break;
+
+            case 'country':
+            case 'studio':
+            case 'director':
+            case 'genre':
+            case 'theme':
+            case 'mood':
+            case 'style':
+            case 'artist':
+                params[f.name] = splitStringList(f.getValue(), /[,\/\|]+/); // Split list separated with , / or |.
+                break;
+
+            default:
+                params[f.name] = f.getValue();
+                break;
+        }
+    }
+
+    if (Ext.util.JSON.encode(params).length === 2) {
+        // Nothing to update.
+        return;
+    }
+
+    var rpcCmd = {jsonrpc: '2.0', id: 1};
+    switch (recordType) {
+        case 'episode':
+            params.episodeid = recordId;
+            rpcCmd.method = 'VideoLibrary.SetEpisodeDetails';
+            rpcCmd.params = params;
+            break;
+
+        case 'tvshow':
+            params.tvshowid = recordId;
+            rpcCmd.method = 'VideoLibrary.SetTVShowDetails';
+            rpcCmd.params = params;
+            break;
+
+        case 'movie':
+            params.movieid = recordId;
+            rpcCmd.method = 'VideoLibrary.SetMovieDetails';
+            rpcCmd.params = params;
+            break;
+
+        case 'album':
+        case 'albuminfo':
+            params.albumid = recordId;
+            rpcCmd.method = 'AudioLibrary.SetAlbumDetails';
+            rpcCmd.params = params;
+            break;
+
+        default:
+            return;
+    }
+
+    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
+    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmdJSON);
+    xbmcJsonRPC(rpcCmdJSON);
+}
+
 
 function escape (key, val) {
     if (typeof(val)!="string") return val;

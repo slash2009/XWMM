@@ -82,7 +82,7 @@ function updateXBMCAll() {
 			if (v == 1) {
 				myText = 'Checking changes...';
 				if (MoviedetailPanel.getForm().isDirty()) {
-					updateXBMCTables(MoviedetailPanel.getForm(), 'movie');
+					updateXBMCTables(MoviedetailPanel.getForm(), 'movie', selectedMovie);
 					myText = 'updating movie info';
 				};
 				if (Ext.getCmp('moviesetcombo').isDirty()) {
@@ -90,7 +90,7 @@ function updateXBMCAll() {
 					myText = 'updating Sets'
 				}
 				if (fileDetailsPanel.getForm().isDirty()) {
-					updateXBMCTables(fileDetailsPanel.getForm(), 'movie');
+					updateXBMCTables(fileDetailsPanel.getForm(), 'movie', selectedMovie);
 					myText = 'updating additional info';
 				};
 			};
