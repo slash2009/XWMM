@@ -28,15 +28,15 @@ function updateMusicAlbum() {
 			if (v == 1) {
 				myText = 'Checking changes...';
 				if (standardInfo.getForm().isDirty()) {
-					updateXBMCTables(standardInfo.form, 'album');
+					updateXBMCTables(standardInfo.form, 'album', AlbumGrid.getSelectionModel().getSelected().data.albumid);
 					myText = 'updating Album info'
 				}
 			};
             if (v == 19) {
 				if ((extraInfo.getForm().isDirty()) || (albumDescription.getForm().isDirty())) {
 //					ValidateAlbuminfo(record);
-					updateXBMCTables(extraInfo.form, 'albuminfo');
-					updateXBMCTables(albumDescription.form, 'albuminfo');
+					updateXBMCTables(extraInfo.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
+					updateXBMCTables(albumDescription.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
 					myText = 'updating Extra info'
 				}					
 			};

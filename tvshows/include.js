@@ -55,13 +55,13 @@ function updateXBMCAll() {
 			if (v == 1) {
 				myText = 'Checking changes...';
 				if (EpisodedetailPanel.getForm().isDirty()) {
-					updateXBMCTables(EpisodedetailPanel.getForm(), 'episode');
+					updateXBMCTables(EpisodedetailPanel.getForm(), 'episode', EpisodeGrid.getSelectionModel().getSelected().data.episodeid);
 					myText = 'updating Episode info';
 				}
 			}
                if (v == 10) {
 				if (TVShowdetailPanel.getForm().isDirty()) {
-					updateXBMCTables(TVShowdetailPanel.getForm(), 'tvshow');
+					updateXBMCTables(TVShowdetailPanel.getForm(), 'tvshow', TvShowGrid.getSelectionModel().getSelected().data.tvshowid);
 					myText = 'updating TV Show info';
 						//need commit here
 				}
