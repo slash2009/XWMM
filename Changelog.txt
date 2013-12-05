@@ -1,5 +1,9 @@
 XWMM Change log
 
+3.0.1
+- Whitspace fixes (fyfe)
+- Multicharactar support (fyfe)
+
 3.0.0a
 - Slash, fixed movie set management (add, delete, rename)
 
