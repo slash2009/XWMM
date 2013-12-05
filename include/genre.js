@@ -39,7 +39,7 @@ var storegenre = new Ext.data.Store({
     }),
     reader: new Ext.data.JsonReader({
         root:'result.genres'
-    }, genreRecord)
+    }, genreRecord),
 //  selectFromString :function(string){ // select genre rows according to movie genre field
 //      var myArray = string.split('/');
 //      Genregrid.getSelectionModel().clearSelections(false);
@@ -48,6 +48,20 @@ var storegenre = new Ext.data.Store({
 //          Genregrid.getSelectionModel().selectRow(index, true)
 //      }
 //  }
+    listeners: {
+        load: function(store, records, options) {
+            /*
+            * When asking XBMC for a list of genres it will return a blank one. This blank one is a catch all for all
+            * items that don't have a genre assigned to them. We don't want this blank genre to show up, so it's
+            * remove from the store at load.
+            */
+            for (var i = 0, len = records.length; i < len; i++) {
+                if (records[i].data.label === '') {
+                    store.remove(records[i]);
+                }
+            }
+        }
+    }
 });
 
 
@@ -122,14 +136,36 @@ function onDelete() {
 
 //grid for Genres
 var Genregrid = new Ext.grid.GridPanel({
-            id: 'Genregrid',
-            cm: GenrecolModel,
-            title: 'Genres',
-            enableDragDrop: false,
-            sm : Checkgenre,
-            stripeRows: true,
-            viewconfig: {forceFit: true},
-            store: storegenre
+    id: 'Genregrid',
+    title: 'Genres',
+    store: storegenre,
+    cm: GenrecolModel,
+    enableDragDrop: false,
+    sm : Checkgenre,
+    stripeRows: true,
+    viewconfig: {forceFit: true},
+    tbar: [
+        {
+            text: 'Add',
+            iconCls: 'silk-add',
+            handler: function(b, e) {
+                Ext.MessageBox.prompt(
+                    'Add Genre',
+                    'Enter the name of the genre you would like to add:',
+                    Genregrid.addGenre,
+                    Genregrid);
+            }
+        }
+    ],
+    addGenre: function(btn, text) {
+        if (btn != 'ok') {
+            return;
+        }
+
+        var newGenre = new genreRecord({label: text});
+        console.debug(this);
+        this.store.add(newGenre);
+    }
 });
 
 var winGenre = new Ext.Window({
