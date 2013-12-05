@@ -39,7 +39,9 @@ var episodeRecord = Ext.data.Record.create([
     {name: 'director'},
     {name: 'streamdetails'},
     {name: 'playcount'},
-    {name: 'episodeid'}
+    {name: 'episodeid'},
+    {name: 'file', convert: fileConvert},
+    {name: 'directory', mapping: 'file', convert: directoryConvert}
 ]);
 
 var tvshowStars = new Ext.ux.XbmcStars ({
@@ -94,6 +96,29 @@ function fanartConvert(v, record) {
 function ratingConvert(v, record) {
     return v.toFixed(1);
 }
+
+function fileConvert(v, record) {
+    var x;
+    x = v.lastIndexOf('/');
+    if (x >= 0) // Unix-based path
+        return v.substr(x+1);
+    x = v.lastIndexOf('\\');
+    if (x >= 0) // Windows-based path
+        return v.substr(x+1);
+    return v; // just the filename
+}
+
+function directoryConvert(v, record) {
+    var x;
+    x = v.lastIndexOf('/');
+    if (x >= 0) // Unix-based path
+        return v.substr(0, x+1);
+    x = v.lastIndexOf('\\');
+    if (x >= 0) // Windows-based path
+        return v.substr(0, x+1);
+    return v; // just the directory
+}
+
 
 var storeTvshow = new Ext.data.Store({
     sortInfo: {field: 'title', direction: "ASC"},
@@ -300,14 +325,12 @@ var fileDetailsPanel = new Ext.FormPanel({
     defaults: {width: 140, xtype: 'textfield'},
     items: [{
         fieldLabel: 'Name',
-        name: 'strFilename',
+        name: 'file',
         readOnly: true,
-        XBMCName: 'c00'
     },{
         fieldLabel: 'Directory',
-        name: 'strPath',
+        name: 'directory',
         readOnly: true,
-        XBMCName: 'c05'
     }]
 })
 
@@ -425,7 +448,7 @@ TVShow.Mainpanel = Ext.extend(Ext.Panel, {
         EpisodedetailPanel.getForm().reset();
         //Ext.getCmp('episodedetailPanel').getForm().reset(); does not work
 
-        storeEpisode.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": myTvShow, "season": mySeason, "properties": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount"]},"id": 1};
+        storeEpisode.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": {"tvshowid": myTvShow, "season": mySeason, "properties": [ "episode", "title", "rating", "plot", "firstaired", "director", "streamdetails", "playcount", "file"]},"id": 1};
         storeEpisode.load();
 
         storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVshowDetails", "params": {"tvshowid": myTvShow, "properties": ["cast"]},"id": 1};
