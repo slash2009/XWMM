@@ -3,7 +3,7 @@
   id="webinterface.XWMM"
   version="3.0.1"
   name="XWMM"
-  provider-name="slash | Zernable | MokuJinJin | nwtn">
+  provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe">
   <requires>
     <import addon="xbmc.gui" version="4.0.0"/>
   </requires>
