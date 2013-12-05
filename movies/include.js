@@ -196,14 +196,19 @@ function movieGenreChange(sm){
  * Save genre changes back to XBMC.
  */
 function updateXBMCGenreMovie() {
-    var newGenres = Genregrid.getSelectionModel().getSelections();
+    var selection = Genregrid.getSelectionModel().getSelections();
+    var genres = [];
+
+    for (var i = 0, len = selection.length; i < len; i++) {
+        genres.push(selection[i].data.label);
+    }
 
     var rpcCmd = {
         jsonrpc: '2.0',
         method: 'VideoLibrary.SetMovieDetails',
         params: {
             movieid: currentRecord.data.idMovie,
-            genre: newGenres
+            genre: genres
         },
         id: 1
     };
@@ -212,7 +217,7 @@ function updateXBMCGenreMovie() {
     //console.debug('XWMM::updateXBMCGenreMovie rpcCmd: ' + rpcCmdJSON);
     xbmcJsonRPC(rpcCmdJSON);
 
-    currentRecord.data.Moviegenres = newGenres.join(' / ');
+    currentRecord.data.Moviegenres = genres.join(' / ');
 }
 
 
