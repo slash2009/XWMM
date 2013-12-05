@@ -21,15 +21,15 @@ var gridContextMenu = new Ext.menu.Menu({
 
 function setWatched() {
     if (selectedEpisode.data.watched == "") {
-        setXBMCwatched(selectedEpisode.data.idFile);
-        selectedEpisode.data.watched ="1";
+        setXBMCWatched(selectedEpisode.data.idFile, 'episode', true);
+        selectedEpisode.data.watched = "1";
         EpisodeGrid.getView().refresh();
     }
 }
 
 function setUnwatched() {
     if (selectedEpisode.data.watched != "") {
-        setXBMCunwatched(selectedEpisode.data.idFile);
+        setXBMCWatched(selectedEpisode.data.idFile, 'episode', false);
         selectedEpisode.data.watched = "";
         EpisodeGrid.getView().refresh()
     }

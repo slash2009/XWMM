@@ -34,21 +34,47 @@ function setXBMCResponseFormat() {
     });
 }
 
-function setXBMCwatched(idMedia,media) {
-    if (media == "movie") {
-        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMedia+', "playcount": 1}, "id": 1}');
-    } else {
-        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idMedia+', "playcount": 1}, "id": 1}');
+
+/**
+ * Save the watched state back to XBMC.
+ * @param {int} mediaId The media id.
+ * @param {string} mediaType The type of media.
+ * @param {boolean} watched Has it been watched?
+ */
+function setXBMCWatched(mediaId, mediaType, watched) {
+    var playCount = watched ? 1 : 0;
+    var rpcCmd = {
+        jsonrpc: '2.0',
+        method: '',
+        params: {},
+        id: 1
+    };
+
+    switch (mediaType) {
+        case 'movie':
+            rpcCmd.method = 'VideoLibrary.SetMovieDetails';
+            rpcCmd.param = {movieid: mediaId, playcount: playCount};
+            break;
+
+        case 'episode':
+            rpcCmd.method = 'VideoLibrary.SetEpisodeDetails';
+            rpcCmd.param = {episodeid: mediaId, playcount: playCount};
+            break;
+
+        case 'musicvideo': // For future use, when music video support is added. :)
+            rpcCmd.method = 'VideoLibrary.SetMusicVideoDetails';
+            rpcCmd.param = {musicvideoid: mediaId, playcount: playCount};
+            break;
+
+        default:
+            return;
     }
+
+    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
+    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
+    xbmcJsonRPC(rpcCmdJSON);
 }
 
-function setXBMCunwatched(idMedia,media) {
-    if (media == "movie") {
-        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMedia+', "playcount": 0, "lastplayed": ""}, "id": 1}');
-    } else {
-        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": '+idMedia+', "playcount": 0, "lastplayed": ""}, "id": 1}');
-    }
-}
 
 function downloadNewXBMCFile(url,myFile) {
     var inputUrl = '/xbmcCmds/xbmcHttp?command=FileDownloadFromInternet('+url+'; '+myFile+')';

@@ -21,13 +21,13 @@ var gridContextMenu = new Ext.menu.Menu({
 });
 
 function setWatched() {
-        setXBMCwatched(currentRecord.data.idMovie, "movie");
-        currentRecord.data.watched ="1";
+        setXBMCWatched(currentRecord.data.idMovie, 'movie', true);
+        currentRecord.data.watched = "1";
         Moviegrid.getView().refresh()
 };
 
 function setUnwatched() {
-        setXBMCunwatched(currentRecord.data.idMovie, "movie");
+        setXBMCWatched(currentRecord.data.idMovie, 'movie', false);
         currentRecord.data.watched = "";
         Moviegrid.getView().refresh()
 };
