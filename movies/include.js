@@ -209,7 +209,7 @@ function updateXBMCGenreMovie() {
     };
 
     var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    console.debug('XWMM::updateXBMCGenreMovie rpcCmd: ' + rpcCmdJSON);
+    //console.debug('XWMM::updateXBMCGenreMovie rpcCmd: ' + rpcCmdJSON);
     xbmcJsonRPC(rpcCmdJSON);
 
     currentRecord.data.Moviegenres = newGenres.join(' / ');
