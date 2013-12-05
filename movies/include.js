@@ -33,33 +33,38 @@ function setUnwatched() {
 };
 
 
-function updateXBMCSet(item) {
-    var currentMovie = currentRecord; //Moviegrid.getSelectionModel().getSelected();
-    if (item.value == "") {
-    // remove existing record in setlinkmovie
-        myId = "";
-        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": ""}, "id": 1}');
-    }
-    else {
-        var myStore = MovieSetStore.getAt(MovieSetStore.findExact('strSet', item.value)),
-            myID;
+/**
+ * Save set changes back to XBMC.
+ * @param {Ext.form.Field} setField The set field.
+ */
+function updateXBMCSet(setField) {
+    var newValue = setField.getValue();
 
-        if (myStore) {
-            myId = myStore.data.idSet;
-        } else {
-            myId = item.value;
-        }
-
-        if (item.value != item.originalValue) {
-            xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ currentMovie.data.idMovie +', "set": "' + item.value + '"}, "id": 1}');
-        }
+    if (setField.originalValue == newValue) {
+        // No change, don't save the value.
+        return;
     }
-    item.IsDirty = false;
-    item.originalValue = item.getValue();
-    currentMovie.data.idSet = myId;
-    currentMovie.data.strSet = item.value;
-    Moviegrid.getView().refresh()
+
+    var rpcCmd = {
+        jsonrpc: '2.0',
+        method: 'VideoLibrary.SetMovieDetails',
+        params: {
+            movieid: currentRecord.data.idMovie,
+            set: newValue
+        },
+        id: 1
+    };
+
+    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
+    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
+    xbmcJsonRPC(rpcCmdJSON);
+
+    setField.IsDirty = false;
+    setField.originalValue = newValue;
+    currentMovie.data.strSet = newValue;
+    Moviegrid.getView().refresh();
 }
+
 
 function updateXBMCAll() {
 
@@ -186,36 +191,59 @@ function movieGenreChange(sm){
 
 }
 
-function updateXBMCGenreMovie(){
-    var parmArray = [];
-    var jsParam = '';
-    var modifiedGenre = Genregrid.getSelectionModel().getSelections();
 
-    currentRecord.data.selectedGenre = modifiedGenre;
+/**
+ * Save genre changes back to XBMC.
+ */
+function updateXBMCGenreMovie() {
+    var selection = Genregrid.getSelectionModel().getSelections();
+    var genres = [];
 
-    idMovie = currentRecord.data.idMovie;
-
-    for (var i = 0; i < modifiedGenre.length; i++){
-        parmArray[i] = modifiedGenre[i].data.label;
+    for (var i = 0, len = selection.length; i < len; i++) {
+        genres.push(selection[i].data.label);
     }
-    if (parmArray.length == 1) {
-        jsParam = '"' + parmArray[0] + '"';
-        }
-    else {
-        jsParam = '"' + parmArray.join('","') + '"';
-        }
-    xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+idMovie+', "genre": ['+jsParam+']}, "id": 1}');
-}
 
-function GetMovieGenres(record){
-    var responseArr = [];
-    var myGenres = record.data.Moviegenres.split('/');
-
-    for (var i = 0; i < myGenres.length; i++) {
-        responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false)
+    var rpcCmd = {
+        jsonrpc: '2.0',
+        method: 'VideoLibrary.SetMovieDetails',
+        params: {
+            movieid: currentRecord.data.idMovie,
+            genre: genres
+        },
+        id: 1
     };
-    updateGenreGrid(responseArr)
+
+    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
+    //console.debug('XWMM::updateXBMCGenreMovie rpcCmd: ' + rpcCmdJSON);
+    xbmcJsonRPC(rpcCmdJSON);
+
+    currentRecord.data.Moviegenres = genres.join(' / ');
 }
+
+
+/**
+ * Update the genre grid selection from the current record.
+ * @param {MovieRecord} record The selected record.
+ */
+function GetMovieGenres(record) {
+    var genres = splitStringList(record.data.Moviegenres, /[,\/\|]+/); // Split list separated with , / or |.
+    var genreIds = [];
+
+    for (var i = 0, len = genres.length; i < len; i++) {
+        var id = storegenre.findExact('label', genres[i]);
+        if (id == -1) {
+            // Genre not found. This should never happen, but just in case the genre grid gets out of sync add the
+            // missing genre.
+            var newGenre = new genreRecord({label: genres[i]});
+            storegenre.add(newGenre);
+            id = storegenre.indexOf(newGenre);
+        }
+        genreIds[i] = id;
+    }
+
+    updateGenreGrid(genreIds);
+}
+
 
 function checkWatched(val) {
  if ((val != "" ) && (val != "0"))
