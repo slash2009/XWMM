@@ -1,9 +1,8 @@
 XWMM - XBMC Web Media Manager
 ====
 
-### MAIN REPO (Master):
-Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
-Branched repositories for e.g. Frodo
+### Gotham REPO:
+Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged to this repo
 
 Information should be posted here and some rudimentary format about XWMM etc and extended as necessary.
 - - -
@@ -12,7 +11,7 @@ Please join XWMM, Help this XBMC web-interface be nr#1, we need skilled develope
 - - -
 
 ### SUBMITTING PATCHES AND PR's
-The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM Master Repo, it should contain some of the following:
+The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM Master Repo **NOT child repos**, it should contain some of the following:
 
 * What Patch addresses, if its a bug-fix a feature or improvement or something else.
 * Any comments in code for what is not immediately obvious.
@@ -36,12 +35,14 @@ Github issue tracker [Click here to submit an issue](https://github.com/slash200
 Features not yet working (incomplete list) - Todo list:
 
 * Changing artwork
-* Managing, genres and actors (although these can be changed on a per movie/TV/music basis)
-* The "Files" tab
+* Managing, actors (although these can be changed on a per movie/TV/music basis)
+* The "Files" tab (testing)
+* Test Genres
+* Manage Movie set information/artwork
 
 - - -
 Install Via Zip mode in XBMC.
 
 ### Download:
-XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/master.zip "Title")
+XWMM Gotham-Pre-3.0.1.zip [click here to download](https://github.com/slash2009/XWMM/archive/v3.0.1-pre.zip "Title")
 - - -

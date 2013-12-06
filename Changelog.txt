@@ -1,24 +1,28 @@
 XWMM Change log
 
+3.0.2
+- Addon dependency bump
+
 3.0.1
 - Changes by fyfe
-- Whitspace fixes 
-- Multicharactar support
-- Fix typo in updateXBMCTables commit.
-- Cleanup and improve updateXBMCSet, updateXBMCGenreMovie, GetMovieGenres.	
-- Forgot to comment out debugging code in last commit (b1d59e2) 	
-- Small fix, getSelections() returns an array of records not values. 	
-- Fold setXBMCwatched and setXBMCunwatched into one function and clean up. 	
-- Allow new genres to be added. (Issue #4)	
-- Show filename and directory when episode selected. (Issue #14) 
-- Fix-updateXBMCTables	
-- Improvement-add-genres	
-- Cleanup-save-watched 	
-- Fix-save-sets-genres 	
-- fix-tvshow-file-details
+-- Whitspace fixes 
+-- Multicharactar support
+-- Fix typo in updateXBMCTables commit.
+-- Cleanup and improve updateXBMCSet, updateXBMCGenreMovie, GetMovieGenres.	
+-- Forgot to comment out debugging code in last commit (b1d59e2) 	
+-- Small fix, getSelections() returns an array of records not values. 	
+-- Fold setXBMCwatched and setXBMCunwatched into one function and clean up. 	
+-- Allow new genres to be added. (Issue #4)	
+-- Show filename and directory when episode selected. (Issue #14) 
+-- Fix-updateXBMCTables	
+-- Improvement-add-genres	
+-- Cleanup-save-watched 	
+-- Fix-save-sets-genres 	
+-- fix-tvshow-file-details
 
 3.0.0a
-- Slash, fixed movie set management (add, delete, rename)
+- Slash
+-- Fixed movie set management (add, delete, rename)
 
 3.0.0
 - MokuJinJin and nwtn PR's
@@ -29,8 +33,10 @@ XWMM Change log
 -- Minor fixes
 
 2.1.0
-- Updated to use JSON
-- Minor updates to addon.xml
+- Zernable changes.
+-- Compatibility with Frodo
+-- Updated to use JSON
+-- Minor updates to addon.xml
 
 2.0.9
 -- minor fixes
