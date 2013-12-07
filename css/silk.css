@@ -15,11 +15,4 @@
 .silk-add { background-image: url(../images/icons/add.png) !important; background-repeat: no-repeat; }
 .silk-delete{ background-image: url(../images/icons/delete.png) !important; background-repeat: no-repeat; }
 .silk-grid { background-image: url(../images/icons/grid.png) !important; background-repeat: no-repeat; }
-<<<<<<< HEAD
-.silk-plugin { background-image: url(../images/icons/plugin.png) !important; background-repeat: no-repeat; }
-
-
-
-=======
 .silk-plugin { background-image: url(../images/icons/plugin.gif) !important; background-repeat: no-repeat; }
->>>>>>> master
