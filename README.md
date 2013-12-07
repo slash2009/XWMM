@@ -1,11 +1,9 @@
 XWMM - XBMC Web Media Manager
 ====
 
-<<<<<<< HEAD
-### Experimental Graphics (Master): 
+### Experimental Graphics: 
 =======
-### MAIN REPO (Master):
->>>>>>> master
+
 Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
 Branched repositories for e.g. Frodo
 
