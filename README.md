@@ -21,6 +21,15 @@ The idea is to fork this repo work on your changes and make a pull request (PR) 
 ## Note:
 A pull request PR should be made to MASTER, (using Branches is ok if your going to make same PR to master) by using Master then your working with latest code and fixes.
 Any work can then be easily Picked and pulled into branches if needed, especially if its a bug-fix.
+
+### Graphics and code related to graphics PR's
+
+Please submit Graphics improvements and contributions PR's to this branch directly.
+Any code imporvemnts related to graphics also ok to PR against this branch.
+
+### Code PR not related to graphics
+Please submit these Against Master
+
 #### What will happen to Patches & PR's
 
 * It will be reviewed and merged as soon as possible by someone who understands what's going on.
