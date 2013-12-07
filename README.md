@@ -2,7 +2,6 @@ XWMM - XBMC Web Media Manager
 ====
 
 ### Experimental Graphics: 
-=======
 
 Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
 Branched repositories for e.g. Frodo
@@ -44,5 +43,5 @@ Features not yet working (incomplete list) - Todo list:
 Install Via Zip mode in XBMC.
 
 ### Download:
-XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/Experimental-graphics.zip "Title")
+XWMM Experimental Graphics.zip [click here to download](https://github.com/slash2009/XWMM/archive/Experimental-graphics.zip "Title")
 - - -
