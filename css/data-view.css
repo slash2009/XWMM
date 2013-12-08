@@ -4,14 +4,17 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
+ 
 #images-view .x-panel-body{
 	background: #777777;
 	font: 11px Arial, Helvetica, sans-serif;
 }
+
 #images-view .thumb{
 	background: #dddddd;
 	padding: 3px;
 }
+
 #images-view .thumb img{
 	height: 120px;
 	width: 90px;
@@ -33,6 +36,7 @@
 	margin-right: 0;
 	padding: 5px;
 }
+
 #images-view .thumb-wrap span{
 	display: block;
 	overflow: hidden;
@@ -50,6 +54,7 @@
 	border:1px solid #99bbe8;
 	padding: 4px;
 }
+
 #images-view .x-view-selected .thumb{
 	background:transparent;
 }

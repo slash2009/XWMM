@@ -1,11 +1,28 @@
 XWMM Change log
 
-3.0.0
-- Slash, 
--- Fixed movie set management (add, delete, rename)
--- Fix addon.xml dependency
+3.0.1
+- Changes by fyfe
+-- Whitspace fixes
+-- Multicharactar support
+-- Fix typo in updateXBMCTables commit.
+-- Cleanup and improve updateXBMCSet, updateXBMCGenreMovie, GetMovieGenres.        
+-- Forgot to comment out debugging code in last commit (b1d59e2)         
+-- Small fix, getSelections() returns an array of records not values.         
+-- Fold setXBMCwatched and setXBMCunwatched into one function and clean up.         
+-- Allow new genres to be added. (Issue #4)        
+-- Show filename and directory when episode selected. (Issue #14)
+-- Fix-updateXBMCTables        
+-- Improvement-add-genres        
+-- Cleanup-save-watched         
+-- Fix-save-sets-genres         
+-- fix-tvshow-file-details
+-- addon.xml dependencies update
 
 3.0.0a
+- Slash, 
+-- Fixed movie set management (add, delete, rename)
+
+3.0.0
 - MokuJinJin and nwtn PR's
 -- Some hack to get it working (not all features) with Frodo (XBMC v12) -- thanks to MokuJinJin
 -- Unable to load tvshow, because of a little bug, just check undefined var -- thanks to MokuJinJin
