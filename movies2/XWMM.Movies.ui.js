@@ -344,11 +344,13 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
                 },
                 {
                     fieldLabel: 'Director',
-                    name: 'director'
+                    name: 'director',
+                    emptyText: 'A / separated list of directors.'
                 },
                 {
                     fieldLabel: 'Writer',
-                    name: 'writer'
+                    name: 'writer',
+                    emptyText: 'A / separated list of writers.'
                 },
                 {
                     xtype: 'combo',
@@ -365,7 +367,8 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
                 },
                 {
                     fieldLabel: 'Studio',
-                    name: 'studio'
+                    name: 'studio',
+                    emptyText: 'A / separated list of studios.'
                 },
                 {
                     // TODO: replace the drop down box image (on the right) with a more appropriate image.
@@ -435,7 +438,8 @@ XWMM.Movies.ui.OtherDetails = new Ext.FormPanel({
         },
         {
             fieldLabel: 'Country',
-            name: 'country'
+            name: 'country',
+            emptyText: 'A / separated list of countries.'
         },
         {
             // TODO: replace the drop down box image (on the right) with a more appropriate image.
