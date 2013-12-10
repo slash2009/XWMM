@@ -464,8 +464,14 @@ XWMM.Movies.ui.OtherDetails = new Ext.FormPanel({
             }
         },
         {
+            xtype: 'combo',
             fieldLabel: 'Set',
-            name: 'set'
+            name: 'set',
+            displayField: 'title',
+            emptyText: '-- None --',
+            store: XWMM.Movies.data.MovieSetStore,
+            mode: 'local',
+            triggerAction: 'all'
         }
     ]
 });

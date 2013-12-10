@@ -12,5 +12,6 @@ Ext.onReady(function() {
         ]
     });
 
+    XWMM.Movies.data.MovieSetStore.load();
     XWMM.Movies.data.MovieGridStore.load();
 });
