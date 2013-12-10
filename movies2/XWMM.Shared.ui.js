@@ -74,7 +74,21 @@ XWMM.Shared.ui.MainMenuBar = new Ext.Toolbar({
             menu: [
                 {
                     text: 'Full screen mode',
-                    handler: function() {window.location = '../movies/index.html'}
+                    handler: function(btn, e) {
+                        /*
+                         * TODO: there is an API for entering/exiting full screen mode, but it's not consistent across
+                         * browsers yet.
+                         * https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Using_full_screen_mode
+                         */
+                        console.log(e);
+                        Ext.MessageBox.show({
+                            title: 'Full screen mode',
+                            msg: 'To enter/leave full screen mode press F11.',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.INFO
+                        });
+                        e.stopEvent();
+                    }
                 },
                 {
                     xtype: 'menucheckitem',
