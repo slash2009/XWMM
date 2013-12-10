@@ -143,6 +143,12 @@ XWMM.Movies.data.MovieRecord = Ext.data.Record.create([
 ]);
 
 
+XWMM.Movies.data.MovieSetRecord = Ext.data.Record.create([
+    {name: 'setid', type: 'int'},
+    {name: 'title'}
+]);
+
+
 XWMM.Movies.data.MovieGridStore = new Ext.data.Store({
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
@@ -204,4 +210,34 @@ XWMM.Movies.data.MovieDetailsStore = new Ext.data.Store({
 XWMM.Movies.data.ContentRatingStore = new Ext.data.ArrayStore({
     fields: [{name: 'mpaa', type: 'string'},{name: 'rating', type: 'string'}],
     data: [['UK:U','UK:U'], ['UK:PG','UK:PG'], ['UK:12A','UK:12A'], ['UK:12','UK:12'], ['UK:15','UK:15'], ['UK:18','UK:18']]
+});
+
+
+XWMM.Movies.data.MovieSetStore = new Ext.data.Store({
+    proxy: new Ext.data.XBMCProxy({
+        url: '/jsonrpc',
+        xbmcParams: {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetMovieSets',
+            params: {
+                properties: ['title'],
+                sort: {
+                    order: 'ascending',
+                    ignorearticle: true,
+                    method: 'title'
+                }
+            },
+            id: 1
+        }
+    }),
+    reader: new Ext.data.JsonReader({root: 'result.sets'}, XWMM.Movies.data.MovieSetRecord),
+    listeners: {
+        load: function(store, records, options) {
+            //console.log(records);
+        },
+        exception: function(store, type, action, options, response, arg) {
+            console.debug('Store Exception: [type: ' + type + '; action: ' + action + ']');
+            console.debug(response);
+        }
+    }
 });
