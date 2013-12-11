@@ -6,6 +6,12 @@ XWMM.Shared.data.GenreRecord = Ext.data.Record.create([
 ]);
 
 
+XWMM.Shared.data.ActorRecord = Ext.data.Record.create([
+    {name: 'name', type: 'string'},
+    {name: 'role', type: 'string'}
+]);
+
+
 XWMM.Shared.data.GenreStore = new Ext.data.Store({
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',

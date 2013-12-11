@@ -241,3 +241,29 @@ XWMM.Movies.data.MovieSetStore = new Ext.data.Store({
         }
     }
 });
+
+XWMM.Movies.data.ActorStore = new Ext.data.Store({
+    sortInfo: {field: 'name', direction: 'ASC'},
+    proxy: new Ext.data.XBMCProxy({
+        url: '/jsonrpc',
+        xbmcParams: {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetMovieDetails',
+            params: {
+                // movieid: set for movie cast.
+                properties: ['cast']
+            },
+            id: 1
+        }
+    }),
+    reader: new Ext.data.JsonReader({root: 'result.moviedetails.cast'}, XWMM.Shared.data.ActorRecord),
+    listeners: {
+        load: function(store, records, options) {
+            //console.log(records);
+        },
+        exception: function(store, type, action, options, response, arg) {
+            console.debug('Store Exception: [type: ' + type + '; action: ' + action + ']');
+            console.debug(response);
+        }
+    }
+});
