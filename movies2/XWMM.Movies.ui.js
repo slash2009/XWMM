@@ -361,9 +361,8 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
                     store: XWMM.Movies.data.ContentRatingStore,
                     displayField: 'mpaa',
                     valueField: 'mpaa',
-                    emptyText : '-- Unrated --',
+                    emptyText: '-- Unrated --',
                     typeAhead: true,
-                    emptyText: 'Select a content rating...',
                     mode: 'local',
                     triggerAction: 'all'
                 },
