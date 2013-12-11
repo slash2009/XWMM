@@ -122,10 +122,16 @@ XWMM.Shared.ui.GenreChkBoxModel = new Ext.grid.CheckboxSelectionModel({
 });
 
 
-XWMM.Shared.ui.GenreColModel = new Ext.grid.ColumnModel([
-    XWMM.Shared.ui.GenreChkBoxModel,
-    {header: 'Genre', width: 200, dataIndex: 'title'}
-]);
+XWMM.Shared.ui.GenreColModel = new Ext.grid.ColumnModel({
+    defaults: {
+        menuDisabled: true,
+        resizable: false
+    },
+    columns: [
+        XWMM.Shared.ui.GenreChkBoxModel,
+        {header: 'Genre', dataIndex: 'title', id: 'colGenre'}
+    ]
+});
 
 
 XWMM.Shared.ui.ActorColModel = new Ext.grid.ColumnModel({
@@ -145,6 +151,7 @@ XWMM.Shared.ui.GenreGrid = new Ext.grid.GridPanel({
     genreField: false, // Set when initialising app.
     store: XWMM.Shared.data.GenreStore,
     cm: XWMM.Shared.ui.GenreColModel,
+    autoExpandColumn: 'colGenre',
     enableDragDrop: false,
     sm: XWMM.Shared.ui.GenreChkBoxModel,
     stripeRows: true,
