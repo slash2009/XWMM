@@ -417,7 +417,7 @@ XWMM.Movies.ui.ActorGrid = new Ext.grid.GridPanel({
     cm: XWMM.Shared.ui.ActorColModel,
     enableDragDrop: false,
     stripeRows: true,
-    viewconfig: {forceFit: true},
+    viewconfig: {forceFit: true}
 });
 
 
