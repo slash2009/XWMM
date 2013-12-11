@@ -4,6 +4,9 @@ Ext.onReady(function() {
     XWMM.InitApp();
     XWMM.Movies.ui.SetupMainMenuBar();
 
+    XWMM.Shared.data.GenreStore.proxy.conn.xbmcParams.params.type = 'movie';
+    XWMM.Shared.ui.GenreGrid.genreField = 'XWMM.Movies.ui.MovieDetails.GenresField';
+
     new Ext.Viewport({
         layout: 'border',
         items: [
@@ -12,6 +15,7 @@ Ext.onReady(function() {
         ]
     });
 
+    XWMM.Shared.data.GenreStore.load();
     XWMM.Movies.data.MovieSetStore.load();
     XWMM.Movies.data.MovieGridStore.load();
 });
