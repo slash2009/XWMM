@@ -109,3 +109,101 @@ XWMM.Shared.ui.MainMenuBar = new Ext.Toolbar({
         }
     ]
 });
+
+
+XWMM.Shared.ui.GenreChkBoxModel = new Ext.grid.CheckboxSelectionModel({
+    alwaysSelectOnCheck: 'true',
+    header: false,
+    listeners: {
+        selectionchange: function(sm) {
+            XWMM.Shared.ui.GenreGrid.updateField();
+        }
+    }
+});
+
+
+XWMM.Shared.ui.GenreColModel = new Ext.grid.ColumnModel([
+    XWMM.Shared.ui.GenreChkBoxModel,
+    {header: 'Genre', width: 200, dataIndex: 'title'}
+]);
+
+
+XWMM.Shared.ui.GenreGrid = new Ext.grid.GridPanel({
+    title: 'Genres', // TODO: why has this got a different style header??
+    genreField: false, // Set when initialising app.
+    store: XWMM.Shared.data.GenreStore,
+    cm: XWMM.Shared.ui.GenreColModel,
+    enableDragDrop: false,
+    sm: XWMM.Shared.ui.GenreChkBoxModel,
+    stripeRows: true,
+    viewconfig: {forceFit: true},
+    tbar: [
+        {
+            text: 'Add',
+            iconCls: 'silk-add',
+            handler: function(b, e) {
+                Ext.MessageBox.prompt(
+                    'Add Genre',
+                    'Enter the name of the genre you would like to add:',
+                    XWMM.Shared.ui.GenreGrid.addGenre,
+                    XWMM.Shared.ui.GenreGrid);
+            }
+        }
+    ],
+    addGenre: function(btn, text) {
+        if (btn != 'ok') {
+            return;
+        }
+
+        var newGenre = new XWMM.Shared.data.GenreRecord({title: text});
+        this.store.add(newGenre);
+    },
+    updateSelection: function(genres) {
+        var genreList = genres.split(XWMM.settings.listSeparatorRe);
+        var genreIds = [];
+
+        for (var i = 0, len = genreList.length; i < len; i++) {
+            var id = this.store.findExact('title', genreList[i]);
+            if (id == -1) {
+                // Genre not found. This should never happen, but just in case the genre grid gets out of sync add the
+                // missing genre.
+                var newGenre = new XWMM.Shared.data.GenreRecord({title: genreList[i]});
+                this.store.add(newGenre);
+                id = this.store.indexOf(newGenre);
+            }
+            genreIds[i] = id;
+        }
+
+        var sm = this.getSelectionModel();
+        sm.suspendEvents(); // Don't start an update storm!
+        sm.clearSelections(false);
+        sm.selectRows(genreIds, true);
+        sm.resumeEvents();
+    },
+    updateField: function() {
+        if (this.genreField === false) {
+            console.error('Genre field has not been set!');
+            return;
+        }
+
+        var field = Ext.getCmp(this.genreField);
+        if (field === undefined) {
+            console.error('Genre field was not found!');
+            return;
+        }
+
+        var selection = this.getSelectionModel().getSelections();
+        var genres = [];
+        for (var i = 0, len = selection.length; i < len; i++) {
+            genres.push(selection[i].data.title);
+        }
+        genres.sort();
+
+        var oldValue = field.getValue();
+        var newValue = genres.join(XWMM.settings.listSeparator);
+        field.setValue(newValue);
+        // This is a bit of a hack, setValue doesn't fire a change event so do it manually.
+        // This might not be the right way to do it.
+        field.fireEvent('change', {this: field, newValue: newValue, oldValue: oldValue});
+    }
+});

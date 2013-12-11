@@ -153,6 +153,8 @@ XWMM.Movies.ui.MovieGrid = new Ext.grid.GridPanel({
                 XWMM.Movies.ui.MovieDetails.getForm().loadRecord(detailedRecord);
                 XWMM.Movies.ui.OtherDetails.getForm().loadRecord(detailedRecord);
                 XWMM.Movies.ui.RatingStars.updateSrc(detailedRecord);
+                //Load genres
+                XWMM.Shared.ui.GenreGrid.updateSelection(detailedRecord.data.genre);
                 // Load artwork
                 XWMM.Movies.ui.MoviePoster.updateSrc(detailedRecord.data.poster);
                 XWMM.Movies.ui.MovieFanart.updateSrc(detailedRecord.data.fanart);
@@ -278,7 +280,7 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
                 {
                     fieldLabel: 'Genres',
                     name: 'genre',
-                    id:'moviegenres', // TODO: XWMM.Movies.ui.MovieDetails.GenresField
+                    id: 'XWMM.Movies.ui.MovieDetails.GenresField',
                     readOnly: true
                 }
             ]
@@ -486,7 +488,7 @@ XWMM.Movies.ui.MovieExtraDetails = new Ext.Panel({
     margins: '5 0 5 5',
     layout: 'accordion',
     items: [
-        {title: 'Genre', html: 'Genre'},
+        XWMM.Shared.ui.GenreGrid,
         {title: 'Cast', html: 'Cast'},
         XWMM.Movies.ui.OtherDetails
     ]
