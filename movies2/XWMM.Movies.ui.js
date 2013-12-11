@@ -155,6 +155,9 @@ XWMM.Movies.ui.MovieGrid = new Ext.grid.GridPanel({
                 XWMM.Movies.ui.RatingStars.updateSrc(detailedRecord);
                 //Load genres
                 XWMM.Shared.ui.GenreGrid.updateSelection(detailedRecord.data.genre);
+                //Load cast
+                XWMM.Movies.data.ActorStore.proxy.conn.xbmcParams.params.movieid = detailedRecord.data.movieid;
+                XWMM.Movies.data.ActorStore.reload();
                 // Load artwork
                 XWMM.Movies.ui.MoviePoster.updateSrc(detailedRecord.data.poster);
                 XWMM.Movies.ui.MovieFanart.updateSrc(detailedRecord.data.fanart);
@@ -408,6 +411,16 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
 });
 
 
+XWMM.Movies.ui.ActorGrid = new Ext.grid.GridPanel({
+    title: 'Cast', // TODO: why has this got a different style header??
+    store: XWMM.Movies.data.ActorStore,
+    cm: XWMM.Shared.ui.ActorColModel,
+    enableDragDrop: false,
+    stripeRows: true,
+    viewconfig: {forceFit: true},
+});
+
+
 XWMM.Movies.ui.OtherDetails = new Ext.FormPanel({
     title: 'Other Details',
     trackResetOnLoad: true,
@@ -488,7 +501,7 @@ XWMM.Movies.ui.MovieExtraDetails = new Ext.Panel({
     layout: 'accordion',
     items: [
         XWMM.Shared.ui.GenreGrid,
-        {title: 'Cast', html: 'Cast'},
+        XWMM.Movies.ui.ActorGrid,
         XWMM.Movies.ui.OtherDetails
     ]
 });

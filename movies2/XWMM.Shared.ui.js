@@ -128,6 +128,18 @@ XWMM.Shared.ui.GenreColModel = new Ext.grid.ColumnModel([
 ]);
 
 
+XWMM.Shared.ui.ActorColModel = new Ext.grid.ColumnModel({
+    defaults: {
+        menuDisabled: true,
+        resizable: false
+    },
+    columns: [
+        {header: 'Actor', dataIndex: 'name'},
+        {header: 'Role', dataIndex: 'role'}
+    ]
+});
+
+
 XWMM.Shared.ui.GenreGrid = new Ext.grid.GridPanel({
     title: 'Genres', // TODO: why has this got a different style header??
     genreField: false, // Set when initialising app.
