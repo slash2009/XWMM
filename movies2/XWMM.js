@@ -18,7 +18,7 @@ Ext.namespace('XWMM.settings');
 XWMM.settings.ignoreArticle = Ext.state.Manager.get('ignoreArticle', false);
 
 XWMM.settings.listSeparator = ' / ';
-XWMM.settings.listSeparatorRe = /[,\/\|]+/; // Split list separated with , / or |
+XWMM.settings.listSeparatorRe = /[ ]+[,\/\|]+[ ]+/; // Split list separated with , / or |
 
 
 XWMM.InitApp = function() {
