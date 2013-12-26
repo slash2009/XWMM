@@ -16,7 +16,7 @@ XWMM.Movies.ui.MoviePoster = new Ext.ux.XbmcImages ({
     border: 0,
     width: 250,
     height: 375,
-    autoEl: {tag: 'img', src: '../images/defaultMovieCover.jpg'} //, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../images/defaultMovieCover.jpg'}
 });
 
 
@@ -24,7 +24,7 @@ XWMM.Movies.ui.MovieFanart = new Ext.ux.XbmcImages ({
     border: 0,
     width: 295,
     height:165,
-    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'}//, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'}
 });
 
 SetImage = function(img, value) {
@@ -248,11 +248,18 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
             id: 'XWMM.Movies.ui.MovieDetails.SaveBtn',
             text: 'Save',
             disabled: true,
-            handler: function() {}
+            handler: function(btn, e) {
+                var dirtyFields = XWMM.Movies.ui.MovieDetails.getForm().getFieldValues(true);
+                Ext.apply(dirtyFields, XWMM.Movies.ui.OtherDetails.getForm().getFieldValues(true));
+                XWMM.Movies.data.SaveChanges(XWMM.Movies.ui.state.selectedMovie.movieid, dirtyFields);
+                // TODO: check for successful save and update local record and form.
+                e.stopEvent();
+                this.disable();
+            }
         },
         {
             text: 'Cancel',
-            handler: function() {}
+            handler: function() {} // TODO: revert any changes made.
         }
     ],
     layout: 'table',
@@ -360,7 +367,7 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
                 {
                     xtype: 'combo',
                     fieldLabel: 'Content Rating',
-                    name: 'contentrating',
+                    name: 'mpaa',
                     store: XWMM.Movies.data.ContentRatingStore,
                     displayField: 'mpaa',
                     valueField: 'mpaa',
@@ -528,19 +535,19 @@ XWMM.Movies.ui.SetupMainMenuBar = function() {
                 {
                     text: 'Manage Genres',
                     iconCls: 'silk-plugin',
-                    disabled: 'true',
-                    handler: function() {/*winGenre.show()*/}
+                    //disabled: 'true',
+                    handler: function() {winGenre.show()}
                 },
                 {
                     text: 'Manage Actors',
                     iconCls: 'silk-plugin',
-                    disabled: 'true',
-                    handler: function() {/*window.location = '../actors/index.html'*/}
+                    //disabled: 'true',
+                    handler: function() {window.location = '../actors/index.html'}
                 },
                 {
                     text: 'Manage Movie Sets',
                     iconCls: 'silk-plugin',
-                    handler: function() {/*winMovieSet.show()*/}
+                    handler: function() {winMovieSet.show()}
                 },
                 {
                     text: 'Toggle articles in title sort',

@@ -26,7 +26,7 @@ XWMM.Shared.ui.MainMenuBar = new Ext.Toolbar({
                 },
                 {
                     text: 'Movies by Genre',
-                    disabled: 'true',
+                    //disabled: 'true',
                     iconCls: 'silk-grid',
                     handler: function() {window.location = '../movies/moviegenre.html'}
                 },

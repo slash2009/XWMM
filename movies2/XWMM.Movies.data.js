@@ -126,7 +126,7 @@ XWMM.Movies.data.MovieRecord = Ext.data.Record.create([
     {name: 'tagline', type: 'string'},
     {name: 'director', convert: XWMM.Movies.data.ArrayConverter},
     {name: 'writer', convert: XWMM.Movies.data.ArrayConverter},
-    {name: 'contentrating', mapping: 'mpaa', type: 'string'},
+    {name: 'mpaa', type: 'string'},
     {name: 'studio', convert: XWMM.Movies.data.ArrayConverter},
     {name: 'trailer', type: 'string'},
     {name: 'streamdetails', convert: XWMM.Movies.data.StreamDetailsConverter},
@@ -209,7 +209,23 @@ XWMM.Movies.data.MovieDetailsStore = new Ext.data.Store({
 
 XWMM.Movies.data.ContentRatingStore = new Ext.data.ArrayStore({
     fields: [{name: 'mpaa', type: 'string'},{name: 'rating', type: 'string'}],
-    data: [['UK:U','UK:U'], ['UK:PG','UK:PG'], ['UK:12A','UK:12A'], ['UK:12','UK:12'], ['UK:15','UK:15'], ['UK:18','UK:18']]
+    data: [
+        // source: http://forum.xbmc.org/showthread.php?tid=165818
+        // Australia
+        ['Australia:G','Australia:G'], ['Australia:PG','Australia:PG'], ['Australia:M','Australia:M'],
+        ['Australia:MA','Australia:MA'], ['Australia:R','Australia:R'], ['Australia:X','Australia:X'],
+        // France
+        ['France:U','France:U'], ['France:-10','France:-10'], ['France:-12','France:-12'], ['France:-16','France:-16'],
+        ['France:-18','France:-18'],
+        // Germany
+        ['Germany:0','Germany:0'], ['Germany:6','Germany:6'], ['Germany:12','Germany:12'], ['Germany:16','Germany:16'],
+        ['Germany:18','Germany:18'],
+        // UK
+        ['UK:U','UK:U'], ['UK:PG','UK:PG'], ['UK:12A','UK:12A'], ['UK:12','UK:12'], ['UK:15','UK:15'],
+        ['UK:18','UK:18'],
+        // USA
+        ['USA:G','USA:G'], ['USA:PG','USA:PG'], ['USA:PG-13','USA:PG-13'], ['USA:R','USA:R'], ['USA:NC-17','USA:NC-17']
+    ]
 });
 
 
@@ -242,6 +258,7 @@ XWMM.Movies.data.MovieSetStore = new Ext.data.Store({
     }
 });
 
+
 XWMM.Movies.data.ActorStore = new Ext.data.Store({
     sortInfo: {field: 'name', direction: 'ASC'},
     proxy: new Ext.data.XBMCProxy({
@@ -267,3 +284,55 @@ XWMM.Movies.data.ActorStore = new Ext.data.Store({
         }
     }
 });
+
+
+XWMM.Movies.data.SaveChanges = function(recordId, dirtyFields) {
+    console.log(dirtyFields);
+    for (var fname in dirtyFields) {
+        switch (fname) {
+            // Special Fields
+            case 'runtime':
+                dirtyFields[fname] = parseInt(dirtyFields[fname]) * 60; // JSON uses runtime as # of seconds.
+                break;
+
+            // Float Fields
+            case 'rating':
+                dirtyFields[fname] = parseFloat(dirtyFields[fname]).toFixed(1);
+                break;
+
+            // Int Fields
+            case 'year':
+                dirtyFields[fname] = parseInt(dirtyFields[fname]);
+                break;
+
+            // List Fields
+            case 'genre':
+            case 'director':
+            case 'writer':
+            case 'studio':
+            case 'country':
+                dirtyFields[fname] = splitStringList(dirtyFields[fname], /[,\/\|]+/); // Split list separated with , / or |.
+                break;
+
+            //default:
+            //    params[f.name] = f.getValue();
+            //    break;
+        }
+    }
+
+    if (Ext.util.JSON.encode(dirtyFields).length === 2) {
+        // Nothing to update.
+        return;
+    }
+
+    var rpcCmd = {jsonrpc: '2.0', id: 1};
+    dirtyFields.movieid = recordId;
+            rpcCmd.method = 'VideoLibrary.SetMovieDetails';
+            rpcCmd.params = dirtyFields;
+
+    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
+    console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmdJSON);
+    //xbmcJsonRPC(rpcCmdJSON);
+
+    //console.log(dirtyFields);
+};
