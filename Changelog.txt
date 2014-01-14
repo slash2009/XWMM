@@ -1,5 +1,7 @@
 XWMM Change log
 
+4.0.0 - Gotham version open.
+
 3.0.1
 - Changes by fyfe
 - Whitspace fixes
