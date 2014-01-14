@@ -535,21 +535,22 @@ XWMM.Movies.ui.SetupMainMenuBar = function() {
                 {
                     text: 'Manage Genres',
                     iconCls: 'silk-plugin',
-                    //disabled: 'true',
+                    disabled: 'true',
                     handler: function() {winGenre.show()}
                 },
                 {
                     text: 'Manage Actors',
                     iconCls: 'silk-plugin',
-                    //disabled: 'true',
+                    disabled: 'true',
                     handler: function() {window.location = '../actors/index.html'}
                 },
                 {
                     text: 'Manage Movie Sets',
                     iconCls: 'silk-plugin',
+                    disabled: 'true',
                     handler: function() {winMovieSet.show()}
                 },
-                {
+                /*{
                     text: 'Toggle articles in title sort',
                     iconCls: 'silk-plugin',
                     handler: function() {
@@ -563,7 +564,7 @@ XWMM.Movies.ui.SetupMainMenuBar = function() {
                         }
                         window.location.reload();
                     }
-                },
+                },*/
                 {
                     text: 'Export to HTML',
                     menu: [
@@ -591,10 +592,10 @@ XWMM.Movies.ui.SetupMainMenuBar = function() {
             id: 'quicksearch',
             width: 200,
             emptyText: 'Quick search...',
-            disabled: true,
             //triggerClass: 'silk-delete' // TODO: make this look pretty
             onTriggerClick: function (e) {
                 this.setValue('');
+                XWMM.Movies.data.MovieGridStore.clearFilter();
                 e.stopEvent();
             }
         }
