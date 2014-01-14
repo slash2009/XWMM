@@ -326,13 +326,11 @@ XWMM.Movies.data.SaveChanges = function(recordId, dirtyFields) {
     }
 
     var rpcCmd = {jsonrpc: '2.0', id: 1};
-    dirtyFields.movieid = recordId;
-            rpcCmd.method = 'VideoLibrary.SetMovieDetails';
-            rpcCmd.params = dirtyFields;
+    dirtyFields['movieid'] = recordId;
+    rpcCmd.method = 'VideoLibrary.SetMovieDetails';
+    rpcCmd.params = dirtyFields;
 
     var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmdJSON);
-    //xbmcJsonRPC(rpcCmdJSON);
-
-    //console.log(dirtyFields);
+    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmdJSON);
+    xbmcJsonRPC(rpcCmdJSON);
 };

@@ -251,7 +251,7 @@ XWMM.Movies.ui.MovieDetails = new Ext.FormPanel({
             handler: function(btn, e) {
                 var dirtyFields = XWMM.Movies.ui.MovieDetails.getForm().getFieldValues(true);
                 Ext.apply(dirtyFields, XWMM.Movies.ui.OtherDetails.getForm().getFieldValues(true));
-                XWMM.Movies.data.SaveChanges(XWMM.Movies.ui.state.selectedMovie.movieid, dirtyFields);
+                XWMM.Movies.data.SaveChanges(XWMM.Movies.ui.state.selectedMovie.data.movieid, dirtyFields);
                 // TODO: check for successful save and update local record and form.
                 e.stopEvent();
                 this.disable();
