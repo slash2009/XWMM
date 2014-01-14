@@ -159,7 +159,7 @@ XWMM.Movies.data.MovieGridStore = new Ext.data.Store({
                 properties: ['title', 'sorttitle', 'year', 'playcount', 'set'],
                 sort: {
                     order: 'ascending',
-                    ignorearticle: true,
+                    ignorearticle: XWMM.settings.ignoreArticle,
                     method: 'sorttitle'
                 }
             },
@@ -239,7 +239,7 @@ XWMM.Movies.data.MovieSetStore = new Ext.data.Store({
                 properties: ['title'],
                 sort: {
                     order: 'ascending',
-                    ignorearticle: true,
+                    ignorearticle: XWMM.settings.ignoreArticle,
                     method: 'title'
                 }
             },

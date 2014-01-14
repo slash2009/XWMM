@@ -95,9 +95,14 @@ XWMM.Shared.ui.MainMenuBar = new Ext.Toolbar({
                     text: 'Ignore article when sorting',
                     checked: XWMM.settings.ignoreArticle,
                     checkHandler: function(cb, checked) {
-                        XWMM.settings.ignoreArticle = checked;
-                        Ext.state.Manager.set('ignoreArticle', checked);
+                        XWMM.settings.ignoreArticle = checked ? 1 : 0;
+                        if (checked) {
+                            docCookies.setItem('sortArticles', '1', Infinity);
+                        } else {
+                            docCookies.removeItem('sortArticles');
+                        }
                         // TODO: reload store.
+                        window.location.reload();
                     }
                 }
             ]

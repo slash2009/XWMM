@@ -7,15 +7,8 @@ XWMM = {
 };
 
 
-XWMM.cookieProvider = new Ext.state.CookieProvider({
-    path: '/',
-    expires: new Date(new Date().getTime()+(1000*60*60*24*30)) //30 days
-});
-Ext.state.Manager.setProvider(XWMM.cookieProvider);
-
-
 Ext.namespace('XWMM.settings');
-XWMM.settings.ignoreArticle = Ext.state.Manager.get('ignoreArticle', false);
+XWMM.settings.ignoreArticle = (docCookies.getItem('sortArticles') == 1);
 
 XWMM.settings.listSeparator = ' / ';
 XWMM.settings.listSeparatorRe = /[ ]+[,\/\|]+[ ]+/; // Split list separated with , / or |
