@@ -12,7 +12,7 @@ Ext.define('XWMM.Application', {
 
     views: [
         'FilesView',
-        'MoviesView',
+        'movie.Main',
         'MusicVideosView',
         'MusicView',
         'TVShowsView'

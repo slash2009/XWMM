@@ -1,11 +1,11 @@
-Ext.define("XWMM.view.MoviesView", {
+Ext.define("XWMM.view.movie.Main", {
     extend: 'Ext.Container',
-    alias: 'widget.moviestab',
+    alias: 'widget.moviesmainview',
 
     requires: [
         'Ext.layout.container.Border',
-        'XWMM.view.MoviesList',
-        'XWMM.view.MovieDetails'
+        'XWMM.view.movie.MoviesList',
+        'XWMM.view.movie.MovieDetails'
     ],
 
     layout: 'border',

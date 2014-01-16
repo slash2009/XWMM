@@ -1,4 +1,4 @@
-Ext.define('XWMM.view.MovieDetails', {
+Ext.define('XWMM.view.movie.MovieDetails', {
     extend: 'Ext.form.Panel',
     alias: 'widget.moviedetails',
 

@@ -1,4 +1,4 @@
-Ext.define('XWMM.view.MoviesList', {
+Ext.define('XWMM.view.movie.MoviesList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.movieslist',
 

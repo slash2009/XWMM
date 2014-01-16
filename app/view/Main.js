@@ -8,7 +8,7 @@ Ext.define('XWMM.view.Main', {
     items: [
         {
             title: 'Movies',
-            xtype: 'moviestab'
+            xtype: 'moviesmainview'
         },
         {
             title: 'TV Shows',
