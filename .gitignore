@@ -1,0 +1,6 @@
+# Don't include generated files
+build/*
+bootstrap.css
+bootstrap.js
+sass/example/bootstrap.js
+sass/example/example.css
