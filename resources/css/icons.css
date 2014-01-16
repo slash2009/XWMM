@@ -1,0 +1,5 @@
+.icon-delete { content: url('../images/icons/delete.png'); }
+.icon-inset { content: url('../images/icons/set.png'); }
+.icon-notinset {}
+.icon-watched { content: url('../images/icons/checked.png'); }
+.icon-unwatched {}

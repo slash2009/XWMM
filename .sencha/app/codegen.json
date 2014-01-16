@@ -38,6 +38,9 @@
     },
     "{viewFileName}.js.tpl.merge": {
       "acde5ea901286ca2f976bcddea23e159dbaa0e6f": "eJxzrSjRS0lNy8xL1VCqTiwo8EvMTa3VK8tMLderBpFgvpKOQjWXAhCkVpSk5qVYKai7ArU55+cW5Oel5pWo64AlM0pyc4BSHqk5Ofk6CuH5RTkpiorqXLWa1gDU/CBX"
+    },
+    "{modelFileName}.js.tpl.merge": {
+      "31d5356142a167c72422f7902f19df3c583f3249": "eJxlUcFugzAMvfMVVqUq0CLorlC6w7TrfgBxSMG00dKAktAxRfn3GWg7rfMhdvKeX16c99EmDbZCYcjcpWtQfvALmp7X6BOnqPYsBhcABY4WVZMBc0du8E1yYwicoXlpBcrGZFC69byf4srlgCZZICggbAdVW9Epquaz6CZ+j7bTEF65Bo2W+GUVQ8+1nXqXhsT0UtiQxSyKQdDxLqe0X1iJRHWy5xy2W/GsvNjR0FLPTC5FdRfLWJT/I5ODpB/MOXQwDSKDttyRHfvdz/VLBf6pywfBk8Cg1ZTyX8BH4Z+h3CTWfm97OT2/WC3A6vDouRtgjx9ZTDA3Zc/AuxLCUagGRygKGOtuUDaCV2AMiBYzqPw+pQsOgVtDuoGj5OoTJP072I4cNkONcEF9Qqg71UpR08i/0sGgBmwEbTYpeZwdVcH07h/XJaFF"
     }
   },
   "targets": {
@@ -387,6 +390,85 @@
         "viewName": "FilesView",
         "name": "FilesView",
         "viewFileName": "FilesView"
+      }
+    },
+    "app/controller/Movie.js": {
+      "source": "{controllerFileName}.js.tpl.merge",
+      "version": "b092f4aad11d2f7eaab5ce3e2dcc2fc3134f3188",
+      "parameters": {
+        "appName": "XWMM",
+        "controllerName": "Movie",
+        "controllerFileName": "Movie",
+        "name": "Movie",
+        "controllerNamespace": "XWMM.controller"
+      }
+    },
+    "app/model/Movie.js": {
+      "source": "{modelFileName}.js.tpl.merge",
+      "version": "31d5356142a167c72422f7902f19df3c583f3249",
+      "parameters": {
+        "appName": "XWMM",
+        "modelNamespace": "XWMM.model",
+        "baseClass": "Ext.data.Model",
+        "modelFileName": "Movie",
+        "name": "Movie",
+        "fields": "movieid:auto:null,title:auto:null,sorttitle:auto:null,year:auto:null,playcount:auto:null,set:auto:null"
+      }
+    },
+    "app/view/MoviesList.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "MoviesList",
+        "name": "MoviesList",
+        "viewFileName": "MoviesList"
+      }
+    },
+    "app/view/MovieDetails.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "MovieDetails",
+        "name": "MovieDetails",
+        "viewFileName": "MovieDetails"
+      }
+    },
+    "app/model/DetailedMovie.js": {
+      "source": "{modelFileName}.js.tpl.merge",
+      "version": "31d5356142a167c72422f7902f19df3c583f3249",
+      "parameters": {
+        "appName": "XWMM",
+        "modelNamespace": "XWMM.model",
+        "baseClass": "Ext.data.Model",
+        "modelFileName": "DetailedMovie",
+        "name": "DetailedMovie",
+        "fields": "movieid:auto:null,title:auto:null,sorttitle:auto:null,year:auto:null,playcount:auto:null,set:auto:null"
+      }
+    },
+    "app/model/Genre.js": {
+      "source": "{modelFileName}.js.tpl.merge",
+      "version": "31d5356142a167c72422f7902f19df3c583f3249",
+      "parameters": {
+        "appName": "XWMM",
+        "modelNamespace": "XWMM.model",
+        "baseClass": "Ext.data.Model",
+        "modelFileName": "Genre",
+        "name": "Genre",
+        "fields": "id:auto:null"
+      }
+    },
+    "app/model/MovieSet.js": {
+      "source": "{modelFileName}.js.tpl.merge",
+      "version": "31d5356142a167c72422f7902f19df3c583f3249",
+      "parameters": {
+        "appName": "XWMM",
+        "modelNamespace": "XWMM.model",
+        "baseClass": "Ext.data.Model",
+        "modelFileName": "MovieSet",
+        "name": "MovieSet",
+        "fields": "id:auto:null"
       }
     }
   }

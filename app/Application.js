@@ -1,7 +1,14 @@
 Ext.define('XWMM.Application', {
+    extend: 'Ext.app.Application',
+
     name: 'XWMM',
 
-    extend: 'Ext.app.Application',
+    statics: {
+        version: '4.0.0',
+
+        listSeparator: ' / ',
+        listSeparatorRe: /[ ]+[,\/\|]+[ ]+/ // Split list separated with , / or |
+    },
 
     views: [
         'FilesView',
@@ -12,10 +19,14 @@ Ext.define('XWMM.Application', {
     ],
 
     controllers: [
-        // TODO: add controllers here
+        'Movie'
     ],
 
     stores: [
-        // TODO: add stores here
+        'ContentRatings',
+        'DetailedMovies',
+        'Genres',
+        'Movies',
+        'MovieSets'
     ]
 });
