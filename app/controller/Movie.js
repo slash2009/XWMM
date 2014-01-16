@@ -83,6 +83,7 @@ Ext.define('XWMM.controller.Movie', {
             var record = records[0];
 
             this.getMovieDetails().getForm().loadRecord(record);
+            this.getMovieDetails().down('#movie-genres').loadGenre(record.get('genre'));
             //this.getMoviePoster().imgEl.dom.src = '/image/' + record.get('poster');
             //this.getMoviePoster().setValue(record.get('poster'));
         }

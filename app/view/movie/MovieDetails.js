@@ -6,8 +6,9 @@ Ext.define('XWMM.view.movie.MovieDetails', {
         'Ext.layout.container.Form',
         'Ext.form.FieldSet',
         'Ext.form.field.Number',
-        'Ext.form.field.ComboBox'//,
+        'Ext.form.field.ComboBox',
         //'Ext.ux.form.field.Image'
+        'XWMM.view.movie.GenreSelectGrid'
     ],
 
     layout: 'form',
@@ -18,18 +19,29 @@ Ext.define('XWMM.view.movie.MovieDetails', {
 
     buttons: [
         {
+            text:'Revert',
+            id: 'revertbutton',
+            disabled: true,
+            handler: function(){
+                var me = Ext.getCmp('moviedetails');
+                me.getForm().reset();
+                me.down('#movie-genres').onResetClick();
+                this.disable();
+            }
+        },
+        {
             text:'Save',
             id: 'savebutton',
             disabled: true,
             handler: function(){
                 /*
-                Ext.Msg.show ({
-                    title: 'Not implemented yet!',
-                    msg: 'This feature has not been implemented yet.<br><br>'
-                        + 'Action: Save ' + Ext.getCmp('moviedetails').getRecord().get('title'),
-                    buttons: Ext.window.MessageBox.OK
-                });
-                */
+                 Ext.Msg.show ({
+                 title: 'Not implemented yet!',
+                 msg: 'This feature has not been implemented yet.<br><br>'
+                 + 'Action: Save ' + Ext.getCmp('moviedetails').getRecord().get('title'),
+                 buttons: Ext.window.MessageBox.OK
+                 });
+                 */
                 var me = Ext.getCmp('moviedetails');
                 var dirtyFields = me.getValues(false, true);
                 console.log(dirtyFields);
@@ -137,7 +149,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             }
         },
         {
-            title: 'Genre & Plot',
+            title: 'Genre',
             xtype: 'fieldset',
             collapsible: true,
             defaults: {anchor: '100%'},
@@ -145,9 +157,20 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             defaultType: 'textfield',
             items: [
                 {
-                    fieldLabel: 'Genres',
-                    name: 'genre'
-                },
+                    name: 'genre',
+                    xtype: 'movie-genreselectgrid',
+                    id: 'movie-genres'
+                }
+            ]
+        },
+        {
+            title: 'Plot',
+            xtype: 'fieldset',
+            collapsible: true,
+            defaults: {anchor: '100%'},
+            layout: 'anchor',
+            defaultType: 'textfield',
+            items: [
                 {
                     fieldLabel: 'Tagline',
                     name: 'tagline'
@@ -229,7 +252,8 @@ Ext.define('XWMM.view.movie.MovieDetails', {
 
     listeners: {
         'dirtychange': function(form, dirty, eOpts) {
-            Ext.getCmp('savebutton').enable()
+            Ext.getCmp('revertbutton').enable();
+            Ext.getCmp('savebutton').enable();
         }
     }
 });

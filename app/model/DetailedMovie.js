@@ -10,17 +10,7 @@ Ext.define('XWMM.model.DetailedMovie', {
         {name: 'playcount', type: 'int'},
         {name: 'set', type: 'string'},
 
-        {
-            name: 'genre',
-            convert: function(v, r) {
-                if (v == undefined || v.length == 0) {
-                    return '';
-                }
-                else {
-                    return v.join(XWMM.Application.listSeparator);
-                }
-            }
-        },
+        {name: 'genre'},
         {
             name: 'rating',
             convert: function(v, r) {
