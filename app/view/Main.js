@@ -1,26 +1,38 @@
 Ext.define('XWMM.view.Main', {
-    extend: 'Ext.container.Container',
-    requires:[
-        'Ext.tab.Panel',
-        'Ext.layout.container.Border'
-    ],
-    
+    extend: 'Ext.tab.Panel',
+
     xtype: 'app-main',
 
-    layout: {
-        type: 'border'
-    },
+    tabPosition: 'left',
 
-    items: [{
-        region: 'west',
-        xtype: 'panel',
-        title: 'west',
-        width: 150
-    },{
-        region: 'center',
-        xtype: 'tabpanel',
-        items:[{
-            title: 'Center Tab 1'
-        }]
-    }]
+    items: [
+        {
+            title: 'Movies',
+            xtype: 'moviestab'
+        },
+        {
+            title: 'TV Shows',
+            xtype: 'tvshowstab'
+        },
+        {
+            title: 'Music Videos',
+            xtype: 'musicvideostab'
+        },
+        {
+            title: 'Music',
+            xtype: 'musictab'
+        },
+        {
+            title: 'Files',
+            xtype: 'filestab'
+        }
+    ],
+
+    listeners: {
+        beforetabchange: function(tabs, newTab, oldTab) {
+            // TODO: check for unsaved changes and prompt user.
+            //console.debug('XWMM.view.Main beforetabchange');
+            return true;
+        }
+    }
 });

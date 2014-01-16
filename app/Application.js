@@ -4,7 +4,11 @@ Ext.define('XWMM.Application', {
     extend: 'Ext.app.Application',
 
     views: [
-        // TODO: add views here
+        'FilesView',
+        'MoviesView',
+        'MusicVideosView',
+        'MusicView',
+        'TVShowsView'
     ],
 
     controllers: [

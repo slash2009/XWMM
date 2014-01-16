@@ -35,6 +35,9 @@
     },
     "{controllerFileName}.js.tpl.merge": {
       "b092f4aad11d2f7eaab5ce3e2dcc2fc3134f3188": "eJxzrSjRS0lNy8xL1VCvTs7PKynKz8lJLfJLzE0tLkhMTq3VQxOtVddRqOZSAILUipLUvBQrBXVXoBmJBQV6znCF6ly1mtZcACwSIF0\u003d"
+    },
+    "{viewFileName}.js.tpl.merge": {
+      "acde5ea901286ca2f976bcddea23e159dbaa0e6f": "eJxzrSjRS0lNy8xL1VCqTiwo8EvMTa3VK8tMLderBpFgvpKOQjWXAhCkVpSk5qVYKai7ArU55+cW5Oel5pWo64AlM0pyc4BSHqk5Ofk6CuH5RTkpiorqXLWa1gDU/CBX"
     }
   },
   "targets": {
@@ -334,6 +337,56 @@
         "name": "XWMM",
         "controllerNamespace": "XWMM.controller",
         "library": "all"
+      }
+    },
+    "app/view/MoviesView.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "MoviesView",
+        "name": "MoviesView",
+        "viewFileName": "MoviesView"
+      }
+    },
+    "app/view/TVShowsView.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "TVShowsView",
+        "name": "TVShowsView",
+        "viewFileName": "TVShowsView"
+      }
+    },
+    "app/view/MusicVideosView.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "MusicVideosView",
+        "name": "MusicVideosView",
+        "viewFileName": "MusicVideosView"
+      }
+    },
+    "app/view/MusicView.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "MusicView",
+        "name": "MusicView",
+        "viewFileName": "MusicView"
+      }
+    },
+    "app/view/FilesView.js": {
+      "source": "{viewFileName}.js.tpl.merge",
+      "version": "acde5ea901286ca2f976bcddea23e159dbaa0e6f",
+      "parameters": {
+        "appName": "XWMM",
+        "viewName": "FilesView",
+        "name": "FilesView",
+        "viewFileName": "FilesView"
       }
     }
   }
