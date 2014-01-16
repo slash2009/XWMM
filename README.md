@@ -1,71 +1,46 @@
 XWMM - XBMC Web Media Manager
 ====
 
-### MAIN REPO (Master):
-Will contain all of the developers and other contributors work which should come as patches from all corners and then picked and merged in other
-Branched repositories for e.g. Frodo
+### v4 Rewrite Branch
+This is an experimental branch of XWMM looking at the possibility of moving to
+ExtJS 4, which effectively requires a rewrite due to ExtJS 4 being very
+different from ExtJS 3.
 
-Information should be posted here and some rudimentary format about XWMM etc and extended as necessary.
-- - -
-###DEVELOPERS WANTED - We Don't pay either hehe ;)
-Please join XWMM, Help this XBMC web-interface be nr#1, we need skilled developers which can help improve and add exciting new features to XWMM.
-- - -
+This is all highly experimental, it might break stuff, don't use it on
+irreplaceable data.
 
-### SUBMITTING PATCHES AND PR's
-The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM Master Repo, it should contain some of the following:
-
-* What Patch addresses, if its a bug-fix a feature or improvement or something else.
-* Any comments in code for what is not immediately obvious.
-
-## Note:
-A pull request PR should be made to MASTER, (using Branches is ok if your going to make same PR to master) by using Master then your working with latest code and fixes.
-Any work can then be easily Picked and pulled into branches if needed, especially if its a bug-fix.
-#### What will happen to Patches & PR's
-
-* It will be reviewed and merged as soon as possible by someone who understands what's going on.
-
-### Support and Discussion
-For Discussion and support with XVMM see:
-
-XBMC Thread [XWMM - XBMC Web Media Manager](http://forum.xbmc.org/showthread.php?tid=60643 "Title")
-
-##### Bug reports/Feature requests:
-Github issue tracker [Click here to submit an issue](https://github.com/slash2009/XWMM/issues "Title")
+### Prerequisites
+[Sencha Cmd](http://docs.sencha.com/extjs/4.2.1/#!/guide/command "Title") is
+required to build ExtJs 4 based applications.
 
 - - -
-Features not yet working (incomplete list) - Todo list:
 
-* Changing artwork
-* Managing, genres and actors (although these can be changed on a per movie/TV/music basis)
-* The "Files" tab
+### To Do
+* Write a to do list :p
 
 - - -
-Install Via Zip mode in XBMC.
 
-### Download:
-XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/master.zip "Title")
-- - -
-
-# XWMM/app
+### Directory Structure
+#### XWMM/app
 
 This folder contains the javascript files for the application.
 
-# XWMM/resources
+#### XWMM/resources
 
 This folder contains static resources (typically an `"images"` folder as well).
 
-# XWMM/overrides
+#### XWMM/overrides
 
 This folder contains override classes. All overrides in this folder will be 
 automatically included in application builds if the target class of the override
 is loaded.
 
-# XWMM/sass/etc
+#### XWMM/sass/etc
 
 This folder contains misc. support code for sass builds (global functions, 
 mixins, etc.)
 
-# XWMM/sass/src
+#### XWMM/sass/src
 
 This folder contains sass files defining css rules corresponding to classes
 included in the application's javascript code build.  By default, files in this 
@@ -73,7 +48,7 @@ folder are mapped to the application's root namespace, 'XWMM'. The
 namespace to which files in this directory are matched is controlled by the
 app.sass.namespace property in XWMM/.sencha/app/sencha.cfg. 
 
-# XWMM/sass/var
+#### XWMM/sass/var
 
 This folder contains sass files defining sass variables corresponding to classes
 included in the application's javascript code build.  By default, files in this 
