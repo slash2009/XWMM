@@ -11,6 +11,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
         'XWMM.view.movie.GenreSelectGrid'
     ],
 
+    title: 'Movie Details',
     layout: 'form',
     defaultType: 'textfield',
     bodyPadding: 5,

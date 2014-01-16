@@ -6,7 +6,7 @@ Ext.define('XWMM.view.movie.MoviesList', {
         'Ext.grid.column.Action'
     ],
 
-    //title: 'Movies',
+    title: 'Movies',
     store: 'Movies',
 
     emptyText: 'No movies found.',
@@ -22,8 +22,7 @@ Ext.define('XWMM.view.movie.MoviesList', {
             width: 25,
             menuDisabled: true,
             items: [{
-                iconCls: 'icon-delete',
-                //icon: 'resources/images/icons/delete.png',
+                iconCls: 'x-tool-img x-tool-close xaction-delete',
                 tooltip: 'Delete'
             }]
         }

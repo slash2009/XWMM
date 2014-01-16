@@ -90,7 +90,7 @@ Ext.define('XWMM.controller.Movie', {
     },
 
     onListAction: function(view, cell, rowIndex, colIndex, e) {
-        var action = e.getTarget().className.match(/\bicon-(\w+)\b/)[1];
+        var action = e.getTarget().className.match(/\bxaction-(\w+)\b/)[1];
         var record = view.getStore().getAt(rowIndex);
 
         switch (action) {
