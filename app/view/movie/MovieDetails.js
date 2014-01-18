@@ -54,7 +54,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
 
     dockedItems: [
         {
-            xtype: 'panel',
+            xtype: 'container',
             width: 200,
             dock: 'right',
             items: [
@@ -71,7 +71,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
                     id: 'movie-fanart',
                     src: 'resources/images/defaultMovieFanart.jpg',
                     width: 200,
-                    height: 112,
+                    height: 113,
                     title: 'Movie Fanart'
                 },
                 {
