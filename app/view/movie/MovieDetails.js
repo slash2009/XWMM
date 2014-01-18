@@ -52,6 +52,92 @@ Ext.define('XWMM.view.movie.MovieDetails', {
         }
     ],
 
+    dockedItems: [
+        {
+            xtype: 'panel',
+            width: 200,
+            dock: 'right',
+            items: [
+                {
+                    xtype: 'image',
+                    id: 'movie-poster',
+                    src: 'resources/images/defaultMovieCover.jpg',
+                    width: 200,
+                    height: 300,
+                    title: 'Movie Poster'
+                },
+                {
+                    xtype: 'image',
+                    id: 'movie-fanart',
+                    src: 'resources/images/defaultMovieFanart.jpg',
+                    width: 200,
+                    height: 112,
+                    title: 'Movie Fanart'
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'stretch'
+                    },
+                    style: {backgroundColor:'#157fcc'},
+                    items: [
+                        {
+                            xtype: 'image',
+                            id: 'movie-video-codec',
+                            src: 'resources/images/flags/source/defaultsource.png',
+                            width: 78,
+                            height: 54,
+                            title: 'Video Codec'
+                        },
+                        {
+                            xtype: 'image',
+                            id: 'movie-video-aspect',
+                            src: 'resources/images/flags/aspectratio/defaultaspect.png',
+                            width: 61,
+                            height: 54,
+                            title: 'Video Aspect'
+                        },
+                        {
+                            xtype: 'image',
+                            id: 'movie-video-resolution',
+                            src: 'resources/images/flags/source/defaultsource.png',
+                            width: 61,
+                            height: 54,
+                            title: 'Video Resolution'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'stretch'
+                    },
+                    style: {backgroundColor:'#157fcc'},
+                    items: [
+                        {
+                            xtype: 'image',
+                            id: 'movie-audio-codec',
+                            src: 'resources/images/flags/audio/defaultsound.png',
+                            width: 116,
+                            height: 54,
+                            title: 'Audio Codec'
+                        },
+                        {
+                            xtype: 'image',
+                            id: 'movie-audio-channel',
+                            src: 'resources/images/flags/defaultsound.png',
+                            width: 78,
+                            height: 54,
+                            title: 'Audio Channel'
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+
     items: [
         {
             title: 'Title',
@@ -77,77 +163,87 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             ]
         },
         {
-            xtype: 'numberfield',
-            fieldLabel: 'Year',
-            name: 'year',
-            allowDecimals: false,
-            allowExponential: false,
-            autoStripChars: true,
-            decimalPrecision: 0,
-            maxValue: 2100,
-            minValue: 1890,
-            step: 1
-        },
-        {
-            //xtype: 'gridpicker',
-            xtype: 'combobox',
-            fieldLabel: 'Content Rating',
-            name: 'mpaa',
-            queryMode: 'local',
-            typeAhead: true,
-            store: 'ContentRatings',
-            displayField: 'xbmc_value', //'rating',
-            valueField: 'xbmc_value'
-            /*
-             gridConfig: {
-             features: [{
-             ftype: 'grouping',
-             groupHeaderTpl: '{name}',
-             collapsible: true
-             }],
-             columns: [{dataIndex: 'rating'}]
-             }
-             */
-        },
-        {
-            xtype: 'combobox',
-            fieldLabel: 'Set',
-            name: 'set',
-            queryMode: 'local',
-            typeAhead: true,
-            store: 'MovieSets',
-            displayField: 'title',
-            valueField: 'title'
-        },
-        {
-            xtype: 'numberfield',
-            fieldLabel: 'Rating',
-            name: 'rating',
-            autoStripChars: true,
-            decimalPrecision: 1,
-            maxValue: 10,
-            minValue: 0,
-            step: 0.1
-        },
-        {
-            xtype: 'trigger',
-            fieldLabel: 'IMDb ID',
-            name: 'imdbnumber',
-            onTriggerClick: function(e) {
-                var value = this.getValue();
-                if (value.length > 0) { // TODO: attempt to check it's the right format /tt[0-9]{7}/
-                    window.open('http://www.imdb.com/title/' + value + '/', 'XWMM.external');
+            title: 'Miscellaneous Details',
+            xtype: 'fieldset',
+            collapsible: true,
+            defaults: {anchor: '100%'},
+            layout: 'anchor',
+            defaultType: 'textfield',
+            items: [
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Year',
+                    name: 'year',
+                    allowDecimals: false,
+                    allowExponential: false,
+                    autoStripChars: true,
+                    decimalPrecision: 0,
+                    maxValue: 2100,
+                    minValue: 1890,
+                    step: 1
+                },
+                {
+                    //xtype: 'gridpicker',
+                    xtype: 'combobox',
+                    fieldLabel: 'Content Rating',
+                    name: 'mpaa',
+                    queryMode: 'local',
+                    typeAhead: true,
+                    store: 'ContentRatings',
+                    displayField: 'xbmc_value', //'rating',
+                    valueField: 'xbmc_value'
+                    /*
+                     gridConfig: {
+                     features: [{
+                     ftype: 'grouping',
+                     groupHeaderTpl: '{name}',
+                     collapsible: true
+                     }],
+                     columns: [{dataIndex: 'rating'}]
+                     }
+                     */
+                },
+                {
+                    xtype: 'combobox',
+                    fieldLabel: 'Set',
+                    name: 'set',
+                    queryMode: 'local',
+                    typeAhead: true,
+                    store: 'MovieSets',
+                    displayField: 'title',
+                    valueField: 'title'
+                },
+                {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Rating',
+                    name: 'rating',
+                    autoStripChars: true,
+                    decimalPrecision: 1,
+                    maxValue: 10,
+                    minValue: 0,
+                    step: 0.1
+                },
+                {
+                    xtype: 'trigger',
+                    fieldLabel: 'IMDb ID',
+                    name: 'imdbnumber',
+                    onTriggerClick: function(e) {
+                        var value = this.getValue();
+                        if (value.length > 0) { // TODO: attempt to check it's the right format /tt[0-9]{7}/
+                            window.open('http://www.imdb.com/title/' + value + '/', 'XWMM.external');
+                        }
+                        else {
+                            Ext.MessageBox.show({
+                                title: 'IMDb ID',
+                                msg: 'You need to enter an IMDb movie ID before<br>you can visit the movie page on IMDb.com',
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.INFO
+                            });
+                        }
+                        e.stopEvent();
+                    }
                 }
-                else {
-                    Ext.MessageBox.show({
-                        title: 'IMDb ID',
-                        msg: 'You need to enter an IMDb movie ID before<br>you can visit the movie page on IMDb.com',
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.INFO
-                    });
-                }
-                e.stopEvent();
-            }
+            ]
         },
         {
             title: 'Genre',

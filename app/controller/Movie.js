@@ -23,8 +23,14 @@ Ext.define('XWMM.controller.Movie', {
 
     refs: [
         {ref: 'moviesList', selector: 'movieslist'},
-        {ref: 'movieDetails', selector: 'moviedetails'}//,
-        //{ref: 'moviePoster', selector: '#movieposter'}
+        {ref: 'movieDetails', selector: 'moviedetails'},
+        {ref: 'moviePoster', selector: '#movie-poster'},
+        {ref: 'movieFanart', selector: '#movie-fanart'},
+        {ref: 'movieVideoCodec', selector: '#movie-video-codec'},
+        {ref: 'movieVideoAspect', selector: '#movie-video-aspect'},
+        {ref: 'movieVideoResolution', selector: '#movie-video-resolution'},
+        {ref: 'movieAudioCodec', selector: '#movie-audio-codec'},
+        {ref: 'movieAudioChannel', selector: '#movie-audio-channel'}
     ],
 
     init: function() {
@@ -84,8 +90,13 @@ Ext.define('XWMM.controller.Movie', {
 
             this.getMovieDetails().getForm().loadRecord(record);
             this.getMovieDetails().down('#movie-genres').loadGenre(record.get('genre'));
-            //this.getMoviePoster().imgEl.dom.src = '/image/' + record.get('poster');
-            //this.getMoviePoster().setValue(record.get('poster'));
+            this.getMoviePoster().setSrc('/image/' + record.get('poster'));
+            this.getMovieFanart().setSrc('/image/' + record.get('fanart'));
+            this.getMovieVideoCodec().setSrc('resources/images/flags/source/' + record.get('streamdetails').video[0].codec + '.png');
+            this.getMovieVideoAspect().setSrc('resources/images/flags/aspectratio/' + this.findAspect(record.get('streamdetails').video[0].aspect) + '.png');
+            this.getMovieVideoResolution().setSrc('resources/images/flags/resolution/' + this.findResolution(record.get('streamdetails').video[0].width) + '.png');
+            this.getMovieAudioCodec().setSrc('resources/images/flags/audio/' + record.get('streamdetails').audio[0].codec + '.png');
+            this.getMovieAudioChannel().setSrc('resources/images/flags/' + record.get('streamdetails').audio[0].channels + 'c.png');
         }
     },
 
@@ -155,5 +166,39 @@ Ext.define('XWMM.controller.Movie', {
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
+    },
+
+    findAspect: function(aspect) {
+        if (aspect == 0)
+            return 'defaultaspect';
+        else if (aspect < 1.4)
+            return '1.33';
+        else if (aspect < 1.7)
+            return '1.66';
+        else if (aspect < 1.8)
+            return '1.78';
+        else if (aspect < 1.9)
+            return '1.85';
+        else if (aspect < 2.3)
+            return '2.20';
+        else
+            return '2.35';
+    },
+
+    findResolution: function(width) {
+        if (width == 0)
+            return 'defaultscreen';
+        else if (width < 721)
+            return '480';
+        // 960x540
+        else if (width < 961)
+            return '540';
+        // 1280x720
+        else if (width < 1281)
+            return '720';
+        // 1920x1080
+        else
+            return '1080';
     }
+
 });
