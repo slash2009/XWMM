@@ -42,6 +42,8 @@
     <target name="-after-build">
         <copy file="${basedir}/addon.xml" todir="${build.dir}" />
         <copy file="${basedir}/Changelog.txt" todir="${build.dir}" />
+        <copy file="${basedir}/icon.png" todir="${build.dir}" />
+        <copy file="${basedir}/LICENSE.txt" todir="${build.dir}" />
         <copy file="${basedir}/README.md" todir="${build.dir}" />
     </target>
 </project>

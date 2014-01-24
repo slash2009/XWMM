@@ -17,6 +17,7 @@ required to build ExtJs 4 based applications.
 
 ### To Do
 * Write a to do list :p
+* Add fanart for addon (http://wiki.xbmc.org/index.php?title=Add-on_structure)
 
 - - -
 
