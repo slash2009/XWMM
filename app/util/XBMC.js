@@ -82,6 +82,18 @@ Ext.define('XWMM.util.XBMC', {
                 icon: Ext.MessageBox.ERROR
             });
         }
+    },
+
+    splitStringList: function(stringList, sep) {
+        var inList = stringList.split(sep);
+        var outList = [];
+        for (var i = 0, len = inList.length; i < len; i++) {
+            listItem = inList[i].trim();
+            if (listItem.length > 0) {
+                outList.push(listItem);
+            }
+        }
+        return outList;
     }
 
 });
