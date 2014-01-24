@@ -128,6 +128,16 @@ Ext.define('XWMM.view.movie.GenreSelectGrid', {
         //selected.resumeEvents();
     },
 
+    getGenre: function() {
+        var me = this;
+        var store = me.down('#selected').getStore();
+        var genres = [];
+        store.each(function(record, id){
+            genres.push(record.get('title'));
+        });
+        return genres;
+    },
+
     onAddClick: function() {
         var me = this;
         Ext.MessageBox.prompt(
