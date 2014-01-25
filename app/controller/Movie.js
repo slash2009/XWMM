@@ -62,6 +62,9 @@ Ext.define('XWMM.controller.Movie', {
     },
 
     onMovieSelect: function(selModel, selection) {
+        if (selection.length == 0 ) {
+            return;
+        }
         var record = selection[0];
         var store = this.getDetailedMoviesStore();
 
@@ -90,13 +93,20 @@ Ext.define('XWMM.controller.Movie', {
 
             this.getMovieDetails().getForm().loadRecord(record);
             this.getMovieDetails().down('#movie-genres').loadGenre(record.get('genre'));
+
             this.getMoviePoster().setSrc('/image/' + record.get('poster'));
             this.getMovieFanart().setSrc('/image/' + record.get('fanart'));
-            this.getMovieVideoCodec().setSrc('resources/images/flags/source/' + record.get('streamdetails').video[0].codec + '.png');
-            this.getMovieVideoAspect().setSrc('resources/images/flags/aspectratio/' + this.findAspect(record.get('streamdetails').video[0].aspect) + '.png');
-            this.getMovieVideoResolution().setSrc('resources/images/flags/resolution/' + this.findResolution(record.get('streamdetails').video[0].width) + '.png');
-            this.getMovieAudioCodec().setSrc('resources/images/flags/audio/' + record.get('streamdetails').audio[0].codec + '.png');
-            this.getMovieAudioChannel().setSrc('resources/images/flags/' + record.get('streamdetails').audio[0].channels + 'c.png');
+
+            var streamDetails = record.get('streamdetails');
+            if (streamDetails.video.length > 0) {
+                this.getMovieVideoCodec().setSrc('resources/images/flags/source/' + streamDetails.video[0].codec + '.png');
+                this.getMovieVideoAspect().setSrc('resources/images/flags/aspectratio/' + this.findAspect(streamDetails.video[0].aspect) + '.png');
+                this.getMovieVideoResolution().setSrc('resources/images/flags/resolution/' + this.findResolution(streamDetails.video[0].width) + '.png');
+            }
+            if (streamDetails.audio.length > 0) {
+                this.getMovieAudioCodec().setSrc('resources/images/flags/audio/' + streamDetails.audio[0].codec + '.png');
+                this.getMovieAudioChannel().setSrc('resources/images/flags/' + streamDetails.audio[0].channels + 'c.png');
+            }
         }
     },
 

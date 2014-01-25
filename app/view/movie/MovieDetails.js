@@ -23,7 +23,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             text:'Revert',
             id: 'revertbutton',
             disabled: true,
-            handler: function(){
+            handler: function() {
                 var me = Ext.getCmp('moviedetails');
                 me.getForm().reset();
                 me.down('#movie-genres').onResetClick();
@@ -51,6 +51,7 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             xtype: 'container',
             width: 200,
             dock: 'right',
+            style: {backgroundColor:'#c1ddf1'},
             items: [
                 {
                     xtype: 'image',
@@ -74,7 +75,6 @@ Ext.define('XWMM.view.movie.MovieDetails', {
                         type: 'hbox',
                         align: 'stretch'
                     },
-                    style: {backgroundColor:'#157fcc'},
                     items: [
                         {
                             xtype: 'image',
@@ -108,7 +108,6 @@ Ext.define('XWMM.view.movie.MovieDetails', {
                         type: 'hbox',
                         align: 'stretch'
                     },
-                    style: {backgroundColor:'#157fcc'},
                     items: [
                         {
                             xtype: 'image',
@@ -177,25 +176,14 @@ Ext.define('XWMM.view.movie.MovieDetails', {
                     step: 1
                 },
                 {
-                    //xtype: 'gridpicker',
                     xtype: 'combobox',
                     fieldLabel: 'Content Rating',
                     name: 'mpaa',
                     queryMode: 'local',
                     typeAhead: true,
                     store: 'ContentRatings',
-                    displayField: 'xbmc_value', //'rating',
+                    displayField: 'xbmc_value',
                     valueField: 'xbmc_value'
-                    /*
-                     gridConfig: {
-                     features: [{
-                     ftype: 'grouping',
-                     groupHeaderTpl: '{name}',
-                     collapsible: true
-                     }],
-                     columns: [{dataIndex: 'rating'}]
-                     }
-                     */
                 },
                 {
                     xtype: 'combobox',
