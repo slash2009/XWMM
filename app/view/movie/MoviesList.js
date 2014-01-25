@@ -27,8 +27,39 @@ Ext.define('XWMM.view.movie.MoviesList', {
             }]
         }
     ],
-/*
+
     tbar: [
+        {
+            xtype: 'combo',
+            store: 'Movies',
+            queryMode: 'local',
+            displayField: 'title',
+            typeAhead: false,
+            hideLabel: true,
+            //hideTrigger:true,
+            //anchor: '100%',
+            queryCaching: false,
+            width: 250,
+
+            valueNotFoundText: 'No movies found.',
+            loadingText: 'Searching...',
+            emptyText: 'Search...',
+
+            listConfig: {
+
+                // Custom rendering template for each item
+                getInnerTpl: function() {
+                    return '{title} ({year})';
+                }
+            },
+            pageSize: 10,
+            listeners: {
+                select: function(combo, records, eOpts) {
+                    XWMM.app.getController('Movie').onMovieSelect(null, records);
+                }
+            }
+        }
+        /*
         {
             text: 'Refresh',
             handler: function(b, e) { this.refreshLibrary(); }
@@ -37,8 +68,9 @@ Ext.define('XWMM.view.movie.MoviesList', {
             text: 'Clean',
             handler: function(b, e) { this.cleanLibrary(); }
         }
+        */
     ],
-*/
+
     initComponent: function() {
         this.callParent(arguments);
 
