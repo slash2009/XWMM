@@ -158,14 +158,42 @@ Ext.define('XWMM.controller.Movie', {
         });
     },
 
-    onSaveMovie: function(dirtyFields) {
-        Ext.MessageBox.show ({
-            title: 'Not implemented yet!',
-            msg: 'This feature has not been implemented yet.<br><br>'
-                + 'Action: Save ' + record.get('title'),
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
+    onSaveMovie: function(record, dirtyFields) {
+        for (var field in dirtyFields) {
+            switch (field) {
+                case 'runtime':
+                    dirtyFields[field] = parseInt(dirtyFields[field]) * 60; // JSON uses runtime as # of seconds.
+                    break;
+
+                case 'rating':
+                    dirtyFields[field] = parseFloat(dirtyFields[field]).toFixed(1);
+                    break;
+
+                case 'director':
+                case 'writer':
+                case 'studio':
+                case 'country':
+                    dirtyFields[field] = XWMM.util.XBMC.splitStringList(dirtyFields[field], XWMM.Application.listSeparatorRE);
+                    break;
+            }
+        }
+
+        if (Ext.JSON.encode(dirtyFields).length === 2) {
+            // Nothing to update.
+            return;
+        }
+
+        dirtyFields.movieid = record.get('movieid');
+        var rpcCmd = {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.SetMovieDetails',
+            params: dirtyFields,
+            id: 1
+        };
+
+        //var rpcCmdJSON = Ext.JSON.encode(rpcCmd);
+        //console.debug('XWMM.controller.Movie#onSaveMovie rpcCmd: ' + rpcCmdJSON);
+        XWMM.util.XBMC.sendCmd(rpcCmd);
     },
 
     findAspect: function(aspect) {

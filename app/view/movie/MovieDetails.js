@@ -34,20 +34,14 @@ Ext.define('XWMM.view.movie.MovieDetails', {
             text:'Save',
             id: 'savebutton',
             disabled: true,
-            handler: function(){
-                /*
-                 Ext.Msg.show ({
-                 title: 'Not implemented yet!',
-                 msg: 'This feature has not been implemented yet.<br><br>'
-                 + 'Action: Save ' + Ext.getCmp('moviedetails').getRecord().get('title'),
-                 buttons: Ext.window.MessageBox.OK
-                 });
-                 */
+            handler: function() {
                 var me = Ext.getCmp('moviedetails');
+                var record = me.getRecord();
                 var dirtyFields = me.getValues(false, true);
-                console.log(dirtyFields);
-                me.updateRecord();
-                this.disable()
+                dirtyFields.genre = me.down('#movie-genres').getGenre();
+                XWMM.app.getController('Movie').onSaveMovie(record, dirtyFields);
+                //me.updateRecord();
+                this.disable();
             }
         }
     ],
