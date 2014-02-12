@@ -10,8 +10,14 @@ This is all highly experimental, it might break stuff, don't use it on
 irreplaceable data.
 
 ### Prerequisites
-[Sencha Cmd](http://docs.sencha.com/extjs/4.2.1/#!/guide/command "Title") is
-required to build ExtJs 4 based applications.
+Due to ExtJS 4 being over 100MB it's recommended to use Sencha Cmd to generate
+a streamlined version of ExtJS that only includes the components required to
+run the web application.
+
+To run Sencha Cmd you require:
+* [Java JRE](http://java.com/en/download/ "Title")
+* [Ruby](http://rubyinstaller.org/downloads/ "Title")
+* [Sencha Cmd](http://docs.sencha.com/extjs/4.2.1/#!/guide/command "Title")
 
 - - -
 
