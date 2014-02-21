@@ -53,17 +53,17 @@ function setXBMCWatched(mediaId, mediaType, watched) {
     switch (mediaType) {
         case 'movie':
             rpcCmd.method = 'VideoLibrary.SetMovieDetails';
-            rpcCmd.param = {movieid: mediaId, playcount: playCount};
+            rpcCmd.params = {movieid: mediaId, playcount: playCount};
             break;
 
         case 'episode':
             rpcCmd.method = 'VideoLibrary.SetEpisodeDetails';
-            rpcCmd.param = {episodeid: mediaId, playcount: playCount};
+            rpcCmd.params = {episodeid: mediaId, playcount: playCount};
             break;
 
         case 'musicvideo': // For future use, when music video support is added. :)
             rpcCmd.method = 'VideoLibrary.SetMusicVideoDetails';
-            rpcCmd.param = {musicvideoid: mediaId, playcount: playCount};
+            rpcCmd.params = {musicvideoid: mediaId, playcount: playCount};
             break;
 
         default:
