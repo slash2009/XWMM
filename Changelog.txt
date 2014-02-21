@@ -1,5 +1,9 @@
 XWMM Change log
 
+3.0.1.a
+- Fix by criticalfiction
+-- Allow UI to update values on set change
+
 3.0.1
 - Changes by fyfe
 -- Whitspace fixes
