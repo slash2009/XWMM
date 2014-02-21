@@ -1,8 +1,9 @@
 XWMM Change log
 
-3.0.1.a
+3.0.2
 - Fix by criticalfiction
 -- Allow UI to update values on set change
+-- Fix mark as watched
 
 3.0.1
 - Changes by fyfe
