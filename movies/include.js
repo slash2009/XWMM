@@ -38,6 +38,7 @@ function setUnwatched() {
  * @param {Ext.form.Field} setField The set field.
  */
 function updateXBMCSet(setField) {
+    var currentMovie = currentRecord;
     var newValue = setField.getValue();
 
     if (setField.originalValue == newValue) {

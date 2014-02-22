@@ -1,5 +1,10 @@
 XWMM Change log
 
+4.0.1
+- Fix by criticalfiction
+-- Allow UI to immediately reflect changes to sets after save
+-- Fix mark as watched
+
 4.0.0 - Gotham version open.
 
 3.0.1
