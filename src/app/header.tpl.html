@@ -1,0 +1,19 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="HeaderCtrl">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">XWMM</a>
+        </div><!--/.nav-header -->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isPageActive('/movies')}"><a href="#/movies">Movies</a></li>
+                <li ng-class="{ active: isPageActive('/about')}"><a href="#/about">About</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container -->
+</div><!--/.navbar -->

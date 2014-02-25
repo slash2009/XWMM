@@ -1,0 +1,34 @@
+<div class="jumbotron">
+    <div class="container text-center">
+        <h1>XBMC Web Media Manager</h1>
+        <p>Version {{version}}</p>
+        <p><small>
+           Copyright &copy; 2011-2014 slash.<br>
+           Licensed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPL v2</a>.
+           </small></p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <h2>Links</h2>
+            <p><a class="btn btn-primary" href="https://github.com/slash2009/XWMM" role="button">Homepage</a>
+               <a class="btn btn-primary" href="https://github.com/slash2009/XWMM/issues" role="button">Issue Tracker</a></p>
+            <p><a class="btn btn-primary" href="http://forum.xbmc.org/showthread.php?tid=60643" role="button">XBMC Forum Thread</a></p>
+        </div>
+        <div class="col-md-4 text-center">
+            <h2>Contributors</h2>
+            <ul>
+                <li ng-repeat="contributor in contributors">
+                    <span ng-if="contributor.email.length == 0">{{contributor.name}}</span>
+                    <a ng-if="contributor.email.length > 0" href="{{contributor.email}}">{{contributor.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4 text-center">
+            <h2>Powered by</h2>
+            <p><a href="http://angularjs.org/">AngularJS</a> and <a href="http://getbootstrap.com/">Bootstrap</a></p>
+        </div>
+    </div>
+</div> <!-- /container -->

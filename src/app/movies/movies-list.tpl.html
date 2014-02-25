@@ -1,0 +1,34 @@
+<input class="form-control" id="movie_filter" ng-model="query.title" type="search" autocomplete="on" placeholder="search movies...">
+<table id="MoviesList" class="table table-striped table-hover" ng-init="init()">
+    <thead>
+        <tr>
+            <th class="pointer" ng-click="sortBy('sorttitle')" title="Sort by title">Title</th>
+            <th class="pointer" ng-click="sortBy('year')" title="Sort by year">Year</th>
+            <th class="text-center">Watched</th>
+            <th class="text-center">In Set</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="movie in filtered = (movies | filter: query) | orderBy: orderCol:orderDir">
+            <td>{{movie.title}}</td>
+            <td>{{movie.year}}</td>
+            <td title="{{movie.playcount | watched}}" class="text-center">
+                <span class="glyphicon"
+                      ng-class="{'glyphicon-ok': movie.playcount > 0, 'glyphicon-remove': movie.playcount == 0}"></span>
+            </td>
+            <td title="{{movie.set}}" class="text-center">
+                <span class="glyphicon"
+                      ng-class="{'glyphicon-ok': movie.set.length > 0, 'glyphicon-remove': movie.set.length == 0}"></span>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="selectMovie(movie)">
+                        Edit</button>
+                    <button type="button" class="btn btn-danger" ng-click="removeMovie(movie.movieid)">
+                        Delete</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

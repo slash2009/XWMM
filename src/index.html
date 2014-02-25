@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" ng-app="xwmm">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title ng-bind-template="XBMC Web Media Manager (XWMM)">XWMM requires JavaScript</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="css/vendor/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/<%= grunt.config.get('pkg.name') %>.css">
+
+    <script type="text/javascript" src="js/vendor/modernizr.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery.js"></script>
+    <script type="text/javascript" src="js/vendor/angular.js"></script>
+    <script type="text/javascript" src="js/vendor/bootstrap.js"></script>
+
+    <script type="text/javascript" src="js/<%= grunt.config.get('pkg.name') %>.js"></script>
+</head>
+
+<body ng-controller="AppCtrl">
+
+    <noscript>
+    <!-- A friendly message for anyone that tries to use XWMM with JavaScript disabled. -->
+    <div class="container">
+        <div class="jumbotron">
+        <h1>XWMM requires JavaScript</h1>
+        <p>Your browser does not support javascript or you have disabled javascript,
+           unfortunately XWMM can't function without javascript.</p>
+        <hr>
+        <p>For instructions on how to re-enable javascript in your browser visit
+           <a href="http://www.enable-javascript.com/" target="_blank">enable-javascript.com</a></p>
+        </div>
+    </div>
+    </noscript>
+
+    <div id="wrapper">
+        <div ng-include="'header.tpl.html'"></div>
+        <div ng-view class="container-fluid main"></div>
+    </div><!-- /.wrapper -->
+
+</body>
+</html>

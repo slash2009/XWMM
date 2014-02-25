@@ -6,8 +6,30 @@
   "homepage": "https://github.com/slash2009/XWMM",
   "author": {
     "name": "slash2009",
-    "email": ""
+    "email": "https://github.com/slash2009"
   },
+  "contributors": [
+    {
+      "name": "Zernable",
+      "email": ""
+    },
+    {
+      "name": "MokuJinJin",
+      "email": ""
+    },
+    {
+      "name": "nwtn",
+      "email": "https://github.com/nwtn"
+    },
+    {
+      "name": "uNiversaI",
+      "email": "https://github.com/uNiversaI"
+    },
+    {
+      "name": "fyfe",
+      "email": "https://github.com/fyfe"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/slash2009/XWMM.git"
@@ -18,7 +40,7 @@
   "licenses": [
     {
       "type": "GPLv2",
-      "url": "https://github.com/slash2009/XWMM/blob/master/LICENSE.txt"
+      "url": "http://www.gnu.org/licenses/gpl-2.0.html"
     }
   ],
   "devDependencies": {
@@ -26,6 +48,7 @@
     "grunt-contrib-jshint": "^0.8.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-concat": "^0.3.0",
-    "grunt-copy-to": "0.0.10"
+    "grunt-copy-to": "0.0.10",
+    "grunt-html2js": "^0.2.4"
   }
 }
