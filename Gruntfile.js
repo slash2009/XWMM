@@ -50,7 +50,7 @@ module.exports = function(grunt) {
             tpl: {
                 app: ['src/app/**/*.tpl.html'],
                 common: ['src/common/**/*.tpl.html']
-            },
+            }
         },
 
         clean: ['<%= distdir %>/*'],
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
             css: {
                 src: ['src/css/*.css'],
                 dest: '<%= distdir %>/css/XWMM.css'
-            },
+            }
         },
 
         copyto: {
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
             },
             bootstrap_assets: {
                 files: [
-                    { cwd: './vendor/bootstrap/fonts/', src: ['**/*'], dest: '<%= distdir %>/css/fonts/'  },
+                    { cwd: './vendor/bootstrap/fonts/', src: ['**/*'], dest: '<%= distdir %>/css/fonts/'  }
                 ]
             }
         },
