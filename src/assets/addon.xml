@@ -5,6 +5,7 @@
   name="XWMM"
   provider-name="slash, Zernable, MokuJinJin, nwtn, fyfe">
     <requires>
+        <import addon="xbmc.gui" version="4.0.0"/>
         <import addon="xbmc.json" version="6.0.0"/>
     </requires>
     <extension point="xbmc.gui.webinterface"/>
