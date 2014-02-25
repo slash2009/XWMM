@@ -3,18 +3,20 @@
   id="webinterface.XWMM"
   version="4.0.1"
   name="XWMM"
-  provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe">
-  <requires>
-    <import addon="xbmc.gui" version="5.0.1"/>
-    <import addon="xbmc.json" version="6.6.0"/>
-  </requires>
-  <extension
-    point="xbmc.gui.webinterface"/>
-  <extension point="xbmc.addon.metadata">
-    <summary>Web Interface to manage media library</summary>
-    <description>XWMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
-    <platform>all</platform>
-    <source>https://github.com/slash2009/XWMM</source>
-    <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum>
-  </extension>
+  provider-name="slash, Zernable, MokuJinJin, nwtn, fyfe">
+    <requires>
+        <import addon="xbmc.json" version="6.0.0"/>
+    </requires>
+    <extension point="xbmc.gui.webinterface"/>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Web Interface to manage media library</summary>
+        <description lang="en">XWMM allows you to customize and change
+          metadata for movies, TV shows and music from a standard
+          browser.</description>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum>
+        <website>https://github.com/slash2009/XWMM</website>
+        <source>https://github.com/slash2009/XWMM</source>
+    </extension>
 </addon>
