@@ -1,0 +1,15 @@
+# NPM module directory
+node_modules
+
+# Generated files
+build
+
+# WebStorm IDE
+.idea
+
+# Windows Stuff
+Thumbs.db
+ehthumbs.db
+
+# OS X Stuff
+.DS_Store

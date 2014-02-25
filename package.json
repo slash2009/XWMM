@@ -1,0 +1,31 @@
+{
+  "name": "XWMM",
+  "description": "Web Interface to manage XBMC media library.",
+  "private": true,
+  "version": "5.0.0",
+  "homepage": "https://github.com/slash2009/XWMM",
+  "author": {
+    "name": "slash2009",
+    "email": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/slash2009/XWMM.git"
+  },
+  "bugs": {
+    "url": "https://github.com/slash2009/XWMM/issues"
+  },
+  "licenses": [
+    {
+      "type": "GPLv2",
+      "url": "https://github.com/slash2009/XWMM/blob/master/LICENSE.txt"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.2",
+    "grunt-contrib-jshint": "^0.8.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-copy-to": "0.0.10"
+  }
+}
