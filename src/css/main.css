@@ -34,3 +34,7 @@ body {
     cursor: pointer;
     cursor: hand;
 }
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
