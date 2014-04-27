@@ -187,12 +187,12 @@ function checkWatechedInt(val) {
 var episodecolModel = new Ext.grid.ColumnModel([
     {header: "#", dataIndex: 'episode', width: 30},
     {header: "title", dataIndex: 'title', width: 130},
-    {header: "W", dataIndex: 'playcount', width: 25, renderer: checkWatched}
+    {header: "Watched", dataIndex: 'playcount', width: 25, renderer: checkWatched}
 ]);
 
 var tvShowcolModel = new Ext.grid.ColumnModel([
     {header: "Title", width: 155, dataIndex: 'title'},
-    {header: "W", dataIndex: 'playcount', width: 25, renderer: checkWatched}
+    {header: "Watched", dataIndex: 'playcount', width: 25, renderer: checkWatched}
 ]);
 
 var seasoncolModel = new Ext.grid.ColumnModel([
