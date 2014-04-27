@@ -41,7 +41,4 @@ Features not yet working (incomplete list) - Todo list:
 
 - - -
 Install Via Zip mode in XBMC.
-
-### Download:
-XWMM master.zip [click here to download](https://github.com/slash2009/XWMM/archive/master.zip "Download")
 - - -

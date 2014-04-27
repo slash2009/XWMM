@@ -3,7 +3,7 @@
   id="webinterface.XWMM"
   version="4.0.1"
   name="XWMM"
-  provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe">
+  provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe | criticalfiction">
   <requires>
     <import addon="xbmc.gui" version="5.0.1"/>
     <import addon="xbmc.json" version="6.6.0"/>
@@ -15,6 +15,6 @@
     <description>XWMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
     <platform>all</platform>
     <source>https://github.com/slash2009/XWMM</source>
-    <forum>http://forum.xbmc.org/showthread.php?tid=60643</forum>
+    <forum>http://forum.xbmc.org/showthread.php?tid=188839</forum>
   </extension>
 </addon>
