@@ -471,7 +471,7 @@ function updateXBMCTables(form, recordType, recordId) {
                 break;
 
             case 'rating':
-                params[f.name] = parseFloat(f.getValue()).toFixed(1);
+                params[f.name] = parseFloat(f.getValue());
                 break;
 
             case 'year':
