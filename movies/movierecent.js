@@ -38,6 +38,7 @@ var storeMovie = new Ext.data.GroupingStore({
 Moviegrid = new Ext.grid.GridPanel({
     cm: MoviecolModel,
     id: 'Moviegrid',
+    enableHdMenu: false,
     enableDragDrop: false,
     stripeRows: true,
     viewconfig: {forceFit: true},
