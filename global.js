@@ -60,14 +60,7 @@ var menuBar = new Ext.Toolbar({
                 iconCls: 'silk-grid',
                 handler: function(){window.location = '../music/yearalbum.html'}
             }]
-        },{
-            xtype: 'tbspacer'
-        },{
-            xtype: 'tbbutton',
-            text: 'Files',
-            width: 60,
-            handler: function(){window.location = '../files/index.html'}
-    }]
+        }]
 })
 
 
