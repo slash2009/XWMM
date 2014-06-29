@@ -91,47 +91,6 @@ Number.prototype.unsign = function(bytes) {
   return this >= 0 ? this : this - Number.MIN_VALUE*2;
 };
 
-function parseXBMCXml(xmlString) {
-
-    var tempTable = xmlString.replace(/<\/thumb>/g, ';');
-    tempTable = tempTable.replace(/<([^>]+)>/g,'');
-    tempTable = tempTable.split(';');
-    var x = tempTable.pop();
-    return tempTable;
-}
-
-function copyXBMCVideoThumb(thumb, r, element, type) {
-
-    var src = 'special://profile/Thumbnails/Video/'+thumb.substring(0,1)+'/'+thumb+'.tbn';
-    var dst = 'special://xbmc/web/XWMM/cache/Video/'+thumb.substring(0,1)+'/'+thumb+'.tbn';
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=FileCopy('+src+';'+dst+')';
-    var temp = '';
-    Ext.Ajax.request({
-        url: inputUrl,
-        //async: false,
-        method: 'GET',
-        success: function (t){
-            // if (type == 'season') {
-                // if (t.responseText.substr(11,5) == 'Error'){temp = '../images/nobanner.png'}
-                    // else {temp = '../cache/Video/'+thumb.substring(0,1)+'/'+thumb+'.tbn'};
-                // r.data.seasonCover = temp;
-                // element.el.dom.src = r.data.seasonCover
-            // }
-            // else {
-                if (t.responseText.substr(11,5) === 'Error'){temp = '../images/nobanner.png';}
-                    else {temp = '../cache/Video/'+thumb.substring(0,1)+'/'+thumb+'.tbn';}
-                r.data.ShowCover = temp;
-                element.el.dom.src = r.data.ShowCover;
-            //};
-        },
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-var responseFinale = [];
-var movieTable = [];
-var currentShowPath;
 var selectedMovie;
 var currentRecord;
 var currentMovie;
@@ -205,10 +164,6 @@ else if (vAspect < 2.3)
 else
     return '2.35';
 }
-
-
-var savingMessage = new Ext.LoadMask(Ext.getBody(), {msg:'Please wait...'});
-
 
 
 /*\
