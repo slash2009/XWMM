@@ -9,20 +9,6 @@ function XBMCExecSql(inputUrl) {
     });
 }
 
-function XBMCGetSetId(inputUrl) {
-    var response;
-        Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){response = t},
-        failure: function(t){},
-        timeout: 2000
-    });
-    return t;
-
-}
-
 /**
  * Save the watched state back to XBMC.
  * @param {int} mediaId The media id.
@@ -89,62 +75,9 @@ function downloadXBMCFile(url,myFile) {
     });
 };
 
-function AddXBMCNewMovieSet(record) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO sets (strSet) VALUES ("'+record.data.strSet+'"))';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-
-}
-
 function AddXBMCNewGenre(record) {
     var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genre (strGenre) VALUES ("'+record.data.label+'"))';
     XBMCExecSql(inputUrl)
-}
-
-function updateXBMCAlbumInfo(record) {
-
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE albuminfo SET strReview = "'+record.data.strReview+'" ,iRating = "'+record.data.iRating+'" WHERE idAlbum='+record.data.idAlbum+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-function updateXBMCAlbumScraperInfo(record) {
-
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE albuminfo SET strMoods = "'+record.data.strMoods+'", strStyles = "'+record.data.strStyles+'", strThemes = "'+record.data.strThemes+'", strLabel = "'+record.data.strLabel+'", strType = "'+record.data.strType+'" ,strExtraGenres = "'+record.data.strExtraGenres+'" WHERE idAlbum='+record.data.idAlbum+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-function updateXBMCAlbum(record) {
-
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(UPDATE album SET idArtist = "'+record.data.idArtist+'", iYear = "'+record.data.iYear+'", idGenre = "'+record.data.idGenre+'", strAlbum = "'+record.data.strAlbum+'" WHERE idAlbum='+record.data.idAlbum+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-
 }
 
 function removeXBMCGenre(record) {
@@ -332,24 +265,6 @@ function getCoverList(String, r) {
         result.push([previewUrl, downloadUrl, "Remote", ""]);
     }
      return result;
-}
-
-function XBMCgetMoviesFields(resp, r) { //This function is no longer being called
-
-    //var temp = TrimXbmcXml(resp);
-
-    var temp = resp.responseText.replace(/<\/record>/g, "");
-    temp = temp.replace(/<record>/g, "");
-    temp = temp.replace(/<recordset>/g, "");
-    temp = temp.replace(/<\/recordset>/g, "");
-    temp = temp.replace(/<html>/g, "");
-    temp = temp.replace(/<\/html>/g, "");
-    temp = temp.replace(/<\/field>/g, "");
-    temp = temp.split("<field>");
-    r.data.MovieFanartUrl = getFanartList(temp[1]);
-    r.data.MovieCoverUrl = getCoverList(temp[2], r);
-    r.data.idFile = temp[3];
-
 }
 
 /**
