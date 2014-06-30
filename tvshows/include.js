@@ -169,7 +169,7 @@ function GetTvshowGenres(record){
 function checkWatched(val) {
     if (val !== '')
     {
-        return '<img src=../images/icons/checked.png>';
+        return '<img src="../images/icons/checked.png" width="16" height="16" alt="Watched">';
     }
 
     return '';
