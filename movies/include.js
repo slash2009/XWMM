@@ -255,7 +255,7 @@ function checkWatched(val) {
 }
 
 function checkSet(val) {
- if ((typeof(val[0]) !== undefined ))
+ if (val !== '')
     return '<img src=../images/icons/set.png>';
 }
 
