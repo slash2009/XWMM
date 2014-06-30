@@ -2,7 +2,6 @@
 // TV SHOW include.js
 //------------------------------------------
 
-Ext.BLANK_IMAGE_URL = '../extjs/resources/images/default/s.gif';
 var responseFinale = [];
 var movieTable = [];
 var selectedMovie;
@@ -200,5 +199,3 @@ var seasoncolModel = new Ext.grid.ColumnModel([
         {header: '#', dataIndex: 'season', hidden: true},
         {header: 'Season', width: 115, dataIndex: 'label'}
     ]);
-
-//Ext.BLANK_IMAGE_URL = 'extjs/resources/../images/stars/default/s.gif';
