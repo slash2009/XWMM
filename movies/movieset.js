@@ -6,11 +6,11 @@ var MovieSetRecord = Ext.data.Record.create([
 ]);
 
 var MovieSetStore = new Ext.data.GroupingStore({
-    sortInfo: {field: 'strSet', direction: "ASC"},
+    sortInfo: {field: 'strSet', direction: 'ASC'},
     //autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSets", "params": {"properties": ["title"]},"id": 1}
+        url: '/jsonrpc',
+        xbmcParams: {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSets', 'params': {'properties': ['title']},'id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root: 'result.sets'
@@ -18,8 +18,8 @@ var MovieSetStore = new Ext.data.GroupingStore({
 });
 
 var MoviesInSetcolModel = new Ext.grid.ColumnModel([
-        {header: "#", dataIndex: 'idMovie', hidden: true},
-        {header: "Movie Title", dataIndex: 'movieinset', width: 200}
+        {header: '#', dataIndex: 'idMovie', hidden: true},
+        {header: 'Movie Title', dataIndex: 'movieinset', width: 200}
     ]);
 
 
@@ -30,11 +30,11 @@ var MoviesInSetRecord = Ext.data.Record.create([
 
 
 var MoviesInSetStore = new Ext.data.GroupingStore({
-    sortInfo: {field: 'movieinset', direction: "ASC"},
+    sortInfo: {field: 'movieinset', direction: 'ASC'},
     id: 'moviesinsetstore',
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": 2147483647, "movies": {"properties": ["title"]} }, "id": 1} //dummy ID will be replaced by selected setid when set selected
+        url: '/jsonrpc',
+        xbmcParams: {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': 2147483647, 'movies': {'properties': ['title']} }, 'id': 1} //dummy ID will be replaced by selected setid when set selected
     }),
     reader: new Ext.data.JsonReader({
         root:'result.setdetails.movies'
@@ -62,7 +62,7 @@ function onAddMovieSet(btn, ev) {
         });
         editor.stopEditing();
         MovieSetStore.insert(0, u);
-        editor.startEditing(0)
+        editor.startEditing(0);
 }
 
 function onDeleteMovieSet() {
@@ -70,19 +70,19 @@ function onDeleteMovieSet() {
     if (!rec) {return false;}
 
 
-    MovieSetStore.remove(rec)
+    MovieSetStore.remove(rec);
     MoviesInSetStore.each( function (movieRecord)
         {
             xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": ""}, "id": 1}');
         }, this);
-    MovieSetStore.reload()
+    MovieSetStore.reload();
 }
 
 var MovieSetEditor = new Ext.ux.grid.RowEditor({
     saveText: 'Update',
     listeners: {
         afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.idSet == -1) {
+            if (record.data.idSet === -1) {
                 //should add a bubble to tell user to add movies in the set
             }
             else {
@@ -90,7 +90,7 @@ var MovieSetEditor = new Ext.ux.grid.RowEditor({
                     {
                         xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": "'+ changes.strSet +'"}, "id": 1}');
                     }, this);
-                MovieSetStore.reload()
+                MovieSetStore.reload();
             }
         }
     }
@@ -101,8 +101,8 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
     width: 250,
     height: 290,
     columns: [
-        {header: "#", dataIndex: 'idSet', hidden: true},
-        {header: "Set Name", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strSet'}
+        {header: '#', dataIndex: 'idSet', hidden: true},
+        {header: 'Set Name', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strSet'}
     ],
     clicksToEdit: 1,
     title: 'Sets',
@@ -112,7 +112,7 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
         singleSelect: true,
         listeners : {
         rowselect: function(sm, row, rec) {
-                MoviesInSetStore.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": {"setid": rec.data.idSet, "movies": {"properties": ["title"]} }, "id": 1};
+                MoviesInSetStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': rec.data.idSet, 'movies': {'properties': ['title']} }, 'id': 1};
                 MoviesInSetStore.load();
             }
         }
@@ -147,7 +147,7 @@ var winMovieSet = new Ext.Window({
     buttons: [{
         text: 'Close',
         handler: function(){
-            winMovieSet.hide()
+            winMovieSet.hide();
         }
     }]
 });
