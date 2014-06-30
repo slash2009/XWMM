@@ -22,13 +22,13 @@ var gridContextMenu = new Ext.menu.Menu({
 
 function setWatched() {
         setXBMCWatched(currentRecord.data.idMovie, 'movie', true);
-        currentRecord.data.watched = '1';
+        currentRecord.data.watched = 1;
         Moviegrid.getView().refresh();
 }
 
 function setUnwatched() {
         setXBMCWatched(currentRecord.data.idMovie, 'movie', false);
-        currentRecord.data.watched = '';
+        currentRecord.data.watched = 0;
         Moviegrid.getView().refresh();
 }
 
@@ -249,7 +249,7 @@ function GetMovieGenres(record) {
 
 
 function checkWatched(val) {
- if ((val !== '' ) && (val !== '0'))
+ if ((val !== '' ) && (val !== 0))
     return '<img src=../images/icons/checked.png>';
 
 }
