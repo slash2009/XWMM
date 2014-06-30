@@ -175,15 +175,6 @@ function checkWatched(val) {
     return '';
 }
 
-function checkWatechedInt(val) {
-    if (val !== '0')
-    {
-        return '<img src=../images/icons/checked.png>';
-    }
-
-    return '';
-}
-
 var episodecolModel = new Ext.grid.ColumnModel([
     {header: '#', dataIndex: 'episode', width: 30},
     {header: 'title', dataIndex: 'title', width: 130},
