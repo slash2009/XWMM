@@ -22,7 +22,7 @@ function setWatched() {
     if (selectedEpisode.data.watched === '') {
         setXBMCWatched(selectedEpisode.data.episodeid, 'episode', true);
         selectedEpisode.data.watched = '1';
-        EpisodeGrid.getView().refresh();
+        episodeGrid.getView().refresh();
     }
 }
 
@@ -30,7 +30,7 @@ function setUnwatched() {
     if (selectedEpisode.data.watched !== '') {
         setXBMCWatched(selectedEpisode.data.episodeid, 'episode', false);
         selectedEpisode.data.watched = '';
-        EpisodeGrid.getView().refresh();
+        episodeGrid.getView().refresh();
     }
 }
 
@@ -53,14 +53,14 @@ function updateXBMCAll() {
             var i = v/29;
             if (v === 1) {
                 myText = 'Checking changes...';
-                if (EpisodedetailPanel.getForm().isDirty()) {
-                    updateXBMCTables(EpisodedetailPanel.getForm(), 'episode', EpisodeGrid.getSelectionModel().getSelected().data.episodeid);
+                if (episodeDetailsPanel.getForm().isDirty()) {
+                    updateXBMCTables(episodeDetailsPanel.getForm(), 'episode', episodeGrid.getSelectionModel().getSelected().data.episodeid);
                     myText = 'updating Episode info';
                 }
             }
                if (v === 10) {
-                if (TVShowdetailPanel.getForm().isDirty()) {
-                    updateXBMCTables(TVShowdetailPanel.getForm(), 'tvshow', TvShowGrid.getSelectionModel().getSelected().data.tvshowid);
+                if (tvShowDetailsPanel.getForm().isDirty()) {
+                    updateXBMCTables(tvShowDetailsPanel.getForm(), 'tvshow', tvShowGrid.getSelectionModel().getSelected().data.tvshowid);
                     myText = 'updating TV Show info';
                         //need commit here
                 }
@@ -174,19 +174,3 @@ function checkWatched(val) {
 
     return '';
 }
-
-var episodecolModel = new Ext.grid.ColumnModel([
-    {header: '#', dataIndex: 'episode', width: 30},
-    {header: 'title', dataIndex: 'title', width: 130},
-    {header: 'Watched', dataIndex: 'playcount', width: 25, renderer: checkWatched}
-]);
-
-var tvShowcolModel = new Ext.grid.ColumnModel([
-    {header: 'Title', width: 155, dataIndex: 'title'},
-    {header: 'Watched', dataIndex: 'playcount', width: 25, renderer: checkWatched}
-]);
-
-var seasoncolModel = new Ext.grid.ColumnModel([
-        {header: '#', dataIndex: 'season', hidden: true},
-        {header: 'Season', width: 115, dataIndex: 'label'}
-    ]);
