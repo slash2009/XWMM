@@ -6,6 +6,7 @@ XWMM Change log
 - Fix typo in README.md - XWMM not X V MM (Issue #74)
 - Remove the very broken files section (Issue #65)
 - Remove the very broken actor section (Issue #66)
+- Fix genre column not populated on movie view. (Issue #42)
 
 4.0.1
 - Fix by criticalfiction
