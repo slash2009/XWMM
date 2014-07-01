@@ -1,4 +1,4 @@
-var myVersion = '4.0.2';
+var myVersion = '4.1.0';
 
 /**
  * Protect window.console method calls, e.g. console is not defined on IE
