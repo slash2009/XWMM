@@ -76,6 +76,7 @@ var tempMovieStore = new Ext.data.Store( {
 Moviegrid = new Ext.grid.GridPanel({
     cm: MoviecolModel,
     id: 'Moviegrid',
+    enableHdMenu: false,
     enableDragDrop: false,
     stripeRows: true,
     loadMask: true,
