@@ -16,11 +16,6 @@ Ext.onReady(function() {
                 disabled: 'true',
                 iconCls: 'silk-plugin',
                 handler: function(){winGenre.show()}
-            },{
-                text: 'Manage Actors',
-                disabled: 'true',
-                iconCls: 'silk-plugin',
-                handler: function(){window.location = '../actors/index.html'}
             }]
         },{
             text: 'Quicksearch:',

@@ -17,11 +17,6 @@ Ext.onReady(function() {
                 disabled: 'true',
                 handler: function(){winGenre.show()}
             },{
-                text: 'Manage Actors',
-                iconCls: 'silk-plugin',
-                disabled: 'true',
-                handler: function(){window.location = '../actors/index.html'}
-            },{
                 text: 'Manage Movie Sets',
                 iconCls: 'silk-plugin',
                 handler: function(){winMovieSet.show()}
