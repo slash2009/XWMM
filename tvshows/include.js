@@ -160,7 +160,7 @@ function GetTvshowGenres(record){
     var myGenres = record.data.TVGenre.split('/');
 
     for (var i = 0; i < myGenres.length; i++) {
-        responseArr[i]= storegenre.findExact('label',removeSpace(myGenres[i]),0,false,false);
+        responseArr[i]= storegenre.findExact('label',myGenres[i].trim(),0,false,false)
     }
     updateGenreGrid(responseArr);
 }
