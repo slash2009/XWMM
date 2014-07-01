@@ -8,6 +8,7 @@ XWMM Change log
 - Remove the very broken actor section (Issue #66)
 - Fix genre column not populated on movie view. (Issue #42)
 - Add missing console functions to Internet Explorer. (Issue #70)
+- Add debug code for API request failures. (Issue #71)
 
 4.0.1
 - Fix by criticalfiction
