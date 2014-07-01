@@ -2,7 +2,6 @@
 // TV SHOW include.js
 //------------------------------------------
 
-Ext.BLANK_IMAGE_URL = '../extjs/resources/images/default/s.gif';
 var responseFinale = [];
 var movieTable = [];
 var selectedMovie;
@@ -176,15 +175,6 @@ function checkWatched(val) {
     return '';
 }
 
-function checkWatechedInt(val) {
-    if (val !== '0')
-    {
-        return '<img src=../images/icons/checked.png>';
-    }
-
-    return '';
-}
-
 var episodecolModel = new Ext.grid.ColumnModel([
     {header: '#', dataIndex: 'episode', width: 30},
     {header: 'title', dataIndex: 'title', width: 130},
@@ -200,5 +190,3 @@ var seasoncolModel = new Ext.grid.ColumnModel([
         {header: '#', dataIndex: 'season', hidden: true},
         {header: 'Season', width: 115, dataIndex: 'label'}
     ]);
-
-//Ext.BLANK_IMAGE_URL = 'extjs/resources/../images/stars/default/s.gif';

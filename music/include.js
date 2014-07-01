@@ -2,8 +2,6 @@
 // MUSIC include.js
 //------------------------------------------
 
-Ext.BLANK_IMAGE_URL = '../extjs/resources/images/default/s.gif';
-
 function updateMusicAlbum() {
 
     var record = Ext.getCmp('albumGrid').getSelectionModel().getSelected();

@@ -2,7 +2,6 @@
 // MOVIE include.js
 //------------------------------------------
 
-Ext.BLANK_IMAGE_URL = '../extjs/resources/images/default/s.gif';
 var responseFinale = [];
 var movieTable = [];
 var selectedMovie;
