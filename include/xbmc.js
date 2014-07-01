@@ -364,18 +364,6 @@ function XBMCgetMoviesFields(resp, r) { //This function is no longer being calle
 
 }
 
-
-function XBMCScanContent(type,path) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=ExecBuiltIn(UpdateLibrary('+type+','+path+'))';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
 function removeXbmcActor(record) {
     var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM actors WHERE idActor ='+record.data.idActor+')';
     Ext.Ajax.request({
