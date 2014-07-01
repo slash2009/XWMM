@@ -13,7 +13,7 @@ function xbmcJsonRPC(params) {
         success: function (t){
             myjson = Ext.util.JSON.decode(t.responseText);
             },
-        failure: function(t){},
+        failure: function(t){console.error(Ext.util.JSON.decode(t.responseText))},
             timeout: 5000
     });
     return myjson.result;
