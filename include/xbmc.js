@@ -1,4 +1,6 @@
-function XBMCExecSql(inputUrl) {
+function XBMCExecSql(inputUrl) { // #BROKEN
+    console.error('BROKEN! Don\'t use XBMCExecSql');
+/*
     Ext.Ajax.request({
         url: inputUrl,
         method: 'GET',
@@ -7,6 +9,7 @@ function XBMCExecSql(inputUrl) {
         failure: function(t){},
         timeout: 2000
     });
+*/
 }
 
 /**
@@ -50,7 +53,9 @@ function setXBMCWatched(mediaId, mediaType, watched) {
 }
 
 
-function downloadNewXBMCFile(url,myFile) {
+function downloadNewXBMCFile(url,myFile) { // #BROKEN
+    console.error('BROKEN! Don\'t use downloadNewXBMCFile');
+/*
     var inputUrl = '/xbmcCmds/xbmcHttp?command=FileDownloadFromInternet('+url+'; '+myFile+')';
     Ext.Ajax.request({
         url: inputUrl,
@@ -60,20 +65,28 @@ function downloadNewXBMCFile(url,myFile) {
         failure: function(t){},
         timeout: 2000
     });
-
+*/
 };
 
-function AddXBMCNewGenre(record) {
+function AddXBMCNewGenre(record) { // #BROKEN
+    console.error('BROKEN! Don\'t use AddXBMCNewGenre');
+/*
     var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(INSERT INTO genre (strGenre) VALUES ("'+record.data.label+'"))';
     XBMCExecSql(inputUrl)
+*/
 }
 
-function removeXBMCGenre(record) {
+function removeXBMCGenre(record) { // #BROKEN
+    console.error('BROKEN! Don\'t use removeXBMCGenre');
+/*
     var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM genre WHERE idGenre='+record.data.genreid+')';
     XBMCExecSql(inputUrl);
+*/
 }
 
-function checkXBMCGenreUsed(record) {
+function checkXBMCGenreUsed(record) { // #BROKEN
+    console.error('BROKEN! Don\'t use checkXBMCGenreUsed');
+/*
     var found = false;
     // check if genre is used in movie
     var inputUrl = '/xbmcCmds/xbmcHttp?command=queryvideodatabase(SELECT idMovie FROM genrelinkmovie where idGenre='+record.data.genreid+')';
@@ -100,11 +113,13 @@ function checkXBMCGenreUsed(record) {
         timeout: 2000
     });
     return found;
+*/
 
 }
 
-function updateXBMCGenreString(record) {
-
+function updateXBMCGenreString(record) { // #BROKEN
+    console.error('BROKEN! Don\'t use updateXBMCGenreString');
+/*
     //update strGenre in Genre Table
     var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(UPDATE genre SET strGenre = "'+record.data.label+'" WHERE idGenre='+record.data.genreid+')';
     XBMCExecSql(inputUrl)
@@ -153,6 +168,7 @@ function updateXBMCGenreString(record) {
         failure: function(t){},
         timeout: 2000
     });
+*/
 }
 
  function getTagAttribute(xmlString, tag) {
