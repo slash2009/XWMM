@@ -1,5 +1,10 @@
 XWMM Change log
 
+4.0.2
+- XBMC expects rating to be a number not a string. (Issue #57)
+- Fix the mark (un)watched in the TV section. (Issue #58)
+- Fix typo in README.md - XWMM not X V MM (Issue #74)
+
 4.0.1
 - Fix by criticalfiction
 -- Allow UI to immediately reflect changes to sets after save
