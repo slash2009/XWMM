@@ -25,25 +25,25 @@ var tempMovieRecord = Ext.data.Record.create([
 ]);
 
 function genreConvert(v, record) {
-    return record.genre.join(' / ')
+    return record.genre.join(' / ');
 }
 
 var storeMovie = new Ext.data.GroupingStore( {
-    sortInfo: {field: 'Movietitle', direction: "ASC"},
+    sortInfo: {field: 'Movietitle', direction: 'ASC'},
     groupField: 'strGenre',
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
+        url: '/jsonrpc',
     }),
 });
 
 var tempMovieStore = new Ext.data.Store( {
-    sortInfo: {field: 'Movietitle', direction: "ASC"},
+    sortInfo: {field: 'Movietitle', direction: 'ASC'},
     autoLoad: true,
     listeners: {
         'load': function(records) {
                 var genres = [];
                 for (var i = 0; i < records.data.length; i++) {
-                    genres = records.data.items[i].data.Moviegenres.split(" / ");
+                    genres = records.data.items[i].data.Moviegenres.split(' / ');
                     for (var j = 0; j < genres.length; j++) {
                         var record = new MovieRecord({
                             idMovie: records.data.items[i].data.idMovie,
@@ -62,8 +62,8 @@ var tempMovieStore = new Ext.data.Store( {
             }
    },
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams :{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set"]},"id": 1}
+        url: '/jsonrpc',
+        xbmcParams :{'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovies', 'params': {'properties': ['title', 'genre', 'year', 'playcount', 'file', 'set']},'id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root: 'result.movies'

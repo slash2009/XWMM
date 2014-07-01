@@ -7,7 +7,7 @@ var MovieFanart = new Ext.ux.XbmcImages ({
     border: 0,
     width: 295,
     height:165,
-    autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg"}//, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'}//, qtip:'Double-click to change'}
 });
 
 var Stars = new Ext.ux.XbmcStars ({
@@ -23,7 +23,7 @@ var MovieCover = new Ext.ux.XbmcImages ({
     border: 0,
     width: 250,
     height:375,
-    autoEl: {tag: 'img', src: "../images/defaultMovieCover.jpg"}//, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../images/defaultMovieCover.jpg'}//, qtip:'Double-click to change'}
 });
 
 Ext.ns('Movie');
@@ -35,7 +35,7 @@ var fileDetailsPanel = new Ext.FormPanel({
     labelWidth:50,
     frame: true,
     bodyStyle:'padding:5px',
-    defaults: {width: 140, xtype: 'textfield', listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}},
+    defaults: {width: 140, xtype: 'textfield', listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}},
     items: [{
         fieldLabel: 'Name',
         name: 'strFilename',
@@ -64,45 +64,44 @@ var fileDetailsPanel = new Ext.FormPanel({
         name: 'strSet',
         listeners: {
             change: function(combo, newValue, oldValue) {
-                if (newValue != oldValue)
-                    Ext.getCmp('savebutton').enable()
+                if (newValue !== oldValue)
+                    Ext.getCmp('savebutton').enable();
             }
         }
     }]
-})
+});
 
 var MoviedetailPanel = new Ext.FormPanel({
     width: 600,
     region: 'center',
     id: 'MoviedetailPanel',
     trackResetOnLoad : true,
-    title: "<div align='center'>Movie details</div>",
-    defaults:{hideLabels:true, border:false},
+    title: '<div align="center">Movie details</div>',
+    defaults:{frame:true, width:220, height: 120, labelWidth: 60},
     buttons: [{
         disabled: true,
         text:'Save',
         id: 'savebutton',
         handler: function(){
             updateXBMCAll();
-            this.disable()
+            this.disable();
         }
     },{
         text:'Cancel',
         handler: function(){
-            updateGenreGrid(currentRecord.data.genres)
+            updateGenreGrid(currentRecord.data.genres);
         }
     }],
 
     layout:'table',
     layoutConfig: {columns:3},
-    defaults: {frame:true, width:220, height: 120, labelWidth: 60},
     items:[{
         width: 300,
         height : 90,
         layout: 'form',
         defaults: { xtype:'textfield',
             width: 220,
-            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
+            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
         },
         items: [{
             fieldLabel: 'Title',
@@ -128,7 +127,7 @@ var MoviedetailPanel = new Ext.FormPanel({
         height: 90,
         defaults: { xtype:'textfield',
             width: 80,
-            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
+            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
         },
         labelWidth: 60,
         items:[{
@@ -156,7 +155,7 @@ var MoviedetailPanel = new Ext.FormPanel({
         colspan:2,
         defaults: { xtype:'textfield',
             width: 370,
-            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
+            listeners:{change : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
         },
         items: [{
             xtype:'textarea',
@@ -197,8 +196,8 @@ var MoviedetailPanel = new Ext.FormPanel({
             xtype: 'button',
             text: 'View Trailer',
             handler: function(){
-                if (Ext.getCmp('trailer').getValue() != '') {
-                        window.open(Ext.getCmp('trailer').getValue(),'')
+                if (Ext.getCmp('trailer').getValue() !== '') {
+                        window.open(Ext.getCmp('trailer').getValue(),'');
                 }
             },
             width: 60
@@ -216,7 +215,7 @@ var MoviedetailPanel = new Ext.FormPanel({
         items: [VideoFlagsPanel]
 
     }]
-})
+});
 
 //Main Panel
 Movie.Mainpanel = Ext.extend(Ext.Panel, {
@@ -249,9 +248,9 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
             Moviegrid,
             MoviedetailPanel
         ]
-        })
+        });
 
-        Movie.Mainpanel.superclass.initComponent.call(this)
+        Movie.Mainpanel.superclass.initComponent.call(this);
     },
 
     initEvents: function() {
@@ -275,9 +274,9 @@ Movie.Mainpanel = Ext.extend(Ext.Panel, {
 
         GetMovieGenres(r);
         GetMovieDetails(r);
-        Ext.getCmp('filedetailPanel').getForm().loadRecord(r)
+        Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
 
-        storeActor.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": selectedMovie, "properties": ["cast"]},"id": 1};
+        storeActor.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieDetails', 'params': {'movieid': selectedMovie, 'properties': ['cast']},'id': 1};
         storeActor.reload();
 
     }

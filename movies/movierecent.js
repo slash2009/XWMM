@@ -20,14 +20,14 @@ var MovieRecord = Ext.data.Record.create([
 ]);
 
 function genreConvert(v, record) {
-    return record.genre.join(' / ')
+    return record.genre.join(' / ');
 }
 
 var storeMovie = new Ext.data.GroupingStore({
-    sortInfo: {field: 'Movietitle', direction: "ASC"},
+    sortInfo: {field: 'Movietitle', direction: 'ASC'},
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams : {"jsonrpc": "2.0", "method": "VideoLibrary.GetRecentlyAddedMovies", "params": {"properties": ["title", "genre", "year", "playcount", "file", "set", "streamdetails"]},"id": 1}
+        url: '/jsonrpc',
+        xbmcParams : {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetRecentlyAddedMovies', 'params': {'properties': ['title', 'genre', 'year', 'playcount', 'file', 'set', 'streamdetails']},'id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root:'result.movies'
