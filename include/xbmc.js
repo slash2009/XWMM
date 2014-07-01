@@ -22,18 +22,6 @@ function XBMCGetSetId(inputUrl) {
     return t;
 
 }
-function setXBMCResponseFormat() {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=setresponseformat(openRecordSet;<recordset>;closeRecordSet;</recordset>;openRecord;<record>;closeRecord;</record>;openField;<field>;closeField;</field>)';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
 
 /**
  * Save the watched state back to XBMC.
@@ -363,55 +351,6 @@ function XBMCgetMoviesFields(resp, r) { //This function is no longer being calle
     r.data.idFile = temp[3];
 
 }
-
-function removeXbmcActor(record) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM actors WHERE idActor ='+record.data.idActor+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-function removeXbmcActorEpisode(record) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM actorlinkepisode WHERE idActor ='+record.data.idActor+' AND idEpisode ='+record.data.idEpisode+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-function removeXbmcActorTVShow(record) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM actorlinktvshow WHERE idActor ='+record.data.idActor+' AND idShow ='+record.data.idShow+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
-function removeXbmcActorMovie(record) {
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=execvideodatabase(DELETE FROM actorlinkmovie WHERE idActor ='+record.data.idActor+' AND idMovie ='+record.data.idMovie+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-}
-
 
 /**
  * Convert a string list into an array.
