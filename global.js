@@ -86,11 +86,6 @@ var menuBar = new Ext.Toolbar({
         }]
 });
 
-
-Number.prototype.unsign = function(bytes) {
-  return this >= 0 ? this : this - Number.MIN_VALUE*2;
-};
-
 var selectedMovie;
 var currentRecord;
 var currentMovie;
