@@ -14,7 +14,7 @@ var fanartTpl = new Ext.XTemplate(
     '</tpl>'
 );
 
-window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
+window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:'Downloading file, please wait...'});
 
 function ChangeImages(record) {
 
@@ -70,14 +70,14 @@ function ChangeImages(record) {
         listeners: {
              'selectionchange': function () {
                 var selNode = viewFanarts.getSelectedRecords();
-                if (selNode[0].data.title != "Current") {
+                if (selNode[0].data.title !== 'Current') {
                     Ext.getCmp('choosebutton').enable();
                 }
-                else { Ext.getCmp('choosebutton').disable()}
+                else { Ext.getCmp('choosebutton').disable();}
 
             }
          }
-    })
+    });
 
     var viewCovers = new Ext.DataView({
         tpl: coverTpl,
@@ -94,14 +94,14 @@ function ChangeImages(record) {
         listeners: {
              'selectionchange': function () {
                 var selNode = viewCovers.getSelectedRecords();
-                if (selNode[0].data.title != "Current") {
+                if (selNode[0].data.title !== 'Current') {
                     Ext.getCmp('choosebutton').enable();
                 }
-                else { Ext.getCmp('choosebutton').disable()}
+                else { Ext.getCmp('choosebutton').disable();}
 
             }
          }
-    })
+    });
 
     var imagePanel = new Ext.TabPanel({
             id:'images-view',
@@ -112,14 +112,14 @@ function ChangeImages(record) {
             autoHeight:true,
             title:'Simple DataView',
             items: [viewCovers, viewFanarts]
-    })
+    });
 
     var preview = new Ext.Container ({
     id: 'preview',
     border: 0,
-    autoEl: {tag: 'img', src: "../images/defaultMovieFanart.jpg"},
+    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'},
     updateSrc :function(v){
-        this.el.dom.src = v
+        this.el.dom.src = v;
     }
 });
 
@@ -150,15 +150,16 @@ function ChangeImages(record) {
         },{
             text: 'Preview',
             handler: function(){
-                if (Ext.getCmp('myUrl').getValue() != ""){
-                    var v = Ext.getCmp('myUrl').getValue();
+                var v;
+                if (Ext.getCmp('myUrl').getValue() !== ''){
+                    v = Ext.getCmp('myUrl').getValue();
                 }
                 else {
-                    var v = Ext.getCmp('myLocal').getValue();
+                    v = Ext.getCmp('myLocal').getValue();
 
                 }
                     preview.updateSrc(v);
-                    fp.getForm().submit({url: '../test'})
+                    fp.getForm().submit({url: '../test'});
 
             }
         }]
@@ -189,8 +190,8 @@ function ChangeImages(record) {
             disabled: true,
             id: 'choosebutton',
             handler: function(){
-                if (imagePanel.getActiveTab().id == 'tabcovers'){changeXBMCCover()};
-                if (imagePanel.getActiveTab().id == 'tabfanarts'){changeXBMCFanart()};
+                if (imagePanel.getActiveTab().id === 'tabcovers'){changeXBMCCover();}
+                if (imagePanel.getActiveTab().id === 'tabfanarts'){changeXBMCFanart();}
 
             }
         },{
@@ -200,6 +201,5 @@ function ChangeImages(record) {
             }
         }]
     });
-    winImages.show()
-
+    winImages.show();
 }

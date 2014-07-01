@@ -23,7 +23,7 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
             AlbumGrid,
         {
             xtype: 'panel',
-            region: "center",
+            region: 'center',
             defaults:{xtype:'container'},
             items: [
                 albumDetailPanel,
@@ -41,7 +41,7 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
                 items:[Genregrid, ArtistGrid]
             }]
         }]
-        })
+        });
 
         Audio.Mainpanel.superclass.initComponent.call(this);
     },
@@ -54,30 +54,30 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 
         //add double-click event to cover object
         var element = AlbumCover.getEl();
-        element.on('dblclick', function(){ChangeImages(currentRecord)});
+        element.on('dblclick', function(){ChangeImages(currentRecord);});
     },
 
     onRowSelect: function(sm, rowIdx, r) {
 
         currentRecord = r;
 
-        if (r.data.details == undefined){
-            GetAlbumDetails(r)
+        if (r.data.details === undefined){
+            GetAlbumDetails(r);
         }
 
         //albumDetailPanel.getForm().loadRecord(r);
         standardInfo.getForm().loadRecord(r);
         extraInfo.getForm().loadRecord(r);
         albumDescription.getForm().loadRecord(r);
-        albumDetailPanel.setTitle("<div align='center'>"+r.data.strAlbum+"  /  "+r.data.strArtist+"</div>");
+        albumDetailPanel.setTitle('<div align="center">'+r.data.strAlbum+'  /  '+r.data.strArtist+'</div>');
 
         AlbumCover.updateSrc(r.data.currentThumbnail);
 
-        if (r.data.rating < 10) { AlbumStars.updateSrc(r)};
+        if (r.data.rating < 10) { AlbumStars.updateSrc(r);}
 
         r.data.details = true;
 
-        SongStore.proxy.conn.xbmcParams = {"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": [ "track", "artist", "duration"], "filter": {"albumid": r.data.albumid}},"id": 1};
+        SongStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetSongs', 'params': {'properties': [ 'track', 'artist', 'duration'], 'filter': {'albumid': r.data.albumid}},'id': 1};
 
         //SongStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strTitle, iTrack, iDuration, iYear, strFileName, rating, idAlbum, strAlbum, strPath, idArtist, strArtist, idGenre, strGenre FROM songview WHERE idAlbum = '+r.data.albumid+')';
         SongStore.load();

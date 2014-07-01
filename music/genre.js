@@ -18,16 +18,16 @@ var Checkgenre = new Ext.grid.CheckboxSelectionModel({
 
 var GenrecolModel = new Ext.grid.ColumnModel([
         Checkgenre,
-        {header: "#", dataIndex: 'idGenre', hidden: true},
-        {header: "Genre", dataIndex: 'strGenre'}
+        {header: '#', dataIndex: 'idGenre', hidden: true},
+        {header: 'Genre', dataIndex: 'strGenre'}
 ]);
 
 var GenreStore = new Ext.data.Store({
-    sortInfo: {field: 'strGenre', direction: "ASC"},
+    sortInfo: {field: 'strGenre', direction: 'ASC'},
     autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetGenres", "id": 1}
+        url: '/jsonrpc',
+        xbmcParams : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetGenres', 'id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root:'result.genres'
@@ -40,7 +40,7 @@ var editor = new Ext.ux.grid.RowEditor({
     saveText: 'Update',
     listeners: {
         afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.idGenre == -1) {
+            if (record.data.idGenre === -1) {
                 AddXBMCNewMusicGenre(record);
                 GenreStore.reload();
             }
@@ -58,8 +58,8 @@ var editor = new Ext.ux.grid.RowEditor({
 var GenreMgmtGrid = new Ext.grid.GridPanel({
             id: 'genremgmtgrid',
             columns: [
-                {header: "#", dataIndex: 'idGenre', hidden: true},
-                {header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strGenre'}
+                {header: '#', dataIndex: 'idGenre', hidden: true},
+                {header: 'Genre', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strGenre'}
             ],
             clicksToEdit: 1,
             title: 'Genre Management',

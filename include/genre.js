@@ -11,7 +11,7 @@ var Checkgenre = new Ext.grid.CheckboxSelectionModel({
         selectionchange: function(sm) {
             movieGenreChange(sm);
             var bt = Ext.getCmp('savebutton');
-            bt.enable()
+            bt.enable();
         }
     }
 });
@@ -22,20 +22,20 @@ function updateGenreGrid(t){
     Genregrid.getSelectionModel().selectRows(t, true);
     // var bt = Ext.getCmp('savebutton');
     // bt.disable()
-};
+}
 
 var GenrecolModel = new Ext.grid.ColumnModel([
         Checkgenre,
-        {header: "#", dataIndex: 'genreid', hidden: true},
-        {header: "Genre", width: 200, dataIndex: 'label'}
+        {header: '#', dataIndex: 'genreid', hidden: true},
+        {header: 'Genre', width: 200, dataIndex: 'label'}
 ]);
 
 
 var storegenre = new Ext.data.Store({
     id: 'storegenre',
-    sortInfo: {field: 'label', direction: "ASC"},
+    sortInfo: {field: 'label', direction: 'ASC'},
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
+        url: '/jsonrpc',
     }),
     reader: new Ext.data.JsonReader({
         root:'result.genres'
@@ -69,7 +69,7 @@ var editor = new Ext.ux.grid.RowEditor({
     saveText: 'Update',
     listeners: {
         afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.idGenre == -1) {
+            if (record.data.idGenre === -1) {
                 AddXBMCNewGenre(record);
                 storegenre.reload();
             }
@@ -86,8 +86,8 @@ var editor = new Ext.ux.grid.RowEditor({
 var GenreMgmtGrid = new Ext.grid.GridPanel({
             id: 'genremgmtgrid',
             columns: [
-                {header: "#", dataIndex: 'genreid', hidden: true},
-                {header: "Genre", width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'label'}
+                {header: '#', dataIndex: 'genreid', hidden: true},
+                {header: 'Genre', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'label'}
             ],
             clicksToEdit: 1,
             title: 'Genre Management',
@@ -158,7 +158,7 @@ var Genregrid = new Ext.grid.GridPanel({
         }
     ],
     addGenre: function(btn, text) {
-        if (btn != 'ok') {
+        if (btn !== 'ok') {
             return;
         }
 

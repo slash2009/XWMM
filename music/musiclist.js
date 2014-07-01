@@ -21,8 +21,8 @@ var CheckArtist = new Ext.grid.CheckboxSelectionModel({
 
 var ArtistcolModel = new Ext.grid.ColumnModel([
         CheckArtist,
-        {header: "#", dataIndex: 'artistid', hidden: true},
-        {header: "Artist", dataIndex: 'artist'}
+        {header: '#', dataIndex: 'artistid', hidden: true},
+        {header: 'Artist', dataIndex: 'artist'}
     ]);
 
 var ArtistRecord = Ext.data.Record.create([
@@ -33,8 +33,8 @@ var ArtistRecord = Ext.data.Record.create([
 var ArtistStore = new Ext.data.Store({
     autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
-        xbmcParams : {"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists","id": 1}
+        url: '/jsonrpc',
+        xbmcParams : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetArtists','id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root: 'result.artists',
@@ -60,7 +60,7 @@ ArtistGrid = new Ext.grid.GridPanel({
 
 var AlbumCover = new Ext.ux.XbmcImages ({
     id: 'albumCover',
-    autoEl: {tag: 'img', src: "../images/nobanner.png"},
+    autoEl: {tag: 'img', src: '../images/nobanner.png'},
     border: 0,
     width: 160,
     height:160
@@ -82,7 +82,7 @@ var standardInfo = new Ext.FormPanel({
         labelWidth: 60,
         defaults: { xtype:'textfield',
             width: 170,
-            listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}}
+            listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
         },
         items: [{
                 fieldLabel: 'Title',
@@ -214,7 +214,7 @@ var albumDescription = new Ext.FormPanel({
     },{
         text:'Cancel',
         handler: function(){
-            updateGenreGrid(currentRecord.data.genres)
+            updateGenreGrid(currentRecord.data.genres);
         }
     }],
     width: 460,
@@ -224,22 +224,21 @@ var albumDescription = new Ext.FormPanel({
         name:'description',
         id: 'albumreviewfield',
         XBMCName: 'strReview',
-        listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable()}},
+        listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}},
         height: 105,
         width: 430
     }]
-})
+});
 
 var albumDetailPanel = new Ext.Panel({
     region: 'north',
     width: 740,
     id: 'albumDetailPanel',
     trackResetOnLoad: true,
-    title: "<div align='center'>Select Album</div>",
-    defaults:{hideLabels:true, border:false},
+    title: '<div align="center">Select Album</div>',
+    defaults:{frame:true},
     layout:'table',
     layoutConfig: {columns:3},
-    defaults: {frame:true},
     items:[{
             width:190,
             items: [AlbumStars, AlbumCover]
@@ -262,15 +261,15 @@ function convertTime(val) {
 }
 
 function starRating(val) {
-    return "<img src=../images/small-stars/"+val+".gif>"
+    return '<img src=../images/small-stars/'+val+'.gif>';
 }
 
 var SongcolModel = new Ext.grid.ColumnModel([
-        {header: "#", dataIndex: 'songid', hidden: true},
-        {header: "#", dataIndex: 'track', width: 30},
-        {header: "Track", dataIndex: 'strTitle', width: 300},
-        {header: "Duration", dataIndex: 'duration', width: 70, renderer: convertTime},
-        //{header: "Rating", dataIndex: 'rating', width: 100, renderer: starRating} bug with JSON-RPC
+        {header: '#', dataIndex: 'songid', hidden: true},
+        {header: '#', dataIndex: 'track', width: 30},
+        {header: 'Track', dataIndex: 'strTitle', width: 300},
+        {header: 'Duration', dataIndex: 'duration', width: 70, renderer: convertTime},
+        //{header: 'Rating', dataIndex: 'rating', width: 100, renderer: starRating} bug with JSON-RPC
     ]);
 
 var SongRecord = Ext.data.Record.create([
@@ -291,9 +290,9 @@ var SongRecord = Ext.data.Record.create([
 ]);
 
 var SongStore = new Ext.data.Store({
-    sortInfo: {field: 'track', direction: "ASC"},
+    sortInfo: {field: 'track', direction: 'ASC'},
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc",
+        url: '/jsonrpc',
     }),
     reader: new Ext.data.JsonReader({
         root: 'result.songs',
@@ -303,7 +302,7 @@ var SongStore = new Ext.data.Store({
 
 SongGrid = new Ext.grid.GridPanel({
     cm: SongcolModel,
-    title: "<div align='center'>Album Tracks</div>",
+    title: '<div align="center">Album Tracks</div>',
     region: 'center',
     id: 'Moviegrid',
     loadMask: true,
@@ -329,7 +328,7 @@ Ext.onReady(function() {
                 text: 'Manage Genres',
                 disabled: 'true',
                 iconCls: 'silk-plugin',
-                handler: function(){winGenre.show()}
+                handler: function(){winGenre.show();}
             }]
         },{
             text: 'Quicksearch:',
@@ -347,7 +346,7 @@ Ext.onReady(function() {
         text: 'X',
         tooltip: 'Clear quicksearch',
         handler: function() {
-            if (searchBox.getValue().length!=0) {
+            if (searchBox.getValue().length!==0) {
                 searchBox.setValue('');
                 ArtistStore.clearFilter();
             }
@@ -393,44 +392,44 @@ Ext.onReady(function() {
 
     var onFilteringBeforeQuery = function(e) {
     //grid.getSelectionModel().clearSelections();
-        if (this.getValue().length==0) {
+        if (this.getValue().length===0) {
                     ArtistStore.clearFilter();
                 } else {
-                    var strSearch = this.getValue().replace(/^\s+|\s+$/g, "");
-                    if (strSearch=="")
+                    var strSearch = this.getValue().replace(/^\s+|\s+$/g, '');
+                    if (strSearch==='')
                         return;
                     AlbumStore.filterBy(function(r, id) {
                             var regex = RegExp(strSearch, 'i');
-                                    return regex.test(String(r.get('strAlbum'))) || regex.test(String(r.get('strArtist')))
+                                    return regex.test(String(r.get('strAlbum'))) || regex.test(String(r.get('strArtist')));
                             });
                 }
     };
     var onQuickSearchBeforeQuery = function(e) {
-        if (this.getValue().length==0) {
+        if (this.getValue().length===0) {
         } else {
-            var value = this.getValue().replace(/^\s+|\s+$/g, "");
-            if (value=="")
+            var value = this.getValue().replace(/^\s+|\s+$/g, '');
+            if (value==='')
                 return;
             searchStore.clearFilter();
             var vr_insert = true;
             searchStore.each(function(r) {
-                if (r.data['query'].indexOf(value)==0) {
+                if (r.data.query.indexOf(value)===0) {
                     // backspace
                     vr_insert = false;
                     return false;
-                } else if (value.indexOf(r.data['query'])==0) {
+                } else if (value.indexOf(r.data.query)===0) {
                     // forward typing
                     searchStore.remove(r);
                 }
             });
-            if (vr_insert==true) {
+            if (vr_insert===true) {
                 searchStore.each(function(r) {
-                    if (r.data['query']==value) {
+                    if (r.data.query===value) {
                         vr_insert = false;
                     }
                 });
             }
-            if (vr_insert==true) {
+            if (vr_insert===true) {
                 var vr = new searchRec({query: value});
                 searchStore.insert(0, vr);
             }
@@ -444,9 +443,9 @@ Ext.onReady(function() {
             }
     }
     };
-    searchBox.on("beforequery", onQuickSearchBeforeQuery);
-    searchBox.on("beforequery", onFilteringBeforeQuery);
-    searchBox.on("select", onFilteringBeforeQuery);
+    searchBox.on('beforequery', onQuickSearchBeforeQuery);
+    searchBox.on('beforequery', onFilteringBeforeQuery);
+    searchBox.on('select', onFilteringBeforeQuery);
     // end search
 
 
