@@ -4,6 +4,7 @@ XWMM Change log
 - XBMC expects rating to be a number not a string. (Issue #57)
 - Fix the mark (un)watched in the TV section. (Issue #58)
 - Fix typo in README.md - XWMM not X V MM (Issue #74)
+- Remove the very broken files section (Issue #65)
 
 4.0.1
 - Fix by criticalfiction
