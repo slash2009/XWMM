@@ -12,7 +12,7 @@ Please join XWMM, Help this XBMC web-interface be nr#1, we need skilled develope
 - - -
 
 ### SUBMITTING PATCHES AND PR's
-The idea is to fork this repo work on your changes and make a pull request (PR) to XVMM Master Repo, it should contain some of the following:
+The idea is to fork this repo work on your changes and make a pull request (PR) to XWMM Master Repo, it should contain some of the following:
 
 * What Patch addresses, if its a bug-fix a feature or improvement or something else.
 * Any comments in code for what is not immediately obvious.
@@ -25,7 +25,7 @@ Any work can then be easily Picked and pulled into branches if needed, especiall
 * It will be reviewed and merged as soon as possible by someone who understands what's going on.
 
 ### Support and Discussion
-For Discussion and support with XVMM see:
+For Discussion and support with XWMM see:
 
 XBMC Thread [XWMM - XBMC Web Media Manager](http://forum.xbmc.org/showthread.php?tid=188839 "XWMM - XBMC Web Media Manager Forum discussion")
 
