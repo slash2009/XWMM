@@ -1,12 +1,12 @@
 var coverTpl = new Ext.XTemplate(
-    '<tpl for=".">',
-    '<div class="thumb-wrap" id="{title}">',
-    '<div class="musicthumb"><img src="{thumb}"></div>',
+    '<tpl for="."">',
+    '<div class="thumb-wrap" id="{title}"">',
+    '<div class="musicthumb"><img src="{thumb}""></div>',
     '<span class="x-editable">{title}</span></div>',
     '</tpl>'
 );
 
-    window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Downloading file, please wait..."});
+    window.loadingMask = new Ext.LoadMask(Ext.getBody(), {msg:'Downloading file, please wait...'});
 
 
 function ChangeImages(record) {
@@ -26,7 +26,7 @@ function ChangeImages(record) {
         // selNode contains only one item
         downloadNewXBMCFile(selNode[0].data.url, currentAlbum.data.strThumb );
         //update Album Cover in form
-        Ext.getCmp('albumCover').refreshMe;
+        Ext.getCmp('albumCover').refreshMe();
         loadingMask.hide();
 
     }
@@ -46,14 +46,14 @@ function ChangeImages(record) {
         listeners: {
              'selectionchange': function () {
                 var selNode = viewCovers.getSelectedRecords();
-                if (selNode[0].data.title != "Current") {
+                if (selNode[0].data.title !== 'Current') {
                     Ext.getCmp('choosebutton').enable();
                 }
-                else { Ext.getCmp('choosebutton').disable()}
+                else { Ext.getCmp('choosebutton').disable();}
 
             }
          }
-    })
+    });
 
     var imagePanel = new Ext.TabPanel({
             id:'images-view',
@@ -64,7 +64,7 @@ function ChangeImages(record) {
             autoHeight:true,
             title:'Simple DataView',
             items: [viewCovers]
-    })
+    });
 
     var winImages = new Ext.Window({
         layout:'fit',
@@ -81,7 +81,7 @@ function ChangeImages(record) {
             disabled: true,
             id: 'choosebutton',
             handler: function(){
-                if (imagePanel.getActiveTab().id == 'tabcovers'){changeXBMCMusicCover()};
+                if (imagePanel.getActiveTab().id === 'tabcovers'){changeXBMCMusicCover();}
             }
         },{
             text: 'Done',
@@ -90,6 +90,6 @@ function ChangeImages(record) {
             }
         }]
     });
-    winImages.show()
+    winImages.show();
 
 }
