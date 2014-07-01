@@ -3,14 +3,14 @@ var actorRecord = Ext.data.Record.create([
 ]);
 
 var ActorcolModel = new Ext.grid.ColumnModel([
-        {header: "Actor", dataIndex: 'name'},
-        {header: "Role", dataIndex: 'role'}
+        {header: 'Actor', dataIndex: 'name'},
+        {header: 'Role', dataIndex: 'role'}
 ]);
 
 var storeActor = new Ext.data.Store({
-    sortInfo: {field: 'name', direction: "ASC"},
+    sortInfo: {field: 'name', direction: 'ASC'},
     proxy: new Ext.data.XBMCProxy({
-        url: "/jsonrpc"
+        url: '/jsonrpc'
     }),
     reader: new Ext.data.JsonReader({
         root:'result.tvshowdetails.cast'
