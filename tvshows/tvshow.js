@@ -152,317 +152,412 @@ var storeEpisode = new Ext.data.Store({
     }, episodeRecord)
 });
 
-var TVShowdetailPanel = new Ext.FormPanel({
-    region: 'north',
+var tvShowDetailsPanel = new Ext.FormPanel({
+    title: '<div align="center">Select a TV show</div>',
     id: 'tvShowdetailPanel',
+
+    region: 'north',
+
+    frame: true,
     trackResetOnLoad: true,
-    title: '<div align="center">TV Show details</div>',
-    defaults:{hideLabels:true, border:false},
-    items: [{
-        layout: 'column',
-        bodyStyle:'padding:5px',
-        items:[{
-            columnWidth:0.70,
-            layout: 'form',
-            items:[ TVShowCover]
-            },{
-            columnWidth : 0.30,
-            layout: 'form',
-            items: [tvshowStars]
-        }]
-        },{
-        layout:'column',
-        frame:true,
-        labelWidth:50,
-        bodyStyle:'padding:5px',
-        items:[{
-            columnWidth:0.50,
+
+    items: [
+        {
+            layout: 'column',
+            padding: 5,
+            items: [
+                {
+                    columnWidth:0.70,
+                    items: [TVShowCover]
+                },
+                {
+                    columnWidth: 0.30,
+                    items: [tvshowStars]
+                }
+            ]
+        },
+        {
+            layout: 'column',
+            labelWidth: 50,
+            items:[
+                {
+                    columnWidth: 0.40,
+                    layout: 'form',
+                    labelWidth: 65,
+                    defaults: {
+                        xtype: 'textfield',
+                        width: 200,
+                        listeners: {
+                            change: function() {
+                                Ext.getCmp('savebutton').enable();
+                            }
+                        }
+                    },
+
+                    items: [
+                        {
+                            fieldLabel: 'Title',
+                            name: 'title',
+                            allowBlank: false
+                        },
+                        {
+                            fieldLabel: 'Genres',
+                            name: 'TVGenre',
+                            readOnly: true,
+                            id: 'genreString'
+                        },
+                        {
+                            fieldLabel: 'First Aired',
+                            name: 'premiered'
+                        },
+                        {
+                            fieldLabel: 'Channel',
+                            name: 'studio'
+                        }
+                    ]
+                },
+                {
+                    xtype:'textarea',
+                    fieldLabel: 'Description',
+                    name: 'plot',
+
+                    columnWidth: 0.60,
+                    height: 100,
+
+                    listeners: {
+                        change: function() {
+                            Ext.getCmp('savebutton').enable();
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+});
+
+var episodeDetailsPanel = new Ext.FormPanel({
+    id: 'episodedetailPanel',
+    title: '<div align="center">Select an episode</div>',
+
+    region: 'center',
+
+    frame: true,
+
+    layout: 'table',
+    layoutConfig: { columns: 3 },
+    items:[
+        {
             layout: 'form',
             labelWidth: 65,
-            defaults: { xtype:'textfield',
-                width: 170,
-                listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
+            defaults: {
+                xtype: 'textfield',
+                width: 200,
+                listeners: {
+                    change: function() {
+                        Ext.getCmp('savebutton').enable();
+                    }
+                }
             },
-            items: [{
-                fieldLabel: 'Title',
-                name: 'title',
-                XBMCName: 'c00',
-                allowBlank: false
-            },{
-                fieldLabel: 'Genres',
-                name: 'TVGenre',
-                XBMCName: 'c08',
-                readOnly: true,
-                id: 'genreString'
-            },{
-                fieldLabel: 'First aired',
-                XBMCName: 'c05',
-                name: 'premiered'
-            },{
-                fieldLabel: 'Channel',
-                XBMCName: 'c14',
-                name: 'studio'
-            }]
 
-        },{
-            columnWidth:0.50,
-            defaults:{ xtype:'container',
-                width: 260,
-                listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}},
-            items: [{
-                xtype:'textarea',
-                fieldLabel: 'Description',
-                name: 'plot',
-                XBMCName: 'c01',
-                height: 100
-            }]
-        }]
-
-    }]
-});
-
-var EpisodedetailPanel = new Ext.FormPanel({
-    //width: 600,
-    region: 'center',
-    id: 'episodedetailPanel',
-    trackResetOnLoad : true,
-    title: '<div align="center">Movie details</div>',
-    defaults:{frame:true, labelWidth: 60},
-    layout:'table',
-    layoutConfig: {columns:2},
-    items:[{
-        layout: 'form',
-        width : 370,
-        defaults: { xtype:'textfield',
-            width: 275,
-            listeners:{'change' : function(){DetailsFlag = true; Ext.getCmp('savebutton').enable();}}
+            items: [
+                {
+                    fieldLabel: 'Title',
+                    name: 'title',
+                    allowBlank: false
+                },
+                {
+                    fieldLabel: 'Aired',
+                    name: 'firstaired'
+                },
+                {
+                    fieldLabel: 'Director',
+                    name: 'director'
+                },
+                {
+                    fieldLabel: 'Rating',
+                    name: 'rating'
+                }
+            ]
         },
-        items: [{
-            fieldLabel: 'Title',
-            name: 'title',
-            XBMCName: 'c00',
-            allowBlank: false
-        },{
-            fieldLabel: 'Aired',
-            name: 'firstaired',
-            XBMCName: 'c05'
-        },{
-            xtype:'textarea',
-            fieldLabel: 'Description',
-            name: 'plot',
-            XBMCName: 'c01',
-            height: 145
-        },{
-            fieldLabel: 'Director',
-            name: 'director',
-            XBMCName: 'c10'
-        },{
-            fieldLabel: 'Rating',
-            name: 'rating',
-            XBMCName: 'c03'
-        }]
-    },{
-        width:170,
-        items: [episodeStars, SeasonCover]
-    },{
-        items: [VideoFlagsPanel]
-    },{
-        items: [AudioFlagsPanel]
-    }]
+        {
+            layout: 'form',
+            hideLabels: true,
+            padding: 5,
+            labelWidth: 65,
+
+            items: [
+                {
+                    xtype: 'textarea',
+                    fieldLabel: 'Description',
+                    name: 'plot',
+                    height: 100,
+                    width: 400,
+                    listeners: {
+                        change: function() {
+                            Ext.getCmp('savebutton').enable();
+                        }
+                    }
+                },
+            ]
+        },
+        {
+            width: 170,
+            rowspan: 2,
+            items: [episodeStars, SeasonCover]
+        },
+        {
+            colspan: 2,
+            items: [VideoFlagsPanel, AudioFlagsPanel]
+        }
+    ]
 });
 
-// grid with list of movies
-var TvShowGrid = new Ext.grid.GridPanel({
-    cm: tvShowcolModel,
+var tvShowGrid = new Ext.grid.GridPanel({
+    title: 'TV Shows',
     id: 'tvshowgrid',
-    title: 'TV Shows List',
-    enableDragDrop: false,
-    stripeRows: true,
-    viewconfig: {forceFit: true},
-    sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
-    height: 300,
-    store: storeTvshow
-});
+    store: storeTvshow,
 
-var SeasonGrid = new Ext.grid.GridPanel({
-    cm: seasoncolModel,
-    title: 'Seasons',
-    enableDragDrop: false,
-    stripeRows: true,
-    viewconfig: {forceFit: true},
-    sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
-    height: 300,
-    store: storeSeason
-});
-
-var EpisodeGrid = new Ext.grid.GridPanel({
-    cm: episodecolModel,
+    flex: 1,
     frame: true,
-    rowspan: 2,
-    height: 600,
-    loadMask: true,
-    title: 'Episodes List',
-    enableDragDrop: false,
-    viewconfig: {forceFit: true},
-    sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
-    listeners:{
-        rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
-            gridContextMenu.showAt(e.getXY());
-            e.stopEvent();
-            return false;
-        }}
+
+    cm: new Ext.grid.ColumnModel([
+        { header: 'Title', dataIndex: 'title', id: 'title' },
+        { header: '&#160;', dataIndex: 'playcount', width: 30, tooltip: 'Watched',
+          renderer: checkWatched }
+    ]),
+    autoExpandColumn: 'title',
+    enableColumnResize: false,
+    stripeRows: true,
+
+    viewConfig: {
+        headersDisabled: true
     },
-    store: storeEpisode
+
+    sm: new Ext.grid.RowSelectionModel({ singleSelect: true })
 });
 
-var fileDetailsPanel = new Ext.FormPanel({
-    id: 'filedetailPanel',
-    title: 'Other details',
-    labelWidth:50,
+var seasonGrid = new Ext.grid.GridPanel({
+    title: 'Seasons',
+    store: storeSeason,
+
+    flex: 1,
     frame: true,
-    bodyStyle:'padding:5px',
-    defaults: {width: 140, xtype: 'textfield'},
-    items: [{
-        fieldLabel: 'Name',
-        name: 'file',
-        readOnly: true,
-    },{
-        fieldLabel: 'Directory',
-        name: 'directory',
-        readOnly: true,
-    }]
+
+    cm: new Ext.grid.ColumnModel([
+        { header: '#', dataIndex: 'season', hidden: true },
+        { header: 'Season', dataIndex: 'label', id: 'title' }
+    ]),
+    autoExpandColumn: 'title',
+    enableColumnResize: false,
+    hideHeaders: true,
+    stripeRows: true,
+
+    viewConfig: {
+        scrollOffset: 1,
+        headersDisabled: true
+    },
+
+    sm: new Ext.grid.RowSelectionModel({ singleSelect: true })
 });
 
-//Main Panel
-TVShow.Mainpanel = Ext.extend(Ext.Panel, {
-    initComponent: function() {
-        Ext.applyIf(this, {
-            frame: true,
-            title: 'TV Shows List',
-            width: 1250,
-            height: 700,
-            loadMask: true,
-            layout: 'border',
-            renderTo: Ext.getBody(),
-        items: [{
+var episodeGrid = new Ext.grid.GridPanel({
+    title: 'Episodes',
+    store: storeEpisode,
+
+    flex: 1,
+    frame: true,
+
+    cm: new Ext.grid.ColumnModel([
+        { header: '#', dataIndex: 'episode', width: 30 },
+        { header: 'Title', dataIndex: 'title', id: 'title' },
+        { header: '&#160;', dataIndex: 'playcount', width: 30, tooltip: 'Watched',
+          renderer: checkWatched }
+    ]),
+    autoExpandColumn: 'title',
+    enableColumnResize: false,
+    stripeRows: true,
+
+    viewConfig: {
+        scrollOffset: 1,
+        headersDisabled: true
+    },
+
+    sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+    listeners: {
+        rowcontextmenu: function(grid, rowIndex, e) {
+            e.stopEvent();
+            gridContextMenu.showAt(e.getXY());
+        }
+    }
+});
+
+var otherDetailsPanel = new Ext.FormPanel({
+    title: 'Other Details',
+    id: 'filedetailPanel',
+
+    labelWidth: 55,
+    padding: 5,
+    defaults: {
+        xtype: 'textfield',
+        width: 150
+    },
+    items: [
+        {
+            fieldLabel: 'Name',
+            name: 'file',
+            readOnly: true,
+        },
+        {
+            fieldLabel: 'Directory',
+            name: 'directory',
+            readOnly: true,
+        }
+    ]
+});
+
+TVShow.Mainpanel = new Ext.Panel({
+    region: 'center',
+    layout: 'border',
+
+    frame: true,
+    loadMask: true,
+
+    items: [
+        {
             xtype: 'panel',
-            region:'east',
-            margins:'5 5 5 5',
-            split:true,
+            region: 'east',
+            split: true,
             width: 225,
             items: [{
-                layout:'accordion',
+                layout: 'accordion',
                 height: 500,
-                items:[
+                items: [
                     Genregrid,
                     actorGrid,
-                    fileDetailsPanel
+                    otherDetailsPanel
                 ]
             }]
         },
-            menuBar,
+        menuBar,
         {
             xtype : 'panel',
             region: 'west',
+
+            layout: 'hbox',
+            layoutConfig: { align: 'stretch' },
             width: 450,
-            layout: {type: 'table', columns: 2},
-            defaults: {frame:true, width:225},
-            //width: 450,
+
             items: [
-                TvShowGrid,
-                EpisodeGrid,
-                SeasonGrid
+                {
+                    xtype : 'panel',
+                    flex: 1,
+
+                    layout: 'vbox',
+                    layoutConfig: { align: 'stretch' },
+
+                    items: [
+                        tvShowGrid,
+                        seasonGrid
+                    ]
+                },                
+                episodeGrid
             ]
-        },{
+        },
+        {
             xtype: 'panel',
             region: 'center',
             id: 'mainpanel',
-            buttons: [{
-                disabled: true,
-                text:'Save',
-                id: 'savebutton',
-                handler: function(e){
-                    updateXBMCAll();
-                    this.disable();
+            buttons: [
+                {
+                    disabled: true,
+                    text: 'Save',
+                    id: 'savebutton',
+                    handler: function(e) {
+                        updateXBMCAll();
+                        this.disable();
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    handler: function() {
+                        updateGenreGrid(currentRecord.data.genres);
+                    }
                 }
-            },{
-                text:'Cancel',
-                handler: function(){
-                    updateGenreGrid(currentRecord.data.genres);
-                }
-            }],
+            ],
             items: [
-                TVShowdetailPanel,
-                EpisodedetailPanel
+                tvShowDetailsPanel,
+                episodeDetailsPanel
             ]
         }
-        ]
-        });
-
-        TVShow.Mainpanel.superclass.initComponent.call(this);
-    },
+    ],
 
     initEvents: function() {
-        TVShow.Mainpanel.superclass.initEvents.call(this);
-
-        var currentShow = TvShowGrid.getSelectionModel();
-        currentShow.on('rowselect', this.tvShowSelect, this);
-
-        var currentSeason = SeasonGrid.getSelectionModel();
-        currentSeason.on('rowselect', this.seasonSelect, this);
-
-        var currentEpisode = EpisodeGrid.getSelectionModel();
-        currentEpisode.on('rowselect', this.episodeSelect, this);
+        tvShowGrid.getSelectionModel().on('rowselect', this.tvShowSelect, this);
+        seasonGrid.getSelectionModel().on('rowselect', this.seasonSelect, this);
+        episodeGrid.getSelectionModel().on('rowselect', this.episodeSelect, this);
     },
 
-    tvShowSelect: function(sm, rowIdx, r) {
+    tvShowSelect: function(sm, rowIdx, record) {
+        selectedTvShow = record;
+        tvShowDetailsPanel.setTitle('<div align="center">' + record.data.title +
+            ' (' + record.data.episode + ' Episodes / ' + record.data.watchedepisodes +
+            ' Watched)</div>');
+        episodeDetailsPanel.setTitle('<div align="center">Select an episode</div>');
 
-        selectedTvShow = r;
-        var myTvShow = r.data.tvshowid;
-        TVShowdetailPanel.setTitle('<div align="center">'+r.data.title+' ( '+r.data.episode+' Episodes / '+r.data.watchedepisodes+' watched )</div>');
-        EpisodedetailPanel.setTitle('<div align="center">Select Episode</div>');
+        GetTvshowGenres(record);
+        GettvShowDetails(record);
 
-        SeasonGrid.setTitle('<div align="center"> '+r.data.title+' Seasons</div>');
-
-        GetTvshowGenres(selectedTvShow);
-
-        GettvShowDetails(r);
-        updateTvShowForms(r);
-        // corriger ici le refresh de la grille des genres
-
-        //storegenre.selectFromString(r.data.genre);
-        storeSeason.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetSeasons', 'params': {'tvshowid': myTvShow, 'properties': [ 'season', 'thumbnail']},'id': 1};
+        storeSeason.proxy.conn.xbmcParams = {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetSeasons',
+            params: {
+                tvshowid: record.data.tvshowid,
+                properties: ['season', 'thumbnail']
+            },
+            id: 1
+        };
         storeSeason.load();
 
-    },
-
-    seasonSelect: function(sm, rowIdx, r) {
-
-        selectedSeason = r;
-        var mySeason = r.data.season;
-        var myTvShow = selectedTvShow.data.tvshowid;
-
-        EpisodedetailPanel.setTitle('<div align="center"> Season '+mySeason+' / Select Episode</div>');
-        SeasonCover.updateSrc(r.data.thumbnail);
-        EpisodedetailPanel.getForm().reset();
-        //Ext.getCmp('episodedetailPanel').getForm().reset(); does not work
-
-        storeEpisode.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetEpisodes', 'params': {'tvshowid': myTvShow, 'season': mySeason, 'properties': [ 'episode', 'title', 'rating', 'plot', 'firstaired', 'director', 'streamdetails', 'playcount', 'file']},'id': 1};
-        storeEpisode.load();
-
-        storeActor.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetTVshowDetails', 'params': {'tvshowid': myTvShow, 'properties': ['cast']},'id': 1};
+        storeActor.proxy.conn.xbmcParams = {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetTVshowDetails',
+            params: {
+                tvshowid: record.data.tvshowid,
+                properties: ['cast']
+            },
+            id: 1
+        };
         storeActor.load();
     },
 
-    episodeSelect: function(sm, rowIdx, r) {
+    seasonSelect: function(sm, rowIdx, record) {
+        selectedSeason = record;
+        episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
+            ' / Select an episode</div>');
+        SeasonCover.updateSrc(record.data.thumbnail);
+        episodeDetailsPanel.getForm().reset();
 
-        selectedEpisode = r;
-        var mySeason = selectedSeason.data.season;
-        //GetepisodeDetails(r);
-        EpisodedetailPanel.setTitle('<div align="center"> Season '+mySeason+' / Episode '+r.data.episode+'</div>');
-        updateEpisodeForms(r);
+        storeEpisode.proxy.conn.xbmcParams = {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetEpisodes',
+            params: {
+                tvshowid: selectedTvShow.data.tvshowid,
+                season: record.data.season,
+                properties: [
+                    'episode', 'title', 'rating', 'plot', 'firstaired',
+                    'director', 'streamdetails', 'playcount', 'file'
+                ]
+            },
+            id: 1
+        };
+        storeEpisode.load();
+    },
+
+    episodeSelect: function(sm, rowIdx, record) {
+        selectedEpisode = record;
+
+        episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
+            ' / Episode ' + record.data.episode + '</div>');
+        updateEpisodeForms(record);
     }
-
-
 });
-Ext.reg('Mainpanel', TVShow.Mainpanel);

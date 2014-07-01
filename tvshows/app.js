@@ -48,9 +48,12 @@ Ext.onReady(function() {
     });
 
     function startMyApp() {
-        //Start Application with Main Panel
-        var App = new TVShow.Mainpanel({
-            renderTo: Ext.getBody()
+        new Ext.Viewport({
+            layout: 'border',
+            items: [
+                menuBar,
+                TVShow.Mainpanel
+            ]
         });
 
         storegenre.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetGenres', 'params': {'type': 'tvshow'},'id': 1};
