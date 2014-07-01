@@ -21,7 +21,7 @@ var gridContextMenu = new Ext.menu.Menu({
 
 function setWatched() {
     if (selectedEpisode.data.watched == "") {
-        setXBMCWatched(selectedEpisode.data.idFile, 'episode', true);
+        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', true);
         selectedEpisode.data.watched = "1";
         EpisodeGrid.getView().refresh();
     }
@@ -29,7 +29,7 @@ function setWatched() {
 
 function setUnwatched() {
     if (selectedEpisode.data.watched != "") {
-        setXBMCWatched(selectedEpisode.data.idFile, 'episode', false);
+        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', false);
         selectedEpisode.data.watched = "";
         EpisodeGrid.getView().refresh()
     }
