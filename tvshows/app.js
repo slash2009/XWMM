@@ -1,67 +1,58 @@
 Ext.onReady(function() {
-
-    //Load existing genres
-
-    //storegenre.load();
-    //LoadAllshowsdetails();
-
-    // customize menu
-    menuBar.add({
-            xtype: 'tbspacer'
-        },{
+    menuBar.add(
+        { xtype: 'tbspacer' },
+        {
             xtype: 'tbbutton',
             text: 'Tools',
-            menu: [{
-                text: 'Manage Genres',
-                disabled: 'true',
-                iconCls: 'silk-plugin',
-                handler: function(){winGenre.show()}
-            }]
-        },{
-            text: 'Quicksearch:',
-            tooltip: 'Quickly search through the grid.'
-        },{
+            menu: [
+                {
+                    text: 'Manage Genres',
+                    disabled: 'true',
+                    iconCls: 'silk-plugin',
+                    handler: function(){ winGenre.show(); }
+                }
+            ]
+        },
+        {
+            text: 'Quick Search:',
+            tooltip: 'Quickly search through TV shows'
+        },
+        {
             xtype: 'text',
             tag: 'input',
             id: 'quicksearch',
-            size: 30,
-            value: '',
-            style: 'background: #F0F0F9;'
-    });
-
-    menuBar.add({
-        text: 'X',
-        tooltip: 'Clear quicksearch',
-        handler: function() {
-            var item = Ext.getCmp('searchBox');
-            if (item.getValue().length!==0) {
-                item.setValue('');
+            size: 30
+        },
+        {
+            text: 'X',
+            tooltip: 'Clear quick search',
+            handler: function() {
+                Ext.getCmp('searchBox').setValue('');
                 storeTVShow.clearFilter();
             }
-        }
+        },
+        { xtype: 'tbfill' },
+        { text: myVersion }
+    );
+
+    new Ext.Viewport({
+        layout: 'border',
+        items: [
+            menuBar,
+            TVShow.Mainpanel
+        ]
     });
 
-    menuBar.add({
-            xtype: 'tbfill'
-        },{
-            text: myVersion
-    });
+    addQuickSearch('quicksearch', storeTVShow, 'title');
 
-    function startMyApp() {
-        new Ext.Viewport({
-            layout: 'border',
-            items: [
-                menuBar,
-                TVShow.Mainpanel
-            ]
-        });
-
-        storegenre.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetGenres', 'params': {'type': 'tvshow'},'id': 1};
-        storeTVShow.load();
-        storegenre.load();
-
-        addQuickSearch('quicksearch', storeTVShow, 'title');
-    }
-
-    startMyApp();
+    storegenre.proxy.conn.xbmcParams = {
+        jsonrpc: '2.0',
+        method: 'VideoLibrary.GetGenres',
+        params: {
+            type: 'tvshow'
+        },
+        id: 'XWMM'
+    };
+    storegenre.load();
+    storeTVShow.load();
 });
