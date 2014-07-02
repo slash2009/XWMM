@@ -36,7 +36,7 @@ Ext.onReady(function() {
             var item = Ext.getCmp('searchBox');
             if (item.getValue().length!==0) {
                 item.setValue('');
-                storeTvshow.clearFilter();
+                storeTVShow.clearFilter();
             }
         }
     });
@@ -57,10 +57,10 @@ Ext.onReady(function() {
         });
 
         storegenre.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetGenres', 'params': {'type': 'tvshow'},'id': 1};
-        storeTvshow.load();
+        storeTVShow.load();
         storegenre.load();
 
-        addQuickSearch('quicksearch', storeTvshow, 'title');
+        addQuickSearch('quicksearch', storeTVShow, 'title');
     }
 
     startMyApp();
