@@ -12,23 +12,16 @@ var genresFlag;
 var detailPanel;
 
 
-var gridContextMenu = new Ext.menu.Menu({
-    items: [
-        { text: 'Mark as watched', handler: setWatched },
-        { text: 'Mark as unwatched', handler: setUnwatched }
-    ]
-});
-
 function setWatched() {
         setXBMCWatched(currentRecord.data.idMovie, 'movie', true);
         currentRecord.data.watched = 1;
-        Moviegrid.getView().refresh();
+        Ext.getCmp('Moviegrid').getView().refresh();
 }
 
 function setUnwatched() {
         setXBMCWatched(currentRecord.data.idMovie, 'movie', false);
         currentRecord.data.watched = 0;
-        Moviegrid.getView().refresh();
+        Ext.getCmp('Moviegrid').getView().refresh();
 }
 
 
@@ -62,7 +55,7 @@ function updateXBMCSet(setField) {
     setField.IsDirty = false;
     setField.originalValue = newValue;
     currentMovie.data.strSet = newValue;
-    Moviegrid.getView().refresh();
+    Ext.getCmp('Moviegrid').getView().refresh();
 }
 
 
@@ -86,16 +79,16 @@ function updateXBMCAll() {
             var i = v/29;
             if (v === 1) {
                 myText = 'Checking changes...';
-                if (MoviedetailPanel.getForm().isDirty()) {
-                    updateXBMCTables(MoviedetailPanel.getForm(), 'movie', selectedMovie);
+                if (Ext.getCmp('MoviedetailPanel').getForm().isDirty()) {
+                    updateXBMCTables(Ext.getCmp('MoviedetailPanel').getForm(), 'movie', selectedMovie);
                     myText = 'updating movie info';
                 }
                 if (Ext.getCmp('moviesetcombo').isDirty()) {
                     updateXBMCSet(Ext.getCmp('moviesetcombo'));
                     myText = 'updating Sets';
                 }
-                if (fileDetailsPanel.getForm().isDirty()) {
-                    updateXBMCTables(fileDetailsPanel.getForm(), 'movie', selectedMovie);
+                if (Ext.getCmp('filedetailPanel').getForm().isDirty()) {
+                    updateXBMCTables(Ext.getCmp('filedetailPanel').getForm(), 'movie', selectedMovie);
                     myText = 'updating additional info';
                 }
             }
@@ -257,11 +250,9 @@ function checkSet(val) {
     return '<img src="../images/icons/set.png" width="16" height="16" alt="In Set">';
 }
 
-var MoviecolModel = new Ext.grid.ColumnModel([
-        {header: '#', dataIndex: 'idMovie', hidden: true, width: 30},
-        {header: 'Title', dataIndex: 'Movietitle', width: 210},
-        {header: 'Set', dataIndex: 'strSet', width: 26, hidden: false, renderer: checkSet},
-        {header: 'Genre', dataIndex: 'strGenre', hidden: true},
-        {header: 'Watched', dataIndex: 'watched', width: 26, hidden: false, renderer: checkWatched}
-
-    ]);
+var movieColumnModel = new Ext.grid.ColumnModel([
+    { header: 'Title', dataIndex: 'Movietitle', id: 'title' },
+    { header: '&#160;', dataIndex: 'strSet', width: 30, renderer: checkSet, tooltip: 'In Set' },
+    { header: '&#160;', dataIndex: 'watched', width: 26, renderer: checkWatched, tooltip: 'Watched' },
+    { header: 'Genre', dataIndex: 'strGenre', hidden: true }
+]);
