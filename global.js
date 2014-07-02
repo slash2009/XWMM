@@ -39,16 +39,15 @@ var menuBar = new Ext.Toolbar({
             text: 'Movies',
             width: 60,
             menu: [{
-                text: 'Movies List',
+                text: 'by Title',
                 iconCls: 'silk-grid',
                 handler: function(){window.location = '../movies/index.html';}
             },{
-                text: 'Movies by Genre',
-                disabled: 'true',
+                text: 'by Genre',
                 iconCls: 'silk-grid',
                 handler: function(){window.location = '../movies/moviegenre.html';}
             },{
-                text: 'Most recent',
+                text: 'by Date Added',
                 iconCls: 'silk-grid',
                 handler: function(){window.location = '../movies/movierecent.html';}
             }]

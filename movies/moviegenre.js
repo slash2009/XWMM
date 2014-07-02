@@ -1,104 +1,111 @@
-Ext.ns('Movie');
-
-var MovieRecord = Ext.data.Record.create([
-   {name: 'idMovie'},
-   {name: 'strFilename'},
-   {name: 'strGenre'},
-   {name: 'Movietitle'},
-   //{name: 'strPath', mapping: 'field:nth(5)'},        //strPath
-   {name: 'Moviegenres'},
-   //{name: 'idFile', mapping: 'field:nth(7)'},
-   {name: 'watched'},
-   //{name: 'idSet', mapping: 'field:nth(9)'},
-   {name: 'strSet'},
-   {name: 'MovieRelease'}
-]);
-
-var tempMovieRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'movieid'},
-   {name: 'strFilename', mapping: 'file'},
-   {name: 'Movietitle', mapping: 'title'},
-   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},
-   {name: 'watched', mapping: 'playcount'},
-   {name: 'strSet', mapping: 'set'},
-   {name: 'MovieRelease', mapping: 'year'}
-]);
-
-function genreConvert(v, record) {
-    return record.genre.join(' / ');
+function genreConvert(value, record) {
+    return value.join(' / ');
 }
 
-var storeMovie = new Ext.data.GroupingStore( {
-    sortInfo: {field: 'Movietitle', direction: 'ASC'},
+var MovieRecord = Ext.data.Record.create([
+    { name: 'idMovie', mapping: 'movieid' },
+    { name: 'strFilename', mapping: 'file' },
+    { name: 'Movietitle', mapping: 'title' },
+    { name: 'Moviegenres', mapping: 'genre', convert: genreConvert },
+    { name: 'strGenre' },
+    { name: 'watched', mapping: 'playcount' },
+    { name: 'MovieRelease', mapping: 'year' },
+    { name: 'streamdetails' },
+    { name: 'strSet', mapping: 'set' }
+]);
+
+var sortArticles = docCookies.getItem('sortArticles') === '1';
+var storeMovie = new Ext.data.GroupingStore({
     groupField: 'strGenre',
+
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
+        url: '/jsonrpc'
     }),
+    reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
 });
 
-var tempMovieStore = new Ext.data.Store( {
-    sortInfo: {field: 'Movietitle', direction: 'ASC'},
+var tempMovieStore = new Ext.data.Store({
     autoLoad: true,
     listeners: {
-        'load': function(records) {
-                var genres = [];
-                for (var i = 0; i < records.data.length; i++) {
-                    genres = records.data.items[i].data.Moviegenres.split(' / ');
-                    for (var j = 0; j < genres.length; j++) {
-                        var record = new MovieRecord({
-                            idMovie: records.data.items[i].data.idMovie,
-                            strFilename: records.data.items[i].data.strFilename,
-                            strGenre: genres[j],
-                            Movietitle: records.data.items[i].data.Movietitle,
-                            Moviegenres: records.data.items[i].data.Moviegenres,
-                            watched: records.data.items[i].data.watched,
-                            strSet: records.data.items[i].data.strSet,
-                            MovieRelease: records.data.items[i].data.MovieRelease
-                        });
-                        storeMovie.add(record);
-                    }
+        load: function(records) {
+            var i = 0, i_len = 0, j = 0, j_len = 0;
+            var genres = [];
+            var movie;
+            for (i = 0, i_len = records.data.length; i < i_len; i++) {
+                movie = records.data.items[i].data;
+                genres = splitStringList(movie.Moviegenres, /[,\/\|]+/);
+                for (j = 0, j_len = genres.length; j < j_len; j++) {
+                    var record = new MovieRecord({
+                        idMovie: movie.idMovie,
+                        strFilename: movie.strFilename,
+                        Movietitle: movie.Movietitle,
+                        Moviegenres: movie.Moviegenres,
+                        strGenre: genres[j],
+                        watched: movie.watched,
+                        MovieRelease: movie.MovieRelease,
+                        streamdetails: movie.streamdetails,
+                        strSet: movie.strSet
+                    });
+                    storeMovie.add(record);
                 }
-                storeMovie.commitChanges();
             }
-   },
+            storeMovie.commitChanges();
+            storeMovie.sort('strGenre', 'ASC');
+        }
+    },
+
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
-        xbmcParams :{'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovies', 'params': {'properties': ['title', 'genre', 'year', 'playcount', 'file', 'set']},'id': 1}
+        xbmcParams: {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetMovies',
+            params: {
+                properties: [
+                    'title', 'genre', 'year', 'playcount',
+                    'file', 'set', 'streamdetails'
+                ],
+                sort: {
+                    order: 'ascending',
+                    ignorearticle: sortArticles,
+                    method: 'title'
+                }
+            },
+            id: 'XWMM'
+        }
     }),
-    reader: new Ext.data.JsonReader({
-        root: 'result.movies'
-    }, tempMovieRecord)
+    reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
 });
 
-//storeMovie.load();
-
-// grid with list of movies
-Moviegrid = new Ext.grid.GridPanel({
-    cm: MoviecolModel,
+var movieGrid = new Ext.grid.GridPanel({
+    title: 'Movies by Genre',
     id: 'Moviegrid',
-    enableHdMenu: false,
-    enableDragDrop: false,
-    stripeRows: true,
-    loadMask: true,
-    viewconfig: {forceFit: true},
-    view: new Ext.grid.GroupingView({
-        forceFit:true,
-        startCollapsed: true,
-        // enableGrouping: false,
-        enableGroupingMenu : false,
-        //enableNoGroups: false,
-        groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'}),
-    sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
+    store: storeMovie,
+
     region: 'west',
     width: 285,
+    frame: true,
     split: true,
-    listeners:{
-        rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
-            gridContextMenu.showAt(e.getXY());
-            e.stopEvent();
-            return false;
-        }}
-    },
-    store: storeMovie
 
+    cm: movieColumnModel,
+    autoExpandColumn: 'title',
+    enableColumnResize: false,
+    stripeRows: true,
+
+    view: new Ext.grid.GroupingView({
+        startCollapsed: true,
+        enableGroupingMenu : false,
+        enableNoGroups: false,
+        headersDisabled: true,
+        groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+    }),
+
+    sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+
+    listeners: {
+        rowcontextmenu: function(grid, rowIndex, e) {
+            e.stopEvent();
+            gridContextMenu.showAt(e.getXY());
+            return false;
+        }
+    }
 });
