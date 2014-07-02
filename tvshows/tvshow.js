@@ -601,7 +601,7 @@ TVShow.Mainpanel = new Ext.Panel({
     episodeSelect: function(sm, rowIdx, record) {
         selectedEpisode = record;
 
-        episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
+        episodeDetailsPanel.setTitle('<div align="center">Season ' + selectedSeason.data.season +
             ' / Episode ' + record.data.episode + '</div>');
         updateEpisodeDetails(record);
     }
