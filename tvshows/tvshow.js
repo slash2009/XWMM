@@ -406,6 +406,13 @@ var seasonGrid = new Ext.grid.GridPanel({
     sm: new Ext.grid.RowSelectionModel({ singleSelect: true })
 });
 
+var gridContextMenu = new Ext.menu.Menu({
+    items: [
+        { text: 'Mark as watched', handler: setWatched },
+        { text: 'Mark as unwatched', handler: setUnwatched }
+    ]
+});
+
 var episodeGrid = new Ext.grid.GridPanel({
     title: 'Episodes',
     store: storeEpisode,
@@ -543,7 +550,7 @@ TVShow.Mainpanel = new Ext.Panel({
                 {
                     text: 'Cancel',
                     handler: function() {
-                        updateGenreGrid(currentRecord.data.genres);
+                        updateGenreGrid(selectedTvShow.data.genres);
                     }
                 }
             ],
@@ -567,8 +574,10 @@ TVShow.Mainpanel = new Ext.Panel({
             ' Watched)</div>');
         episodeDetailsPanel.setTitle('<div align="center">Select an episode</div>');
 
-        GetTvshowGenres(record);
-        GettvShowDetails(record);
+        updateTVShowGenreGrid(record);
+        loadTVShowDetails(record);
+        clearEpisodeDetails();
+
 
         storeSeason.proxy.conn.xbmcParams.params.tvshowid = record.data.tvshowid;
         storeSeason.load();
@@ -594,6 +603,6 @@ TVShow.Mainpanel = new Ext.Panel({
 
         episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
             ' / Episode ' + record.data.episode + '</div>');
-        updateEpisodeForms(record);
+        updateEpisodeDetails(record);
     }
 });
