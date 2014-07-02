@@ -3,6 +3,7 @@ XWMM Change log
 4.1.0
 - Clean up jshint warnings (Issue #73)
 - Remove unused code (Issue #68)
+- Major clean up of the TV section
 
 4.0.2
 - XBMC expects rating to be a number not a string. (Issue #57)
