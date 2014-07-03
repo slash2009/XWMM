@@ -440,3 +440,88 @@ Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
         Ext.data.HttpProxy.superclass.destroy.call(this);
     }
 });
+
+/**
+ * Add a quick search feature to a text box.
+ * @param {string} searchBoxId The id of the text box to add the quick search feature to.
+ * @param {Ext.data.Store} store The store to apply the filter to.
+ * @param {string} filterField The field to apply the filter to.
+ */
+function addQuickSearch(searchBoxId, store, filterField) {
+    var QueryRecord = Ext.data.Record.create([
+        { name: 'query', type: 'string' }
+    ]);
+
+    var searchStore = new Ext.data.ArrayStore({
+        fields: [
+            { name: 'query', type: 'string' }
+        ]
+    });
+
+    var beforeQuery = function(e) {
+        var query = e.query.trim();
+        if (query.length === 0) {
+            return;
+        }
+
+        var insertQuery = true;
+        searchStore.each(function(record) {
+            if (record.data.query.indexOf(query) === 0) {
+                // backspace
+                insertQuery = false;
+                return false;
+            }
+            else if (query.indexOf(record.data.query) === 0) {
+                // forward typing
+                searchStore.remove(record);
+            }
+            else if (query === record.data.query) {
+                insertQuery = false;
+            }
+        });
+
+        if (insertQuery === true) {
+            var record = new QueryRecord({query: query});
+            searchStore.insert(0, record);
+        }
+
+        var maxQueries = 5; // max 5 query history
+        if (searchStore.getCount() > maxQueries) {
+            var overflow = searchStore.getRange(maxQueries);
+            for (var i = 0, len = overflow.length; i < len; i++) {
+                searchStore.remove(overflow[i]);
+            }
+        }
+
+    };
+
+    var applyFilter = function(query) {
+        query = query.trim();
+        if (query.length === 0) {
+            store.clearFilter();
+        }
+        else {
+            store.filter(filterField, query, true, false);
+        }
+    };
+
+    new Ext.form.ComboBox({
+        id: 'searchBox',
+        store: searchStore,
+        displayField: 'query',
+        typeAhead: false,
+        mode: 'local',
+        triggerAction: 'all',
+        applyTo: searchBoxId,
+        hideTrigger: true,
+        listeners: {
+            beforequery: function(e) {
+                beforeQuery(e);
+                applyFilter(e.query);
+            },
+            select: function(combo, record, index) {
+                applyFilter(combo.getValue());
+            }
+        }
+    });
+}
