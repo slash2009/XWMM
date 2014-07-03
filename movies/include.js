@@ -1,36 +1,40 @@
-// -----------------------------------------
-// MOVIE include.js
-//------------------------------------------
-
-var responseFinale = [];
-var movieTable = [];
-var selectedMovie;
-var currentRecord;
-var currentMovie;
-var DetailsFlag;
-var genresFlag;
-var detailPanel;
-
+function artworkConvert(value) {
+    if (value === undefined) {
+        return '';
+    }
+    else {
+        // subtract image:// from the start and / from the end.
+        return value.substr(8, value.length - 9);
+    }
+}
 
 function setWatched() {
-        setXBMCWatched(currentRecord.data.idMovie, 'movie', true);
-        currentRecord.data.watched = 1;
-        Ext.getCmp('Moviegrid').getView().refresh();
+    var movieGrid = Ext.getCmp('Moviegrid');
+    var selectedMovie = movieGrid.getSelectionModel().getSelected();
+
+    if (selectedMovie !== undefined && selectedMovie.data.watched === 0) {
+        setXBMCWatched(selectedMovie.data.idMovie, 'movie', true);
+        selectedMovie.data.watched = 1;
+        movieGrid.getView().refresh();
+    }
 }
 
 function setUnwatched() {
-        setXBMCWatched(currentRecord.data.idMovie, 'movie', false);
-        currentRecord.data.watched = 0;
-        Ext.getCmp('Moviegrid').getView().refresh();
-}
+    var movieGrid = Ext.getCmp('Moviegrid');
+    var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
+    if (selectedMovie !== undefined && selectedMovie.data.watched !== 0) {
+        setXBMCWatched(selectedMovie.data.idMovie, 'movie', false);
+        selectedMovie.data.watched = 0;
+        movieGrid.getView().refresh();
+    }
+}
 
 /**
  * Save set changes back to XBMC.
  * @param {Ext.form.Field} setField The set field.
  */
 function updateXBMCSet(setField) {
-    var currentMovie = currentRecord;
     var newValue = setField.getValue();
 
     if (setField.originalValue === newValue) {
@@ -38,14 +42,17 @@ function updateXBMCSet(setField) {
         return;
     }
 
+    var movieGrid = Ext.getCmp('Moviegrid');
+    var selectedMovie = movieGrid.getSelectionModel().getSelected();
+
     var rpcCmd = {
         jsonrpc: '2.0',
         method: 'VideoLibrary.SetMovieDetails',
         params: {
-            movieid: currentRecord.data.idMovie,
+            movieid: selectedMovie.data.idMovie,
             set: newValue
         },
-        id: 1
+        id: 'XWMM'
     };
 
     var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
@@ -54,200 +61,211 @@ function updateXBMCSet(setField) {
 
     setField.IsDirty = false;
     setField.originalValue = newValue;
-    currentMovie.data.strSet = newValue;
-    Ext.getCmp('Moviegrid').getView().refresh();
+    selectedMovie.data.strSet = newValue;
+    movieGrid.getView().refresh();
 }
 
-
 function updateXBMCAll() {
-
     Ext.MessageBox.show({
         title: 'Please wait',
         msg: 'Saving changes',
         progressText: 'Checking changes...',
-        width:300,
-        progress:true,
-        closable:false,
+        width: 300,
+        progress: true,
+        closable: false,
         animEl: 'samplebutton'
     });
-    var f = function(v){
-        return function(){
-            var myText;
-        if(v === 30){
-            Ext.MessageBox.hide();
-        }else{
-            var i = v/29;
-            if (v === 1) {
-                myText = 'Checking changes...';
-                if (Ext.getCmp('MoviedetailPanel').getForm().isDirty()) {
-                    updateXBMCTables(Ext.getCmp('MoviedetailPanel').getForm(), 'movie', selectedMovie);
-                    myText = 'updating movie info';
-                }
-                if (Ext.getCmp('moviesetcombo').isDirty()) {
-                    updateXBMCSet(Ext.getCmp('moviesetcombo'));
-                    myText = 'updating Sets';
-                }
-                if (Ext.getCmp('filedetailPanel').getForm().isDirty()) {
-                    updateXBMCTables(Ext.getCmp('filedetailPanel').getForm(), 'movie', selectedMovie);
-                    myText = 'updating additional info';
-                }
+
+    var f = function(v) {
+        return function() {
+            if (v === 30) {
+                Ext.MessageBox.hide();
             }
-            if (v === 15) {
-                if (Ext.getCmp('moviegenres').isDirty()) {
-                    updateXBMCGenreMovie();
-                    myText = 'updating Genres';
+            else {
+                var i = v/29;
+                var mesg = '';
+                var form;
+
+                if (v === 1) {
+                    mesg = 'Checking changes...';
+
+                    form = Ext.getCmp('MoviedetailPanel').getForm();
+                    if (form.isDirty()) {
+                        updateXBMCTables(form, 'movie',
+                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.idMovie);
+                        mesg = 'updating movie info';
+                    }
+
+                    form = Ext.getCmp('moviesetcombo');
+                    if (form.isDirty()) {
+                        updateXBMCSet(form);
+                        mesg = 'updating Sets';
+                    }
+
+                    form = Ext.getCmp('filedetailPanel').getForm();
+                    if (form.isDirty()) {
+                        updateXBMCTables(form, 'movie',
+                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.idMovie);
+                        mesg = 'updating additional info';
+                    }
                 }
+                else if (v === 15) {
+                    if (Ext.getCmp('moviegenres').isDirty()) {
+                        saveMovieGenre();
+                        mesg = 'updating Genres';
+                    }
+                }
+                Ext.MessageBox.updateProgress(i, mesg);
             }
-            Ext.MessageBox.updateProgress(i, myText);
-        }
         };
     };
-    for(var i = 1; i < 31; i++){
+
+    for (var i = 1; i < 31; i++) {
         setTimeout(f(i), i*100);
     }
 }
 
-// function LoadAllMoviesdetails(){
-    // storeVideoFlags.load();
-    // storeAudioFlags.load();
-// }
+function updateMovieDetails(record) {
+    Ext.getCmp('MoviedetailPanel').getForm().loadRecord(record);
+    Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
-function updateAllForms(r) {
+    Ext.getCmp('movierating').updateSrc(record);
+    Ext.getCmp('fanart').updateSrc(record.data.fanart);
+    Ext.getCmp('cover').updateSrc(record.data.thumbnail);
 
-    Ext.getCmp('MoviedetailPanel').getForm().loadRecord(r);
-    Ext.getCmp('filedetailPanel').getForm().loadRecord(r);
+    var videoCodec = Ext.getCmp('videocodec').getEl().dom;
+    var aspect = Ext.getCmp('aspect').getEl().dom;
+    var resolution = Ext.getCmp('resolution').getEl().dom;
+    var audioChannels = Ext.getCmp('audiochannels').getEl().dom;
+    var audioCodec = Ext.getCmp('audiocodec').getEl().dom;
 
-    Ext.getCmp('movierating').updateSrc(r);
-    Ext.getCmp('fanart').updateSrc(r.data.fanart);
-    Ext.getCmp('cover').updateSrc(r.data.thumbnail);
+    videoCodec.src = '../images/flags/default.png';
+    aspect.src = '../images/flags/default.png';
+    resolution.src = '../images/flags/defaultscreen.png';
+    audioChannels.src = '../images/flags/0c.png';
+    audioCodec.src = '../images/flags/defaultsound.png';
 
-    if (r.data.streamdetails !== null) {
-        if (r.data.streamdetails.video !== null && r.data.streamdetails.video[0]) {
-            Ext.getCmp('videocodec').getEl().dom.src = '../images/flags/'+r.data.streamdetails.video[0].codec+'.png';
-            Ext.getCmp('aspect').getEl().dom.src = '../images/flags/'+findAspect(r.data.streamdetails.video[0].aspect)+'.png';
-            Ext.getCmp('resolution').getEl().dom.src = '../images/flags/'+findResolution(r.data.streamdetails.video[0].width)+'.png';
+    if (record.data.streamdetails !== undefined) {
+        if (record.data.streamdetails.video !== undefined &&
+            record.data.streamdetails.video.length > 0) {
+            videoCodec.src = (record.data.streamdetails.video[0].codec !== undefined) ?
+                '../images/flags/' + record.data.streamdetails.video[0].codec + '.png' :
+                '../images/flags/default.png';
+            aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
+                '../images/flags/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                '../images/flags/default.png';
+            resolution.src = (record.data.streamdetails.video[0].aspwidthect !== undefined) ?
+                '../images/flags/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                '../images/flags/defaultscreen.png';
         }
-
-        if (r.data.streamdetails.audio !== null && r.data.streamdetails.audio[0]) {
-            Ext.getCmp('audiochannels').getEl().dom.src = '../images/flags/'+r.data.streamdetails.audio[0].channels+'c.png';
-            Ext.getCmp('audiocodec').getEl().dom.src = '../images/flags/'+r.data.streamdetails.audio[0].codec+'.png';
+        if (record.data.streamdetails.audio !== undefined &&
+            record.data.streamdetails.audio.length > 0) {
+            audioChannels.src = (record.data.streamdetails.audio[0].channels !== undefined) ?
+                '../images/flags/' + record.data.streamdetails.audio[0].channels + 'c.png' :
+                '../images/flags/0c.png';
+            audioCodec.src = (record.data.streamdetails.audio[0].codec !== undefined) ?
+                '../images/flags/' + record.data.streamdetails.audio[0].codec + '.png' :
+                '../images/flags/defaultsound.png';
         }
     }
 }
 
-function GetMovieDetails(r){
-
-    var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieDetails", "params": {"movieid": '+r.data.idMovie+', "properties": ["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "playcount", "writer", "studio", "mpaa", "country", "imdbnumber", "runtime", "streamdetails", "top250", "votes", "set", "fanart", "thumbnail", "file", "sorttitle"]}, "id": 1}');
-
-    mergeJson(r.data, jsonResponse.moviedetails);
+function loadMovieDetails(record) {
+    var request = {
+        jsonrpc: '2.0',
+        method: 'VideoLibrary.GetMovieDetails',
+        params: {
+            movieid: record.data.idMovie,
+            properties: [
+                'title', 'genre', 'year', 'rating', 'director', 'trailer', 'tagline', 'plot',
+                'plotoutline', 'originaltitle', 'playcount', 'writer', 'studio', 'mpaa',
+                'country', 'imdbnumber', 'runtime', 'streamdetails', 'top250', 'votes', 'set',
+                'fanart', 'thumbnail', 'file', 'sorttitle'
+            ]
+        },
+        id: 'XWMM'
+    };
+    var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+    mergeJson(record.data, response.moviedetails);
 
     //fix up some data retrieved
-    r.data.fanart = jsonResponse.moviedetails.fanart.replace(/image:\/\//g, '').slice(0,-1);
-    r.data.thumbnail = jsonResponse.moviedetails.thumbnail.replace(/image:\/\//g, '').slice(0,-1);
-    r.data.rating = r.data.rating.toFixed(1);
-    r.data.runtime = Math.round(r.data.runtime / 60);
-
-    updateAllForms(r);
-    r.data.details = true;
+    record.data.fanart = artworkConvert(response.moviedetails.fanart);
+    record.data.thumbnail = artworkConvert(response.moviedetails.thumbnail);
+    record.data.rating = response.moviedetails.rating.toFixed(1);
+    record.data.runtime = Math.round(response.moviedetails.runtime / 60);
+    updateMovieDetails(record);
 }
 
-function updateXBMCMovieDetails() {
-    var f, i, data;
+function movieGenreChange(sm) {
+    var selectedMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
+    var selectedGenres = sm.getSelections();
+    var genres = [];
 
-    var changedData = [];
-    var itemsList = Ext.getCmp('MoviedetailPanel').form.items.items;
-    for (i = 0; i < itemsList.length; i++){
-        f = itemsList[i];
-        if(f.isDirty()){
-            data = f.getName()+' : '+f.getValue();
-            changedData.push(data);
-        }
+    for (var i = 0, len = selectedGenres.length; i < len; i++) {
+        genres.push(selectedGenres[i].data.label);
     }
-    // also check additional fields
-    itemsList = Ext.getCmp('filedetailPanel').form.items.items;
-    for (i = 0; i < itemsList.length; i++){
-        f = itemsList[i];
-        if(f.isDirty()){
-            data = f.getName()+' : '+f.getValue();
-            changedData.push(data);
-        }
-    }
+
+    var list = genres.join(' / ');
+    selectedMovie.data.genre = list;
+    Ext.getCmp('moviegenres').setValue(list);
 }
-
-function movieGenreChange(sm){
-    var sel = sm.getSelections();
-    var strTemp = '';
-    for (var i = 0; i < sel.length; i++) {
-        if (strTemp === ''){strTemp = sel[i].data.label;}
-            else{ strTemp = strTemp+' / '+sel[i].data.label;}
-    }
-    currentRecord.data.Moviegenres = strTemp;
-    Ext.getCmp('moviegenres').setValue(strTemp);
-
-}
-
 
 /**
  * Save genre changes back to XBMC.
  */
-function updateXBMCGenreMovie() {
-    var selection = Genregrid.getSelectionModel().getSelections();
+function saveMovieGenre() {
+    var selectedMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
+    var selectedGenres = Ext.getCmp('Genregrid').getSelectionModel().getSelections();
     var genres = [];
 
-    for (var i = 0, len = selection.length; i < len; i++) {
-        genres.push(selection[i].data.label);
+    for (var i = 0, len = selectedGenres.length; i < len; i++) {
+        genres.push(selectedGenres[i].data.label);
     }
 
-    var rpcCmd = {
+    var request = {
         jsonrpc: '2.0',
         method: 'VideoLibrary.SetMovieDetails',
         params: {
-            movieid: currentRecord.data.idMovie,
+            movieid: selectedMovie.data.idMovie,
             genre: genres
         },
-        id: 1
+        id: 'XWMM'
     };
 
-    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    //console.debug('XWMM::updateXBMCGenreMovie rpcCmd: ' + rpcCmdJSON);
-    xbmcJsonRPC(rpcCmdJSON);
-
-    currentRecord.data.Moviegenres = genres.join(' / ');
+    xbmcJsonRPC(Ext.util.JSON.encode(request));
 }
-
 
 /**
  * Update the genre grid selection from the current record.
  * @param {MovieRecord} record The selected record.
  */
-function GetMovieGenres(record) {
-    var genres = splitStringList(record.data.Moviegenres, /[,\/\|]+/); // Split list separated with , / or |.
+function updateMovieGenreGrid(record) {
     var genreIds = [];
+    var genres = splitStringList(record.data.Moviegenres, /[,\/\|]+/); // Split list separated with , / or |.
 
-    for (var i = 0, len = genres.length; i < len; i++) {
-        var id = storegenre.findExact('label', genres[i]);
-        if (id === -1) {
-            // Genre not found. This should never happen, but just in case the genre grid gets out of sync add the
-            // missing genre.
-            var newGenre = new genreRecord({label: genres[i]});
-            storegenre.add(newGenre);
-            id = storegenre.indexOf(newGenre);
+    var index;
+    for (var i = 0, genreCount = genres.length; i < genreCount; i++) {
+        index = storegenre.findExact('label', genres[i], 0);
+        if (index > -1) {
+            genreIds.push(index);
         }
-        genreIds[i] = id;
     }
 
-    updateGenreGrid(genreIds);
+    if (genreIds.length > 0) {
+        updateGenreGrid(genreIds);
+    }
 }
 
-
-function checkWatched(val) {
- if ((val !== '' ) && (val !== 0))
-    return '<img src="../images/icons/checked.png" width="16" height="16" alt="Watched">';
+function checkWatched(value) {
+    return value === 1 ?
+        '<img src="../images/icons/checked.png" width="16" height="16" alt="Watched">' :
+        '';
 }
 
-function checkSet(val) {
- if (val !== '')
-    return '<img src="../images/icons/set.png" width="16" height="16" alt="In Set">';
+function checkSet(value) {
+    return value !== '' ?
+        '<img src="../images/icons/set.png" width="16" height="16" alt="In Set">' :
+        '';
 }
 
 var movieColumnModel = new Ext.grid.ColumnModel([
