@@ -170,12 +170,14 @@ var storeActor = new Ext.data.Store({
 });
 
 var tvshowStars = new Ext.ux.XbmcStars ({
+    id: 'tvShowStarRating',
     border: 0,
     width: 96,
     height:27
 });
 
 var episodeStars = new Ext.ux.XbmcStars ({
+    id: 'episodeStarRating',
     width: 72,
     height:20
 });
@@ -384,6 +386,7 @@ var tvShowGrid = new Ext.grid.GridPanel({
 
 var seasonGrid = new Ext.grid.GridPanel({
     title: 'Seasons',
+    id: 'seasonGrid',
     store: storeSeason,
 
     flex: 1,
@@ -415,6 +418,7 @@ var gridContextMenu = new Ext.menu.Menu({
 
 var episodeGrid = new Ext.grid.GridPanel({
     title: 'Episodes',
+    id: 'episodeGird',
     store: storeEpisode,
 
     flex: 1,
@@ -562,13 +566,15 @@ TVShow.Mainpanel = new Ext.Panel({
     ],
 
     initEvents: function() {
-        tvShowGrid.getSelectionModel().on('rowselect', this.tvShowSelect, this);
-        seasonGrid.getSelectionModel().on('rowselect', this.seasonSelect, this);
-        episodeGrid.getSelectionModel().on('rowselect', this.episodeSelect, this);
+        Ext.getCmp('tvshowgrid').getSelectionModel().on('rowselect', this.tvShowSelect, this);
+        Ext.getCmp('seasonGrid').getSelectionModel().on('rowselect', this.seasonSelect, this);
+        Ext.getCmp('episodeGird').getSelectionModel().on('rowselect', this.episodeSelect, this);
     },
 
     tvShowSelect: function(sm, rowIdx, record) {
-        selectedTvShow = record;
+        var tvShowDetailsPanel = Ext.getCmp('tvShowdetailPanel');
+        var episodeDetailsPanel = Ext.getCmp('episodedetailPanel');
+
         tvShowDetailsPanel.setTitle('<div align="center">' + record.data.title +
             ' (' + record.data.episode + ' Episodes / ' + record.data.watchedepisodes +
             ' Watched)</div>');
@@ -587,10 +593,13 @@ TVShow.Mainpanel = new Ext.Panel({
     },
 
     seasonSelect: function(sm, rowIdx, record) {
-        selectedSeason = record;
+        var selectedTvShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
+        var episodeDetailsPanel = Ext.getCmp('episodedetailPanel');
+        var seasonCover = Ext.getCmp('seasoncover');
+
         episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
             ' / Select an episode</div>');
-        SeasonCover.updateSrc(record.data.thumbnail);
+        seasonCover.updateSrc(record.data.thumbnail);
         episodeDetailsPanel.getForm().reset();
 
         storeEpisode.proxy.conn.xbmcParams.params.tvshowid = selectedTvShow.data.tvshowid;
@@ -599,7 +608,8 @@ TVShow.Mainpanel = new Ext.Panel({
     },
 
     episodeSelect: function(sm, rowIdx, record) {
-        selectedEpisode = record;
+        var selectedSeason = Ext.getCmp('seasonGrid').getSelectionModel().getSelected();
+        var episodeDetailsPanel = Ext.getCmp('episodedetailPanel');
 
         episodeDetailsPanel.setTitle('<div align="center">Season ' + selectedSeason.data.season +
             ' / Episode ' + record.data.episode + '</div>');
