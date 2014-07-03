@@ -151,7 +151,7 @@ var movieDetailsPanel = new Ext.FormPanel({
         {
             text:'Cancel',
             handler: function() {
-                updateGenreGrid(currentRecord.data.genres);
+                updateGenreGrid(Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.genres);
             }
         }
     ],
@@ -286,7 +286,7 @@ var movieDetailsPanel = new Ext.FormPanel({
     ]
 });
 
-mainPanel = new Ext.Panel({
+var mainPanel = new Ext.Panel({
     region: 'center',
     layout: 'border',
 
@@ -319,11 +319,8 @@ mainPanel = new Ext.Panel({
     },
 
     movieSelect: function(sm, rowIdx, record) {
-        selectedMovie = record.data.idMovie;
-        currentRecord = record;
-
-        GetMovieGenres(record);
-        GetMovieDetails(record);
+        loadMovieDetails(record);
+        updateMovieGenreGrid(record);
         Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
         storeActor.proxy.conn.xbmcParams.params.movieid = record.data.idMovie;

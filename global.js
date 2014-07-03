@@ -80,11 +80,8 @@ var menuBar = new Ext.Toolbar({
         }]
 });
 
-var selectedMovie;
 var currentRecord;
-var currentMovie;
 var DetailsFlag;
-var detailPanel;
 
 var VideoFlagsPanel = new Ext.Panel({
     border: false,
