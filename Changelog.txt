@@ -4,6 +4,8 @@ XWMM Change log
 - Clean up jshint warnings (Issue #73)
 - Remove unused code (Issue #68)
 - Major clean up of the TV section
+- Major clean up of the Movie section
+- Restore view movies by genre
 
 4.0.2
 - XBMC expects rating to be a number not a string. (Issue #57)
