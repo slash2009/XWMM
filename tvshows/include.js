@@ -1,4 +1,7 @@
 function setWatched() {
+    var episodeGrid = Ext.getCmp('episodeGird');
+    var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
+
     if (selectedEpisode.data.playcount === 0) {
         setXBMCWatched(selectedEpisode.data.episodeid, 'episode', true);
         selectedEpisode.data.playcount = 1;
@@ -7,6 +10,9 @@ function setWatched() {
 }
 
 function setUnwatched() {
+    var episodeGrid = Ext.getCmp('episodeGird');
+    var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
+
     if (selectedEpisode.data.playcount !== 0) {
         setXBMCWatched(selectedEpisode.data.episodeid, 'episode', false);
         selectedEpisode.data.playcount = 0;
@@ -33,19 +39,22 @@ function updateXBMCAll() {
             else {
                 var i = v/29;
                 var mesg = '';
+                var form;
 
                 if (v === 1) {
                     mesg = 'Checking for changes...';
-                    if (episodeDetailsPanel.getForm().isDirty()) {
-                        updateXBMCTables(episodeDetailsPanel.getForm(), 'episode',
-                            episodeGrid.getSelectionModel().getSelected().data.episodeid);
+                    form = Ext.getCmp('episodedetailPanel').getForm();
+                    if (form.isDirty()) {
+                        updateXBMCTables(form, 'episode',
+                            Ext.getCmp('episodeGird').getSelectionModel().getSelected().data.episodeid);
                         mesg = 'Updating episode information...';
                     }
                 }
                 if (v === 10) {
-                    if (tvShowDetailsPanel.getForm().isDirty()) {
-                        updateXBMCTables(tvShowDetailsPanel.getForm(), 'tvshow',
-                            tvShowGrid.getSelectionModel().getSelected().data.tvshowid);
+                    form = Ext.getCmp('tvShowdetailPanel').getForm();
+                    if (form.isDirty()) {
+                        updateXBMCTables(form, 'tvshow',
+                            Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.tvshowid);
                         mesg = 'Updating TV show information...';
                     }
                 }
@@ -88,14 +97,13 @@ function loadTVShowDetails(record) {
 }
 
 function updateTVShowDetails(record) {
-    tvshowStars.updateSrc(record);
+    Ext.getCmp('tvShowStarRating').updateSrc(record);
     Ext.getCmp('tvshowcover').updateSrc(record.data.banner);
     Ext.getCmp('tvShowdetailPanel').getForm().loadRecord(record);
 }
 
 function updateEpisodeDetails(record) {
-    episodeStars.updateSrc(record);
-
+    Ext.getCmp('episodeStarRating').updateSrc(record);
     Ext.getCmp('episodedetailPanel').getForm().loadRecord(record);
     Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
@@ -167,7 +175,7 @@ function movieGenreChange(sm) {
 
 function saveTVShowGenre() {
     var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
-    var selectedGenres = Genregrid.getSelectionModel().getSelections();
+    var selectedGenres = Ext.getCmp('Genregrid').getSelectionModel().getSelections();
     var genres = [];
 
     for (var i = 0, len = selectedGenres.length; i < len; i++) {
