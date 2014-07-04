@@ -355,7 +355,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
         },
         {
             colspan: 2,
-            items: [VideoFlagsPanel, AudioFlagsPanel]
+            items: [videoFlagsPanel, audioFlagsPanel]
         }
     ]
 });
