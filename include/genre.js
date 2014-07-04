@@ -44,7 +44,7 @@ var storegenre = new Ext.data.Store({
 //      var myArray = string.split('/');
 //      Genregrid.getSelectionModel().clearSelections(false);
 //      for (var i = 0; i < myArray.length; i++) {
-//          var index = storegenre.findExact('label',removeSpace(myArray[i]),0,false,false);
+//          var index = storegenre.findExact('label',myArray[i].trim(),0,false,false);
 //          Genregrid.getSelectionModel().selectRow(index, true)
 //      }
 //  }

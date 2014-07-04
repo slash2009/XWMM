@@ -1,58 +1,68 @@
-// -----------------------------------------
-// movierecent.js
-// last modified : 30-11-2011
-//
-//------------------------------------------
-
-var MovieRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'movieid'},       //idMovie
-   {name: 'strFilename', mapping: 'file'},  //strFilename
-   //{name: 'strGenre', mapping: 'field:nth(3)'},       //strGenre
-   {name: 'Movietitle', mapping: 'title'},  //c00
-   //{name: 'strPath', mapping: 'field:nth(5)'},        //strPath
-   {name: 'Moviegenres', mapping: 'genre', convert: genreConvert},  //c14
-   //{name: 'idFile', mapping: 'field:nth(7)'},
-   {name: 'watched', mapping: 'playcount'},
-   {name: 'MovieRelease', mapping: 'year'},
-   {name: 'streamdetails'}, // required for htmlexport
-   //{name: 'idSet', mapping: 'field:nth(10)'},
-   {name: 'strSet', mapping: 'set'}
-]);
-
-function genreConvert(v, record) {
-    return record.genre.join(' / ');
+function genreConvert(value, record) {
+    return value.join(' / ');
 }
 
-var storeMovie = new Ext.data.GroupingStore({
-    sortInfo: {field: 'Movietitle', direction: 'ASC'},
+var MovieRecord = Ext.data.Record.create([
+    { name: 'idMovie', mapping: 'movieid' },
+    { name: 'strFilename', mapping: 'file' },
+    { name: 'Movietitle', mapping: 'title' },
+    { name: 'Moviegenres', mapping: 'genre', convert: genreConvert },
+    { name: 'watched', mapping: 'playcount' },
+    { name: 'MovieRelease', mapping: 'year' },
+    { name: 'streamdetails' },
+    { name: 'strSet', mapping: 'set' }
+]);
+
+var sortArticles = docCookies.getItem('sortArticles') === '1';
+var storeMovie = new Ext.data.Store({
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
-        xbmcParams : {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetRecentlyAddedMovies', 'params': {'properties': ['title', 'genre', 'year', 'playcount', 'file', 'set', 'streamdetails']},'id': 1}
+        xbmcParams: {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetMovies',
+            params: {
+                properties: [
+                    'title', 'genre', 'year', 'playcount',
+                    'file', 'set', 'streamdetails'
+                ],
+                sort: {
+                    order: 'descending',
+                    ignorearticle: sortArticles,
+                    method: 'dateadded'
+                }
+            },
+            id: 'XWMM'
+        }
     }),
-    reader: new Ext.data.JsonReader({
-        root:'result.movies'
-        }, MovieRecord)
+    reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
 });
 
-// grid with list of movies
-Moviegrid = new Ext.grid.GridPanel({
-    cm: MoviecolModel,
+var movieGrid = new Ext.grid.GridPanel({
+    title: 'Movies by Date Added',
     id: 'Moviegrid',
-    enableHdMenu: false,
-    enableDragDrop: false,
-    stripeRows: true,
-    viewconfig: {forceFit: true},
-    sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
+    store: storeMovie,
+
     region: 'west',
     width: 285,
+    frame: true,
     split: true,
-    listeners:{
-        rowcontextmenu:{stopEvent:true, fn:function(grid, rowIndex, e) {
-            gridContextMenu.showAt(e.getXY());
-            e.stopEvent();
-            return false;
-        }}
-    },
-    store: storeMovie
-});
 
+    cm: movieColumnModel,
+    autoExpandColumn: 'title',
+    enableColumnResize: false,
+    stripeRows: true,
+
+    viewConfig: {
+        headersDisabled: true
+    },
+
+    sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+
+    listeners: {
+        rowcontextmenu: function(grid, rowIndex, e) {
+            e.stopEvent();
+            gridContextMenu.showAt(e.getXY());
+            return false;
+        }
+    }
+});

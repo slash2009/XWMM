@@ -3,6 +3,14 @@ XWMM Change log
 4.1.0
 - Clean up jshint warnings (Issue #73)
 - Remove unused code (Issue #68)
+- Major clean up of the TV section
+- Major clean up of the Movie section
+- Restore view movies by genre
+- Upgrade to ExtJS v3.4.1.1
+- Use light gray theme
+- Add media flags from the Confluence theme (Issue #26)
+- Start sharing common code (XWMM.util)
+- Rewrite the HTML export feature (Issue #62)
 
 4.0.2
 - XBMC expects rating to be a number not a string. (Issue #57)

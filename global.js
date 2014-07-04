@@ -23,142 +23,110 @@ var myVersion = '4.1.0';
     }
 })();
 
-function mergeJson(object1, object2) {
-    var i;
-    for (i in object2)
-        object1[i]=object2[i];
-}
-
-function removeSpace(string) {
-    string = string.replace(/^\s*|\s*$/g,'');
-    return string;
-}
-
 var menuBar = new Ext.Toolbar({
     region: 'north',
     height: 30,
-    items: [{
-        xtype: 'tbspacer'
-        },{
+
+    items: [
+        {
             xtype: 'tbbutton',
             text: 'Movies',
             width: 60,
-            menu: [{
-                text: 'Movies List',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../movies/index.html';}
-            },{
-                text: 'Movies by Genre',
-                disabled: 'true',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../movies/moviegenre.html';}
-            },{
-                text: 'Most recent',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../movies/movierecent.html';}
-            }]
-        },{
-            xtype: 'tbspacer'
-        },{
+            menu: [
+                {
+                    text: 'by Title',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../movies/index.html'; }
+                },
+                {
+                    text: 'by Genre',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../movies/moviegenre.html'; }
+                },
+                {
+                    text: 'by Date Added',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../movies/movierecent.html'; }
+                }
+            ]
+        },
+        {
             xtype: 'tbbutton',
-            text: ' TV-Shows ',
+            text: 'TV Shows',
             width: 60,
-            handler: function(){window.location = '../tvshows/index.html';}
-        },{
-            xtype: 'tbspacer'
-        },{
+            handler: function() { window.location = '../tvshows/index.html'; }
+        },
+        {
             xtype: 'tbbutton',
             text: 'Music',
             width: 60,
-            menu: [{
-                text: 'Artist / Album',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../music/index.html';}
-            },{
-                text: 'Genre / Album',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../music/albumgenres.html';}
-            },{
-                text: 'Year / Album',
-                iconCls: 'silk-grid',
-                handler: function(){window.location = '../music/yearalbum.html';}
-            }]
-        }]
+            menu: [
+                {
+                    text: 'Artist / Album',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../music/index.html'; }
+                },
+                {
+                    text: 'Genre / Album',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../music/albumgenres.html'; }
+                },
+                {
+                    text: 'Year / Album',
+                    iconCls: 'silk-grid',
+                    handler: function() { window.location = '../music/yearalbum.html'; }
+                }
+            ]
+        }
+    ]
 });
 
-var selectedMovie;
 var currentRecord;
-var currentMovie;
 var DetailsFlag;
-var detailPanel;
 
-var VideoFlagsPanel = new Ext.Panel({
+var videoFlagsPanel = new Ext.Panel({
     border: false,
-    defaults:{xtype:'container'},
-    items: [{
-        id: 'videocodec',
-        width:84,
-        height:31,
-        autoEl: {tag: 'img', src: '../images/flags/default.png'}
-    },{
-        width:84,
-        height:31,
-        id: 'resolution',
-        autoEl: {tag: 'img', src: '../images/flags/defaultscreen.png'}
-    },{
-        id: 'aspect',
-        width:48,
-        height:31,
-        autoEl: {tag: 'img', src: '../images/flags/default.png'}
-    }]
+    defaults: {
+        xtype: 'container',
+        height: 48,
+        autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
+        cls: 'mediaflag'
+    },
+    items: [
+        {
+            id: 'videocodec',
+            width: 100
+        },
+        {
+            id: 'resolution',
+            width: 64
+        },
+        {
+            id: 'aspect',
+            width: 64
+        }
+    ]
 });
 
-var AudioFlagsPanel = new Ext.Panel({
+var audioFlagsPanel = new Ext.Panel({
     border: false,
-    defaults:{xtype:'container', width: 64, height: 44},
-    items: [{
-        id: 'audiocodec',
-        autoEl: {tag: 'img', src: '../images/flags/defaultsound.png'}
-    },{
-        id: 'audiochannels',
-        autoEl: {tag: 'img', src: '../images/flags/0c.png'}
-    }]
+    defaults:{
+        xtype: 'container',
+        height: 48,
+        autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
+        cls: 'mediaflag'
+    },
+    items: [
+        {
+            id: 'audiocodec',
+            width: 100
+        },
+        {
+            id: 'audiochannels',
+            width: 64
+        }
+    ]
 });
-
-function findResolution(iWidth) {
-
-if (iWidth === 0)
-    return 'defaultscreen';
-else if (iWidth < 721)
-    return '480';
-  // 960x540
-else if (iWidth < 961)
-    return '540';
-  // 1280x720
-else if (iWidth < 1281)
-    return '720';
-  // 1920x1080
-else
-    return '1080';
-
-}
-
-function findAspect(vAspect) {
-if (vAspect === 0)
-    return 'default';
-if (vAspect < 1.4)
-    return '1.33';
-else if (vAspect < 1.7)
-    return '1.66';
-else if (vAspect < 1.8)
-    return '1.78';
-else if (vAspect < 1.9)
-    return '1.85';
-else if (vAspect < 2.3)
-    return '2.20';
-else
-    return '2.35';
-}
 
 
 /*\
