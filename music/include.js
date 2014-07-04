@@ -99,7 +99,7 @@ function GetAlbumDetails(r) {
 
     var jsonResponse = xbmcJsonRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbumDetails", "params": {"albumid": '+r.data.albumid+', "properties": ["title", "genre", "year", "rating", "theme", "mood", "style", "type", "description", "albumlabel"]}, "id": 1}');
 
-    mergeJson(r.data, jsonResponse.albumdetails);
+    XWMM.util.merge2Objects(r.data, jsonResponse.albumdetails);
 
     r.data.currentThumbnail = r.data.currentThumbnail.replace(/image:\/\//g, '').slice(0,-1);
     r.data.details = true;
