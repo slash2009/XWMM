@@ -23,12 +23,6 @@ var myVersion = '4.1.0';
     }
 })();
 
-function mergeJson(object1, object2) {
-    for (var prop in object2) {
-        object1[prop] = object2[prop];
-    }
-}
-
 var menuBar = new Ext.Toolbar({
     region: 'north',
     height: 30,
@@ -133,56 +127,6 @@ var audioFlagsPanel = new Ext.Panel({
         }
     ]
 });
-
-function findResolution(width) {
-    var resolution;
-
-    if (width === 0) {
-        resolution = 'defaultscreen';
-    }
-    else if (width < 721) {
-        resolution = '480';
-    }
-    else if (width < 961) { // 960x540
-        resolution = '540';
-    }
-    else if (width < 1281) { // 1280x720
-        resolution = '720';
-    }
-    else { // 1920x1080
-        resolution = '1080';
-    }
-
-    return resolution;
-}
-
-function findAspect(aspect) {
-    var ratio;
-
-    if (aspect === 0) {
-        ratio = 'default';
-    }
-    else if (aspect < 1.4) {
-        ratio = '1.33';
-    }
-    else if (aspect < 1.7) {
-        ratio = '1.66';
-    }
-    else if (aspect < 1.8) {
-        ratio = '1.78';
-    }
-    else if (aspect < 1.9) {
-        ratio = '1.85';
-    }
-    else if (aspect < 2.3) {
-        ratio = '2.20';
-    }
-    else {
-        ratio = '2.35';
-    }
-
-    return ratio;
-}
 
 
 /*\

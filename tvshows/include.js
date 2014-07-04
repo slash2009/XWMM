@@ -88,11 +88,11 @@ function loadTVShowDetails(record) {
         id: 'XWMM'
     };
     var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
-    mergeJson(record.data, response.tvshowdetails);
+    XWMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
-    record.data.fanart = artworkConvert(response.tvshowdetails.fanart);
-    record.data.thumbnail = artworkConvert(response.tvshowdetails.thumbnail);
+    record.data.fanart = XWMM.util.convertArtworkURL(response.tvshowdetails.fanart);
+    record.data.thumbnail = XWMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
     updateTVShowDetails(record);
 }
 
@@ -126,10 +126,12 @@ function updateEpisodeDetails(record) {
                 '../images/flags/video/' + record.data.streamdetails.video[0].codec + '.png' :
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
-                '../images/flags/aspectratio/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                '../images/flags/aspectratio/' +
+                    XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
-                '../images/flags/video/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                '../images/flags/video/' +
+                    XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&

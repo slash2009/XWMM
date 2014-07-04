@@ -11,45 +11,12 @@ function genreConvert(value, record) {
     return value.join(' / ');
 }
 
-function artworkConvert(value) {
-    if (value === undefined) {
-        return '';
-    }
-    else {
-        // subtract image:// from the start and / from the end.
-        return value.substr(8, value.length - 9);
-    }
-}
-
-function thumbConvert(value, record) {
-    return artworkConvert(value);
-}
-
 function bannerConvert(value, record) {
-    return artworkConvert(value.banner);
+    return XWMM.util.convertArtworkURL(value.banner);
 }
 
 function fanartConvert(value, record) {
-    return artworkConvert(value.fanart);
-}
-
-function ratingConvert(value, record) {
-    return value.toFixed(1);
-}
-
-function fileConvert(value, record) {
-    var fileName = /([^\\\/]+)$/.exec(value);
-
-    return fileName === null ?
-        value :
-        fileName[1];
-}
-
-function directoryConvert(value, record) {
-    var dirPath = value.replace(/([^\\\/]+)$/, '');
-    return dirPath === null ?
-        value :
-        dirPath;
+    return XWMM.util.convertArtworkURL(value.fanart);
 }
 
 var tvShowRecord = Ext.data.Record.create([
@@ -72,21 +39,21 @@ var tvShowRecord = Ext.data.Record.create([
 var seasonRecord = Ext.data.Record.create([
    { name: 'season' },
    { name: 'label' },
-   { name: 'thumbnail', convert: thumbConvert }
+   { name: 'thumbnail', convert: XWMM.util.convertArtworkURL }
 ]);
 
 var episodeRecord = Ext.data.Record.create([
     { name: 'episode' },
     { name: 'title' },
-    { name: 'rating', convert: ratingConvert },
+    { name: 'rating', convert: XWMM.util.convertRating },
     { name: 'plot' },
     { name: 'firstaired' },
     { name: 'director' },
     { name: 'streamdetails' },
     { name: 'playcount' },
     { name: 'episodeid' },
-    { name: 'file', convert: fileConvert },
-    { name: 'directory', mapping: 'file', convert: directoryConvert }
+    { name: 'file', convert: XWMM.util.convertPathToFileName },
+    { name: 'directory', mapping: 'file', convert: XWMM.util.convertPathToDirectory }
 ]);
 
 var actorRecord = Ext.data.Record.create([

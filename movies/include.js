@@ -1,13 +1,3 @@
-function artworkConvert(value) {
-    if (value === undefined) {
-        return '';
-    }
-    else {
-        // subtract image:// from the start and / from the end.
-        return value.substr(8, value.length - 9);
-    }
-}
-
 function setWatched() {
     var movieGrid = Ext.getCmp('Moviegrid');
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
@@ -152,10 +142,12 @@ function updateMovieDetails(record) {
                 '../images/flags/video/' + record.data.streamdetails.video[0].codec + '.png' :
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
-                '../images/flags/aspectratio/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                '../images/flags/aspectratio/' +
+                    XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
-                '../images/flags/video/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                '../images/flags/video/' +
+                    XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
@@ -186,12 +178,12 @@ function loadMovieDetails(record) {
         id: 'XWMM'
     };
     var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
-    mergeJson(record.data, response.moviedetails);
+    XWMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved
-    record.data.fanart = artworkConvert(response.moviedetails.fanart);
-    record.data.thumbnail = artworkConvert(response.moviedetails.thumbnail);
-    record.data.rating = response.moviedetails.rating.toFixed(1);
+    record.data.fanart = XWMM.util.convertArtworkURL(response.moviedetails.fanart);
+    record.data.thumbnail = XWMM.util.convertArtworkURL(response.moviedetails.thumbnail);
+    record.data.rating = XWMM.util.convertRating(response.moviedetails.rating);
     record.data.runtime = Math.round(response.moviedetails.runtime / 60);
     updateMovieDetails(record);
 }
