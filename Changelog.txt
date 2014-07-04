@@ -10,6 +10,7 @@ XWMM Change log
 - Use light gray theme
 - Add media flags from the Confluence theme (Issue #26)
 - Start sharing common code (XWMM.util)
+- Rewrite the HTML export feature (Issue #62)
 
 4.0.2
 - XBMC expects rating to be a number not a string. (Issue #57)
