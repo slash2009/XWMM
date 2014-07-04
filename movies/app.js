@@ -55,6 +55,7 @@ Ext.onReady(function() {
             ]
         },
         {
+            xtype: 'tbtext',
             text: 'Quick Search:',
             tooltip: 'Quickly search through movies.'
         },
