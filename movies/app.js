@@ -34,23 +34,8 @@ Ext.onReady(function() {
                 },
                 {
                     text: 'Export to HTML',
-                    menu: [
-                        {
-                            text: 'All Movies',
-                            iconCls: 'silk-grid',
-                            handler: function() { moviesHTML(); }
-                        },
-                        {
-                            text: 'Watched Movies',
-                            iconCls: 'silk-grid',
-                            handler: function() { watchedMoviesHTML(); }
-                        },
-                        {
-                            text: 'Unwatched Movies',
-                            iconCls: 'silk-grid',
-                            handler: function() { unwatchedMoviesHTML(); }
-                        }
-                    ]
+                    iconCls: 'silk-grid',
+                    handler: function() { Ext.getCmp('exportToHTMLWin').show(); }
                 }
             ]
         },
