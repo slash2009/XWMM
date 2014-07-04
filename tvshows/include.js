@@ -161,7 +161,7 @@ function clearEpisodeDetails() {
     Ext.getCmp('audiocodec').getEl().dom.src = Ext.BLANK_IMAGE_URL;
 }
 
-function movieGenreChange(sm) {
+function tvShowGenreChange(sm) {
     var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
     var selectedGenres = sm.getSelections();
     var genres = [];
@@ -173,11 +173,13 @@ function movieGenreChange(sm) {
     var list = genres.join(' / ');
     selectedTVShow.data.genre = list;
     Ext.getCmp('genreString').setValue(list);
+
+    Ext.getCmp('savebutton').enable();
 }
 
 function saveTVShowGenre() {
     var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
-    var selectedGenres = Ext.getCmp('Genregrid').getSelectionModel().getSelections();
+    var selectedGenres = Ext.getCmp('genresGrid').getSelectionModel().getSelections();
     var genres = [];
 
     for (var i = 0, len = selectedGenres.length; i < len; i++) {
@@ -198,19 +200,21 @@ function saveTVShowGenre() {
 }
 
 function updateTVShowGenreGrid(record) {
+    var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
     var genres = splitStringList(record.data.TVGenre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {
-        index = storegenre.findExact('label', genres[i], 0);
+        index = genreGrid.getStore().findExact('label', genres[i], 0);
         if (index > -1) {
             genreIds.push(index);
         }
     }
 
     if (genreIds.length > 0) {
-        updateGenreGrid(genreIds);
+        genreGrid.getSelectionModel().clearSelections(false);
+        genreGrid.getSelectionModel().selectRows(genreIds, true);
     }
 }
 

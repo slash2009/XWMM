@@ -7,9 +7,8 @@ Ext.onReady(function() {
             menu: [
                 {
                     text: 'Manage Genres',
-                    disabled: 'true',
                     iconCls: 'silk-plugin',
-                    handler: function(){ winGenre.show(); }
+                    handler: function(){ Ext.getCmp('manageGenresWin').show(); }
                 }
             ]
         },
@@ -46,14 +45,6 @@ Ext.onReady(function() {
 
     addQuickSearch('quicksearch', storeTVShow, 'title');
 
-    storegenre.proxy.conn.xbmcParams = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.GetGenres',
-        params: {
-            type: 'tvshow'
-        },
-        id: 'XWMM'
-    };
-    storegenre.load();
+    XWMM.video.setGenreMode('tvshow');
     storeTVShow.load();
 });

@@ -152,7 +152,7 @@ var movieDetailsPanel = new Ext.FormPanel({
         {
             text:'Cancel',
             handler: function() {
-                updateGenreGrid(Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.genres);
+                // TODO: should this reset the form?
             }
         }
     ],
@@ -304,7 +304,7 @@ var mainPanel = new Ext.Panel({
                 layout: 'accordion',
                 height: 500,
                 items: [
-                    Genregrid,
+                    Ext.getCmp('genresGrid'),
                     actorGrid,
                     otherDetailsPanel
                 ]

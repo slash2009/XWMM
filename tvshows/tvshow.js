@@ -473,7 +473,7 @@ TVShow.Mainpanel = new Ext.Panel({
                 layout: 'accordion',
                 height: 500,
                 items: [
-                    Genregrid,
+                    Ext.getCmp('genresGrid'),
                     actorGrid,
                     otherDetailsPanel
                 ]
@@ -521,7 +521,7 @@ TVShow.Mainpanel = new Ext.Panel({
                 {
                     text: 'Cancel',
                     handler: function() {
-                        updateGenreGrid(selectedTvShow.data.genres);
+                        // TODO: should this reset the form?
                     }
                 }
             ],
