@@ -154,7 +154,7 @@ function updateMovieDetails(record) {
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
                 '../images/flags/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 '../images/flags/default.png';
-            resolution.src = (record.data.streamdetails.video[0].aspwidthect !== undefined) ?
+            resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
                 '../images/flags/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 '../images/flags/defaultscreen.png';
         }
