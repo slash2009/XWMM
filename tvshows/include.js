@@ -113,33 +113,33 @@ function updateEpisodeDetails(record) {
     var audioChannels = Ext.getCmp('audiochannels').getEl().dom;
     var audioCodec = Ext.getCmp('audiocodec').getEl().dom;
 
-    videoCodec.src = '../images/flags/default.png';
-    aspect.src = '../images/flags/default.png';
-    resolution.src = '../images/flags/defaultscreen.png';
-    audioChannels.src = '../images/flags/0c.png';
-    audioCodec.src = '../images/flags/defaultsound.png';
+    videoCodec.src = Ext.BLANK_IMAGE_URL;
+    aspect.src = Ext.BLANK_IMAGE_URL;
+    resolution.src = Ext.BLANK_IMAGE_URL;
+    audioChannels.src = Ext.BLANK_IMAGE_URL;
+    audioCodec.src = Ext.BLANK_IMAGE_URL;
 
     if (record.data.streamdetails !== undefined) {
         if (record.data.streamdetails.video !== undefined &&
             record.data.streamdetails.video.length > 0) {
             videoCodec.src = (record.data.streamdetails.video[0].codec !== undefined) ?
-                '../images/flags/' + record.data.streamdetails.video[0].codec + '.png' :
-                '../images/flags/default.png';
+                '../images/flags/video/' + record.data.streamdetails.video[0].codec + '.png' :
+                Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
-                '../images/flags/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
-                '../images/flags/default.png';
+                '../images/flags/aspectratio/' + findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
-                '../images/flags/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
-                '../images/flags/defaultscreen.png';
+                '../images/flags/video/' + findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
             record.data.streamdetails.audio.length > 0) {
             audioChannels.src = (record.data.streamdetails.audio[0].channels !== undefined) ?
-                '../images/flags/' + record.data.streamdetails.audio[0].channels + 'c.png' :
-                '../images/flags/0c.png';
+                '../images/flags/audio/' + record.data.streamdetails.audio[0].channels + '.png' :
+                Ext.BLANK_IMAGE_URL;
             audioCodec.src = (record.data.streamdetails.audio[0].codec !== undefined) ?
-                '../images/flags/' + record.data.streamdetails.audio[0].codec + '.png' :
-                '../images/flags/defaultsound.png';
+                '../images/flags/audio/' + record.data.streamdetails.audio[0].codec + '.png' :
+                Ext.BLANK_IMAGE_URL;
         }
     }
 }
@@ -152,11 +152,11 @@ function clearEpisodeDetails() {
     Ext.getCmp('episodedetailPanel').getForm().reset();
     Ext.getCmp('filedetailPanel').getForm().reset();
 
-    Ext.getCmp('videocodec').getEl().dom.src = '../images/flags/default.png';
-    Ext.getCmp('aspect').getEl().dom.src = '../images/flags/default.png';
-    Ext.getCmp('resolution').getEl().dom.src = '../images/flags/defaultscreen.png';
-    Ext.getCmp('audiochannels').getEl().dom.src = '../images/flags/0c.png';
-    Ext.getCmp('audiocodec').getEl().dom.src = '../images/flags/defaultsound.png';
+    Ext.getCmp('videocodec').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+    Ext.getCmp('aspect').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+    Ext.getCmp('resolution').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+    Ext.getCmp('audiochannels').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+    Ext.getCmp('audiocodec').getEl().dom.src = Ext.BLANK_IMAGE_URL;
 }
 
 function movieGenreChange(sm) {
