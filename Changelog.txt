@@ -8,6 +8,7 @@ XWMM Change log
 - Restore view movies by genre
 - Upgrade to ExtJS v3.4.1.1
 - Use light gray theme
+- Add media flags from the Confluence theme (Issue #26)
 
 4.0.2
 - XBMC expects rating to be a number not a string. (Issue #57)
