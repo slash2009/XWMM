@@ -278,10 +278,10 @@ var movieDetailsPanel = new Ext.FormPanel({
             items: [MovieFanart]
         },
         {
-            items: [AudioFlagsPanel]
+            items: [audioFlagsPanel]
         },
         {
-            items: [VideoFlagsPanel]
+            items: [videoFlagsPanel]
         }
     ]
 });
