@@ -249,13 +249,12 @@ function GetMovieGenres(record) {
 
 function checkWatched(val) {
  if ((val !== '' ) && (val !== 0))
-    return '<img src=../images/icons/checked.png>';
-
+    return '<img src="../images/icons/checked.png" width="16" height="16" alt="Watched">';
 }
 
 function checkSet(val) {
  if (val !== '')
-    return '<img src=../images/icons/set.png>';
+    return '<img src="../images/icons/set.png" width="16" height="16" alt="In Set">';
 }
 
 var MoviecolModel = new Ext.grid.ColumnModel([
