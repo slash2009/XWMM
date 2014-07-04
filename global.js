@@ -92,25 +92,24 @@ var DetailsFlag;
 
 var videoFlagsPanel = new Ext.Panel({
     border: false,
-    defaults: { xtype: 'container' },
+    defaults: {
+        xtype: 'container',
+        height: 48,
+        autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
+        cls: 'mediaflag'
+    },
     items: [
         {
             id: 'videocodec',
-            width: 84,
-            height: 31,
-            autoEl: { tag: 'img', src: '../images/flags/default.png' }
+            width: 100
         },
         {
             id: 'resolution',
-            width: 84,
-            height: 31,
-            autoEl: { tag: 'img', src: '../images/flags/defaultscreen.png' }
+            width: 64
         },
         {
             id: 'aspect',
-            width: 48,
-            height: 31,
-            autoEl: { tag: 'img', src: '../images/flags/default.png' }
+            width: 64
         }
     ]
 });
@@ -119,17 +118,18 @@ var audioFlagsPanel = new Ext.Panel({
     border: false,
     defaults:{
         xtype: 'container',
-        width: 64,
-        height: 44
+        height: 48,
+        autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
+        cls: 'mediaflag'
     },
     items: [
         {
             id: 'audiocodec',
-            autoEl: { tag: 'img', src: '../images/flags/defaultsound.png' }
+            width: 100
         },
         {
             id: 'audiochannels',
-            autoEl: { tag: 'img', src: '../images/flags/0c.png' }
+            width: 64
         }
     ]
 });
