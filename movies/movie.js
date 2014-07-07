@@ -76,6 +76,7 @@ var otherDetailsPanel = new Ext.FormPanel({
     title: 'Other Details',
     id: 'filedetailPanel',
 
+    trackResetOnLoad : true,
     labelWidth: 55,
     padding: 5,
     defaults: {

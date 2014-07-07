@@ -82,5 +82,4 @@ Ext.onReady(function() {
     };
     storegenre.load();
     MovieSetStore.load();
-    storeMovie.load();
 });

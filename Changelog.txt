@@ -1,5 +1,9 @@
 XWMM Change log
 
+4.1.1
+- Improve error reporting for JSON-RPC requests
+- Fix 2 minor JSON-RPC errors [362bf51, 41a48a3]
+
 4.1.0
 - Clean up jshint warnings (Issue #73)
 - Remove unused code (Issue #68)
