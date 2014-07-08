@@ -35,10 +35,24 @@
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovies',
             params: {
-                properties: options.fields
+                properties: options.fields,
+                sort: {
+                    method: options.sortby.toLowerCase().replace(' ', '')
+                }
             },
             id: 'XWMM'
         };
+
+        if ('ignoreArticle' in options && options.ignoreArticle === 'on') {
+            request.params.sort.ignorearticle = true;
+        }
+
+        if ('reverseSort' in options && options.reverseSort === 'on') {
+            request.params.sort.order = 'descending';
+        }
+        else {
+            request.params.sort.order = 'ascending';
+        }
 
         if (options.filter === 'Watched') {
             title = 'Watched ' + title;
@@ -112,7 +126,7 @@
         title: 'Export movies to HTML',
         layout: 'fit',
         width: 500,
-        height: 300,
+        height: 350,
         modal: true,
         items: [
             {
@@ -131,6 +145,32 @@
                         triggerAction:'all',
                         emptyText: 'Select which movies to view',
                         value: 'All'
+                    },
+                    {
+                        xtype: 'combo',
+                        fieldLabel: 'Sort by',
+                        name: 'sortby',
+                        allowBlank: false,
+                        autoSelect: true,
+                        store: ['Title', 'Sort Title', 'Year', 'Rating', 'Runtime'],
+                        triggerAction:'all',
+                        emptyText: 'Select field to sort by',
+                        value: 'Title'
+                    },
+                    {
+                        xtype: 'checkboxgroup',
+                        items: [
+                            {
+                                name: 'reverseSort',
+                                boxLabel: 'Reverse',
+                                checked: false
+                            },
+                            {
+                                name: 'ignoreArticle',
+                                boxLabel: 'Ignore Article',
+                                checked: true
+                            }
+                        ]
                     },
                     {
                         xtype: 'fieldset',
