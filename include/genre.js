@@ -1,184 +1,268 @@
-var genreRecord = Ext.data.Record.create([
-   {name: 'genreid', type: 'string'},
-   {name: 'label'}
-]);
+/* global Ext: false, XWMM: false */
 
-var Checkgenre = new Ext.grid.CheckboxSelectionModel({
-    dataIndex:'genreid',
-    alwaysSelectOnCheck: 'true',
-    header: false,
-    listeners: {
-        selectionchange: function(sm) {
-            movieGenreChange(sm);
-            var bt = Ext.getCmp('savebutton');
-            bt.enable();
-        }
-    }
-});
+Ext.ns('XWMM.video');
 
+(function() {
 
-function updateGenreGrid(t){
-    Genregrid.getSelectionModel().clearSelections(false);
-    Genregrid.getSelectionModel().selectRows(t, true);
-    // var bt = Ext.getCmp('savebutton');
-    // bt.disable()
-}
+    var genreRecord = Ext.data.Record.create([
+        { name: 'genreid', type: 'string' },
+        { name: 'label', type: 'string' }
+    ]);
 
-var GenrecolModel = new Ext.grid.ColumnModel([
-        Checkgenre,
-        {header: '#', dataIndex: 'genreid', hidden: true},
-        {header: 'Genre', width: 200, dataIndex: 'label'}
-]);
-
-
-var storegenre = new Ext.data.Store({
-    id: 'storegenre',
-    sortInfo: {field: 'label', direction: 'ASC'},
-    proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-    }),
-    reader: new Ext.data.JsonReader({
-        root:'result.genres'
-    }, genreRecord),
-//  selectFromString :function(string){ // select genre rows according to movie genre field
-//      var myArray = string.split('/');
-//      Genregrid.getSelectionModel().clearSelections(false);
-//      for (var i = 0; i < myArray.length; i++) {
-//          var index = storegenre.findExact('label',myArray[i].trim(),0,false,false);
-//          Genregrid.getSelectionModel().selectRow(index, true)
-//      }
-//  }
-    listeners: {
-        load: function(store, records, options) {
-            /*
-            * When asking XBMC for a list of genres it will return a blank one. This blank one is a catch all for all
-            * items that don't have a genre assigned to them. We don't want this blank genre to show up, so it's
-            * remove from the store at load.
-            */
-            for (var i = 0, len = records.length; i < len; i++) {
-                if (records[i].data.label === '') {
-                    store.remove(records[i]);
+    XWMM.video.genreStore = new Ext.data.Store({
+        sortInfo: { field: 'label', direction: 'ASC' },
+        proxy: new Ext.data.XBMCProxy({
+            url: '/jsonrpc',
+            xbmcParams: {
+                jsonrpc: '2.0',
+                method: 'VideoLibrary.GetGenres',
+                params: {
+                    type: 'movie'
+                },
+                id: 'XWMM'
+            }
+        }),
+        reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord),
+        listeners: {
+            load: function(store, records, options) {
+                /*
+                 * When asking XBMC for a list of genres it will return a blank one. This blank one is a catch all for all
+                 * items that don't have a genre assigned to them. We don't want this blank genre to show up, so it's
+                 * remove from the store at load.
+                 */
+                 for (var i = 0, len = records.length; i < len; i++) {
+                    if (records[i].data.label === '') {
+                        store.remove(records[i]);
+                    }
                 }
             }
         }
-    }
-});
+    });
 
-
-var editor = new Ext.ux.grid.RowEditor({
-    saveText: 'Update',
-    listeners: {
-        afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.idGenre === -1) {
-                AddXBMCNewGenre(record);
-                storegenre.reload();
-            }
-            else {
-                updateXBMCGenreString(record);
-                storegenre.reload();
-            }
-         }
-    }
-});
-
-
-//grid for Genres mgmt
-var GenreMgmtGrid = new Ext.grid.GridPanel({
-            id: 'genremgmtgrid',
-            columns: [
-                {header: '#', dataIndex: 'genreid', hidden: true},
-                {header: 'Genre', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'label'}
-            ],
-            clicksToEdit: 1,
-            title: 'Genre Management',
-            enableDragDrop: false,
-            //sm : Checkgenre,
-            stripeRows: true,
-            plugins: [editor],
-            store: storegenre,
-            tbar: [{
-                text: 'Add',
-                iconCls: 'silk-add',
-                handler: onAdd
-            }, '-', {
-                text: 'Delete',
-                iconCls: 'silk-delete',
-                handler: onDelete
-            }, '-'],
-            viewConfig: {
-                forceFit: true
-            }
-});
-
-function onAdd(btn, ev) {
-        var u = new GenreMgmtGrid.store.recordType({
-                strGenre: 'New Genre',
-        idGenre: '-1' // flag as new record
-        });
-        editor.stopEditing();
-        GenreMgmtGrid.store.insert(0, u);
-        editor.startEditing(0);
-}
-
-
-function onDelete() {
-    var rec = GenreMgmtGrid.getSelectionModel().getSelected();
-    if (!rec) {return false;}
-
-    if (checkXBMCGenreUsed(rec)){
-        Ext.Msg.alert('Error', 'this genre is still in use');
-    }
-    else {
-        removeXBMCGenre(rec);
-        GenreMgmtGrid.store.remove(rec);
-    }
-}
-
-//grid for Genres
-var Genregrid = new Ext.grid.GridPanel({
-    id: 'Genregrid',
-    title: 'Genres',
-    store: storegenre,
-    cm: GenrecolModel,
-    enableDragDrop: false,
-    sm : Checkgenre,
-    stripeRows: true,
-    viewconfig: {forceFit: true},
-    tbar: [
-        {
-            text: 'Add',
-            iconCls: 'silk-add',
-            handler: function(b, e) {
-                Ext.MessageBox.prompt(
-                    'Add Genre',
-                    'Enter the name of the genre you would like to add:',
-                    Genregrid.addGenre,
-                    Genregrid);
+    var rowEditor = new Ext.ux.grid.RowEditor({
+        saveText: 'Update',
+        listeners: {
+            afteredit: function(roweditor, changes, record, rowIndex) {
+                if (record.data.genreid > -1) {
+                    renameGenre(record.modified.label, changes.label);
+                    roweditor.grid.getStore().reload();
+                }
             }
         }
-    ],
-    addGenre: function(btn, text) {
-        if (btn !== 'ok') {
+    });
+
+    function renameGenre(oldGenre, newGenre) {
+        var idField, resultField, readMethod, writeMethod, gridId;
+        if (XWMM.video.genreMode === 'movie') {
+            idField = 'movieid';
+            resultField = 'movies';
+            readMethod = 'VideoLibrary.GetMovies';
+            writeMethod = 'VideoLibrary.SetMovieDetails';
+            gridId = 'Moviegrid';
+        }
+        else if (XWMM.video.genreMode === 'tvshow') {
+            idField = 'tvshowid';
+            resultField = 'tvshows';
+            readMethod = 'VideoLibrary.GetTVShows';
+            writeMethod = 'VideoLibrary.SetTVShowDetails';
+            gridId = 'tvshowgrid';
+        }
+        else {
+            console.error('Unknown XWMM.video.mode. [' + XWMM.video.mode + ']');
             return;
         }
 
-        var newGenre = new genreRecord({label: text});
-        console.debug(this);
-        this.store.add(newGenre);
-    }
-});
+        var request = {
+            jsonrpc: '2.0',
+            method: readMethod,
+            params: {
+                properties: ['genre'],
+                filter: { field: 'genre', operator: 'contains', value: oldGenre }
+            },
+            id: 'XWMM'
+        };
+        var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
 
-var winGenre = new Ext.Window({
-    layout:'fit',
-    width:500,
-    height:300,
-    closeAction:'hide',
-    plain: true,
-    items: GenreMgmtGrid,
-    buttons: [{
-        text: 'Close',
-        handler: function(){
-            winGenre.hide();
+        var i, i_len, j, j_len, oldGenreList, newGenreList, updateRequest;
+        for (i = 0, i_len = response[resultField].length; i < i_len; i++) {
+            oldGenreList  = response[resultField][i].genre;
+            newGenreList = [];
+
+            for (j = 0, j_len = oldGenreList.length; j < j_len; j++) {
+                if (oldGenreList[j] === oldGenre || oldGenreList[j] === newGenre) {
+                    if (newGenre !== undefined) {
+                        newGenreList.push(newGenre);
+                    }
+                }
+                else {
+                    newGenreList.push(oldGenreList[j]);
+                }
+            }
+
+            updateRequest = {
+                jsonrpc: '2.0',
+                method: writeMethod,
+                params: { genre: newGenreList },
+                id: 'XWMM'
+            };
+            updateRequest.params[idField] = response[resultField][i][idField];
+            xbmcJsonRPC(Ext.util.JSON.encode(updateRequest));
         }
-    }]
-});
+
+        Ext.getCmp(gridId).getStore().load();
+    }
+
+    new Ext.Window({
+        id: 'manageGenresWin',
+        title: 'Genre Management',
+        layout: 'fit',
+        width: 500,
+        height: 300,
+        modal: true,
+        closeAction:'hide',
+        items: [
+            {
+                id: 'manageGenresGrid',
+                xtype: 'grid',
+                columns: [
+                    { header: '#', dataIndex: 'genreid', hidden: true },
+                    { header: 'Genre', editor: new Ext.form.TextField({ allowBlank: false }), dataIndex: 'label', id: 'title' }
+                ],
+                autoExpandColumn: 'title',
+                enableColumnResize: false,
+                clicksToEdit: 1,
+                stripeRows: true,
+                plugins: [rowEditor],
+                store: XWMM.video.genreStore,
+                tbar: [
+                    {
+                        text: 'Add',
+                        iconCls: 'silk-add',
+                        handler: function(btn, e) {
+                            Ext.MessageBox.prompt(
+                                'Add a genre',
+                                'Enter the name of the genre you would like to add:',
+                                function(btn, text) {
+                                    if (btn === 'ok') {
+                                        var newGenre = new genreRecord({ label: text });
+                                        var grid = Ext.getCmp('manageGenresGrid');
+                                        grid.getStore().add(newGenre);
+                                        grid.getSelectionModel().selectLastRow();
+                                    }
+                                }
+                            );
+                        }
+                    },
+                    '-',
+                    {
+                        text: 'Delete',
+                        iconCls: 'silk-delete',
+                        handler: function(btn, e) {
+                            var grid = Ext.getCmp('manageGenresGrid');
+                            var record = grid.getSelectionModel().getSelected();
+
+                            if (record === undefined) {
+                                Ext.Msg.alert(
+                                    'Select a genre',
+                                    'You must select a genre to delete first.'
+                                );
+                                return false;
+                            }
+
+                            Ext.Msg.confirm(
+                                'Are you sure?',
+                                'Are you sure you want to delete the ' + record.data.label + ' genre?<br>' +
+                                'This can\'t be undone!',
+                                function(btn) {
+                                    if (btn === 'yes') {
+                                        renameGenre(record.data.label, undefined);
+                                        grid.getStore().reload();
+                                    }
+                                }
+                            );
+                        }
+                    }
+                ],
+            }
+
+        ],
+        buttons: [
+            {
+                text: 'Close',
+                handler: function(btn, e) {
+                    Ext.getCmp('manageGenresWin').hide();
+                }
+            }
+        ]
+    });
+
+
+    var genreChkBoxSM = new Ext.grid.CheckboxSelectionModel({
+        dataIndex: 'genreid',
+        alwaysSelectOnCheck: 'true',
+        header: false,
+        listeners: {
+            selectionchange: function(sm) {
+                if (XWMM.video.genreMode === 'movie') {
+                    movieGenreChange(sm);
+                }
+                else if (XWMM.video.genreMode === 'tvshow') {
+                    tvShowGenreChange(sm);
+                }
+                else {
+                    console.error('Unknown XWMM.video.mode. [' + XWMM.video.mode + ']');
+                }
+            }
+        }
+    });
+
+    XWMM.video.genresGrid = new Ext.grid.GridPanel({
+        id: 'genresGrid',
+        title: 'Genres',
+        store: XWMM.video.genreStore,
+
+        cm: new Ext.grid.ColumnModel([
+            genreChkBoxSM,
+            { header: '#', dataIndex: 'genreid', hidden: true },
+            { header: 'Genre', dataIndex: 'label', id: 'title' }
+        ]),
+        sm : genreChkBoxSM,
+        autoExpandColumn: 'title',
+        enableColumnResize: false,
+        stripeRows: true,
+        tbar: [
+            {
+                text: 'Add',
+                iconCls: 'silk-add',
+                handler: function(btn, e) {
+                    Ext.MessageBox.prompt(
+                        'Add a genre',
+                        'Enter the name of the genre you would like to add:',
+                        function(btn, text) {
+                            if (btn === 'ok') {
+                                var newGenre = new genreRecord({ label: text });
+                                var grid = Ext.getCmp('genresGrid');
+                                grid.getStore().add(newGenre);
+                            }
+                        }
+                    );
+                }
+            }
+        ]
+    });
+
+
+    XWMM.video.setGenreMode = function(mode) {
+        if (mode === 'movie' || mode === 'tvshow') {
+            XWMM.video.genreMode = mode;
+        }
+        else {
+            console.error('XWMM.video.setGenreMode :: Unknown mode. [' + mode + ']');
+            return;
+        }
+
+        XWMM.video.genreStore.proxy.conn.xbmcParams.params.type = mode;
+        XWMM.video.genreStore.load();
+    };
+
+})();

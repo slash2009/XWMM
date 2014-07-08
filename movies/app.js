@@ -9,8 +9,7 @@ Ext.onReady(function() {
                 {
                     text: 'Manage Genres',
                     iconCls: 'silk-plugin',
-                    disabled: 'true',
-                    handler: function() { winGenre.show(); }
+                    handler: function() { Ext.getCmp('manageGenresWin').show(); }
                 },
                 {
                     text: 'Manage Movie Sets',
@@ -72,14 +71,6 @@ Ext.onReady(function() {
 
     addQuickSearch('quicksearch', storeMovie, 'Movietitle');
 
-    storegenre.proxy.conn.xbmcParams = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.GetGenres',
-        params: {
-            type: 'movie'
-        },
-        id: 'XWMM'
-    };
-    storegenre.load();
+    XWMM.video.setGenreMode('movie');
     MovieSetStore.load();
 });
