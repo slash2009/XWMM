@@ -98,25 +98,6 @@ function TrimXbmcXml(t){
 }
 
 /**
- * Convert a string list into an array.
- * @param {string} stringList The string to split.
- * @param {(string|RegExp)} sep The separator to split the list on.
- * @returns {Array} The string list as an array.
- */
-function splitStringList(stringList, sep) {
-    var inList = stringList.split(sep);
-    var outList = [];
-    for (var i = 0, len = inList.length; i < len; i++) {
-        listItem = inList[i].trim();
-        if (listItem.length > 0) {
-            outList.push(listItem);
-        }
-    }
-    return outList;
-}
-
-
-/**
  * Save the changes back to XBMC.
  * @param {Ext.form.BasicForm} form The form containing the record.
  * @param {string}recordType The type of record.
@@ -158,7 +139,7 @@ function updateXBMCTables(form, recordType, recordId) {
             case 'mood':
             case 'style':
             case 'artist':
-                params[f.name] = splitStringList(f.getValue(), /[,\/\|]+/); // Split list separated with , / or |.
+                params[f.name] = XWMM.util.convertListToArray(f.getValue(), /[,\/\|]+/); // Split list separated with , / or |.
                 break;
 
             default:

@@ -204,7 +204,7 @@ function saveTVShowGenre() {
 function updateTVShowGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = splitStringList(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = XWMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {

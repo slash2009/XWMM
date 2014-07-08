@@ -27,6 +27,24 @@ XWMM.util.convertArrayToList = function(value) {
 };
 
 /**
+ * Convert a string list into an array.
+ * @param {string} stringList The string to split.
+ * @param {(string|RegExp)} sep The separator to split the list on.
+ * @returns {Array} The string list as an array.
+ */
+XWMM.util.convertListToArray = function(stringList, sep) {
+    var inList = stringList.split(sep);
+    var outList = [];
+    for (var i = 0, len = inList.length; i < len; i++) {
+        listItem = inList[i].trim();
+        if (listItem.length > 0) {
+            outList.push(listItem);
+        }
+    }
+    return outList;
+}
+
+/**
  * Strip the image:// prefix from artwork urls.
  * @param {string} value The artwork url to convert.
  * @return {string} The converted url.
