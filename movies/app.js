@@ -17,8 +17,9 @@ Ext.onReady(function() {
                     handler: function() { winMovieSet.show(); }
                 },
                 {
-                    text: 'Toggle articles in title sort',
-                    iconCls: 'silk-plugin',
+                    xtype: 'menucheckitem',
+                    checked: (docCookies.getItem('sortArticles') === '1'),
+                    text: 'Ignore articles when sorting (e.g. "the")',
                     handler: function() {
                         // extjs cookies aren't available until v3.4.0, so we'll use cookies.js
                         var sortArticles = docCookies.getItem('sortArticles');
@@ -26,7 +27,7 @@ Ext.onReady(function() {
                             docCookies.removeItem('sortArticles');
                         }
                         else {
-                            docCookies.setItem('sortArticles', '1', 'Infinity');
+                            docCookies.setItem('sortArticles', '1', Infinity);
                         }
                         window.location.reload();
                     }

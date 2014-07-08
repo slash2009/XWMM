@@ -13,6 +13,20 @@ XWMM.util.toTitleCase = function(str) {
 
 
 /**
+ * Converts an array to a string list.
+ * @param {array} value The array to convert.
+ * @return {string} The list.
+ */
+XWMM.util.convertArrayToList = function(value) {
+    if (value === undefined || value.length === 0) {
+        return '';
+    }
+    else {
+        return value.join(' / ');
+    }
+};
+
+/**
  * Strip the image:// prefix from artwork urls.
  * @param {string} value The artwork url to convert.
  * @return {string} The converted url.

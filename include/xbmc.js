@@ -134,7 +134,7 @@ function updateXBMCTables(form, recordType, recordId) {
 
         switch (f.name) {
             case 'Moviegenres':
-            case 'TVGenre':
+            case 'genre':
                 continue; // We don't want to save genres here
                 break;
 
