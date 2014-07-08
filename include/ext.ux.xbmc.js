@@ -69,13 +69,16 @@ Ext.ux.XbmcImages = function(config) {
 
 Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
     // refresh image
-    refreshMe : function(){
+    refreshMe: function() {
         this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
     },
     // set source image
-    updateSrc :function(imagePath){
-        if (imagePath) {
-            this.el.dom.src = '/image/'+imagePath;
+    updateSrc: function(imagePath) {
+        if (imagePath === undefined) {
+            this.el.dom.src = Ext.BLANK_IMAGE_URL;
+        }
+        else {
+            this.el.dom.src = imagePath;
         }
     }
 });

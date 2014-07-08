@@ -60,7 +60,7 @@ ArtistGrid = new Ext.grid.GridPanel({
 
 var AlbumCover = new Ext.ux.XbmcImages ({
     id: 'albumCover',
-    autoEl: {tag: 'img', src: '../images/nobanner.png'},
+    autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL},
     border: 0,
     width: 160,
     height:160

@@ -150,7 +150,7 @@ var TVShowCover = new Ext.ux.XbmcImages({
     border: 0,
     width: 380,
     height:70,
-    autoEl: {tag: 'img', src: '../images/nobanner.png'}
+    autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
 var SeasonCover = new Ext.ux.XbmcImages({
@@ -159,7 +159,7 @@ var SeasonCover = new Ext.ux.XbmcImages({
     border: 0,
     width: 160,
     height:231,
-    autoEl: {tag: 'img', src: '../images/nobanner.png'}
+    autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
 var tvShowDetailsPanel = new Ext.FormPanel({

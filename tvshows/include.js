@@ -148,8 +148,7 @@ function updateEpisodeDetails(record) {
 
 function clearEpisodeDetails() {
     episodeStars.updateSrc({data:{}});
-    // FIXME: this doesn't work because updateSrc appends /images/
-    //Ext.getCmp('seasoncover').updateSrc('../images/nobanner.png');
+    Ext.getCmp('seasoncover').updateSrc(undefined);
 
     Ext.getCmp('episodedetailPanel').getForm().reset();
     Ext.getCmp('filedetailPanel').getForm().reset();
