@@ -133,24 +133,24 @@ function updateMovieDetails(record) {
         if (record.data.streamdetails.video !== undefined &&
             record.data.streamdetails.video.length > 0) {
             videoCodec.src = (record.data.streamdetails.video[0].codec !== undefined) ?
-                '../images/flags/video/' + record.data.streamdetails.video[0].codec + '.png' :
+                '../resources/images/flags/video/' + record.data.streamdetails.video[0].codec + '.png' :
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
-                '../images/flags/aspectratio/' +
+                '../resources/images/flags/aspectratio/' +
                     XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
-                '../images/flags/video/' +
+                '../resources/images/flags/video/' +
                     XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
             record.data.streamdetails.audio.length > 0) {
             audioChannels.src = (record.data.streamdetails.audio[0].channels !== undefined) ?
-                '../images/flags/audio/' + record.data.streamdetails.audio[0].channels + '.png' :
+                '../resources/images/flags/audio/' + record.data.streamdetails.audio[0].channels + '.png' :
                 Ext.BLANK_IMAGE_URL;
             audioCodec.src = (record.data.streamdetails.audio[0].codec !== undefined) ?
-                '../images/flags/audio/' + record.data.streamdetails.audio[0].codec + '.png' :
+                '../resources/images/flags/audio/' + record.data.streamdetails.audio[0].codec + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
     }
@@ -229,13 +229,13 @@ function updateMovieGenreGrid(record) {
 
 function checkWatched(value) {
     return value === 1 ?
-        '<img src="../images/icons/checked.png" width="16" height="16" alt="Watched">' :
+        '<img src="../resources/images/icons/checked.png" width="16" height="16" alt="Watched">' :
         '';
 }
 
 function checkSet(value) {
     return value !== '' ?
-        '<img src="../images/icons/set.png" width="16" height="16" alt="In Set">' :
+        '<img src="../resources/images/icons/set.png" width="16" height="16" alt="In Set">' :
         '';
 }
 

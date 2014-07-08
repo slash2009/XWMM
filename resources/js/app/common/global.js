@@ -36,17 +36,17 @@ var menuBar = new Ext.Toolbar({
                 {
                     text: 'by Title',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../movies/index.html'; }
+                    handler: function() { window.location = 'movies.html'; }
                 },
                 {
                     text: 'by Genre',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../movies/moviegenre.html'; }
+                    handler: function() { window.location = 'movies-by-genre.html'; }
                 },
                 {
                     text: 'by Date Added',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../movies/movierecent.html'; }
+                    handler: function() { window.location = 'movies-by-date-added.html'; }
                 }
             ]
         },
@@ -54,7 +54,7 @@ var menuBar = new Ext.Toolbar({
             xtype: 'tbbutton',
             text: 'TV Shows',
             width: 60,
-            handler: function() { window.location = '../tvshows/index.html'; }
+            handler: function() { window.location = 'tv-shows.html'; }
         },
         {
             xtype: 'tbbutton',
@@ -64,17 +64,17 @@ var menuBar = new Ext.Toolbar({
                 {
                     text: 'Artist / Album',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../music/index.html'; }
+                    handler: function() { window.location = 'music-by-artist.html'; }
                 },
                 {
                     text: 'Genre / Album',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../music/albumgenres.html'; }
+                    handler: function() { window.location = 'music-by-genre.html'; }
                 },
                 {
                     text: 'Year / Album',
                     iconCls: 'silk-grid',
-                    handler: function() { window.location = '../music/yearalbum.html'; }
+                    handler: function() { window.location = 'music-by-year.html'; }
                 }
             ]
         }

@@ -7,7 +7,7 @@ var MovieFanart = new Ext.ux.XbmcImages ({
     border: 0,
     width: 295,
     height:165,
-    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'}//, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../resources/images/defaultMovieFanart.jpg'}//, qtip:'Double-click to change'}
 });
 
 var Stars = new Ext.ux.XbmcStars ({
@@ -23,7 +23,7 @@ var MovieCover = new Ext.ux.XbmcImages ({
     border: 0,
     width: 250,
     height:375,
-    autoEl: {tag: 'img', src: '../images/defaultMovieCover.jpg'}//, qtip:'Double-click to change'}
+    autoEl: {tag: 'img', src: '../resources/images/defaultMovieCover.jpg'}//, qtip:'Double-click to change'}
 });
 
 var actorRecord = Ext.data.Record.create([
