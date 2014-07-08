@@ -110,9 +110,9 @@ var otherDetailsPanel = new Ext.FormPanel({
 
             xtype: 'combo',
             fieldLabel: 'Set',
-            name: 'strSet',
+            name: 'title',
             emptyText: '-- None --',
-            displayField: 'strSet',
+            displayField: 'title',
             mode: 'local',
             triggerAction: 'all',
             listeners: {
@@ -122,6 +122,10 @@ var otherDetailsPanel = new Ext.FormPanel({
                     }
                 }
             }
+        },
+        {
+            fieldLabel: 'Tags',
+            name: 'tag',
         }
     ]
 });
@@ -181,7 +185,7 @@ var movieDetailsPanel = new Ext.FormPanel({
                 },
                 {
                     fieldLabel: 'Genres',
-                    name: 'Moviegenres',
+                    name: 'genre',
                     id:'moviegenres',
                     readOnly: true
                 }
@@ -324,7 +328,7 @@ var mainPanel = new Ext.Panel({
         updateMovieGenreGrid(record);
         Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
-        storeActor.proxy.conn.xbmcParams.params.movieid = record.data.idMovie;
+        storeActor.proxy.conn.xbmcParams.params.movieid = record.data.movieid;
         storeActor.load();
     }
 });

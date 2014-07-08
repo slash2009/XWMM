@@ -3,7 +3,7 @@ function setWatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched === 0) {
-        setXBMCWatched(selectedMovie.data.idMovie, 'movie', true);
+        setXBMCWatched(selectedMovie.data.movieid, 'movie', true);
         selectedMovie.data.watched = 1;
         movieGrid.getView().refresh();
     }
@@ -14,7 +14,7 @@ function setUnwatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched !== 0) {
-        setXBMCWatched(selectedMovie.data.idMovie, 'movie', false);
+        setXBMCWatched(selectedMovie.data.movieid, 'movie', false);
         selectedMovie.data.watched = 0;
         movieGrid.getView().refresh();
     }
@@ -39,7 +39,7 @@ function updateXBMCSet(setField) {
         jsonrpc: '2.0',
         method: 'VideoLibrary.SetMovieDetails',
         params: {
-            movieid: selectedMovie.data.idMovie,
+            movieid: selectedMovie.data.movieid,
             set: newValue
         },
         id: 'XWMM'
@@ -51,7 +51,7 @@ function updateXBMCSet(setField) {
 
     setField.IsDirty = false;
     setField.originalValue = newValue;
-    selectedMovie.data.strSet = newValue;
+    selectedMovie.data.set = newValue;
     movieGrid.getView().refresh();
 }
 
@@ -82,7 +82,7 @@ function updateXBMCAll() {
                     form = Ext.getCmp('MoviedetailPanel').getForm();
                     if (form.isDirty()) {
                         updateXBMCTables(form, 'movie',
-                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.idMovie);
+                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating movie info';
                     }
 
@@ -95,7 +95,7 @@ function updateXBMCAll() {
                     form = Ext.getCmp('filedetailPanel').getForm();
                     if (form.isDirty()) {
                         updateXBMCTables(form, 'movie',
-                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.idMovie);
+                            Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating additional info';
                     }
                 }
@@ -167,12 +167,12 @@ function loadMovieDetails(record) {
         jsonrpc: '2.0',
         method: 'VideoLibrary.GetMovieDetails',
         params: {
-            movieid: record.data.idMovie,
+            movieid: record.data.movieid,
             properties: [
                 'title', 'genre', 'year', 'rating', 'director', 'trailer', 'tagline', 'plot',
                 'plotoutline', 'originaltitle', 'playcount', 'writer', 'studio', 'mpaa',
                 'country', 'imdbnumber', 'runtime', 'streamdetails', 'top250', 'votes', 'set',
-                'fanart', 'thumbnail', 'file', 'sorttitle'
+                'fanart', 'thumbnail', 'file', 'sorttitle', 'tag'
             ]
         },
         id: 'XWMM'
@@ -181,6 +181,12 @@ function loadMovieDetails(record) {
     XWMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved
+    record.data.genre = XWMM.util.convertArrayToList(response.moviedetails.genre);
+    record.data.director = XWMM.util.convertArrayToList(response.moviedetails.director);
+    record.data.writer = XWMM.util.convertArrayToList(response.moviedetails.writer);
+    record.data.studio = XWMM.util.convertArrayToList(response.moviedetails.studio);
+    record.data.country = XWMM.util.convertArrayToList(response.moviedetails.country);
+    record.data.tag = XWMM.util.convertArrayToList(response.moviedetails.tag);
     record.data.fanart = XWMM.util.convertArtworkURL(response.moviedetails.fanart);
     record.data.thumbnail = XWMM.util.convertArtworkURL(response.moviedetails.thumbnail);
     record.data.rating = XWMM.util.convertRating(response.moviedetails.rating);
@@ -220,7 +226,7 @@ function saveMovieGenre() {
         jsonrpc: '2.0',
         method: 'VideoLibrary.SetMovieDetails',
         params: {
-            movieid: selectedMovie.data.idMovie,
+            movieid: selectedMovie.data.movieid,
             genre: genres
         },
         id: 'XWMM'
@@ -236,7 +242,7 @@ function saveMovieGenre() {
 function updateMovieGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = splitStringList(record.data.Moviegenres, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = splitStringList(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {
@@ -266,7 +272,6 @@ function checkSet(value) {
 
 var movieColumnModel = new Ext.grid.ColumnModel([
     { header: 'Title', dataIndex: 'Movietitle', id: 'title' },
-    { header: '&#160;', dataIndex: 'strSet', width: 30, renderer: checkSet, tooltip: 'In Set' },
-    { header: '&#160;', dataIndex: 'watched', width: 26, renderer: checkWatched, tooltip: 'Watched' },
-    { header: 'Genre', dataIndex: 'strGenre', hidden: true }
+    { header: '&#160;', dataIndex: 'set', width: 30, renderer: checkSet, tooltip: 'In Set' },
+    { header: '&#160;', dataIndex: 'watched', width: 26, renderer: checkWatched, tooltip: 'Watched' }
 ]);

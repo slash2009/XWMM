@@ -133,7 +133,6 @@ function updateXBMCTables(form, recordType, recordId) {
         }
 
         switch (f.name) {
-            case 'Moviegenres':
             case 'genre':
                 continue; // We don't want to save genres here
                 break;
@@ -154,6 +153,7 @@ function updateXBMCTables(form, recordType, recordId) {
             case 'studio':
             case 'director':
             case 'genre':
+            case 'tag':
             case 'theme':
             case 'mood':
             case 'style':
