@@ -15,44 +15,8 @@ var MovieRecord = Ext.data.Record.create([
 ]);
 
 var sortArticles = docCookies.getItem('sortArticles') === '1';
-var storeMovie = new Ext.data.GroupingStore({
-    groupField: 'strGenre',
-
-    proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc'
-    }),
-    reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
-});
-
-var tempMovieStore = new Ext.data.Store({
+var storeMovie = new Ext.data.Store({
     autoLoad: true,
-    listeners: {
-        load: function(records) {
-            var i = 0, i_len = 0, j = 0, j_len = 0;
-            var genres = [];
-            var movie;
-            for (i = 0, i_len = records.data.length; i < i_len; i++) {
-                movie = records.data.items[i].data;
-                genres = splitStringList(movie.Moviegenres, /[,\/\|]+/);
-                for (j = 0, j_len = genres.length; j < j_len; j++) {
-                    var record = new MovieRecord({
-                        idMovie: movie.idMovie,
-                        strFilename: movie.strFilename,
-                        Movietitle: movie.Movietitle,
-                        Moviegenres: movie.Moviegenres,
-                        strGenre: genres[j],
-                        watched: movie.watched,
-                        MovieRelease: movie.MovieRelease,
-                        streamdetails: movie.streamdetails,
-                        strSet: movie.strSet
-                    });
-                    storeMovie.add(record);
-                }
-            }
-            storeMovie.commitChanges();
-            storeMovie.sort('strGenre', 'ASC');
-        }
-    },
 
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
@@ -91,13 +55,9 @@ var movieGrid = new Ext.grid.GridPanel({
     enableColumnResize: false,
     stripeRows: true,
 
-    view: new Ext.grid.GroupingView({
-        startCollapsed: true,
-        enableGroupingMenu : false,
-        enableNoGroups: false,
-        headersDisabled: true,
-        groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
-    }),
+    viewConfig: {
+        headersDisabled: true
+    },
 
     sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
 
@@ -107,5 +67,33 @@ var movieGrid = new Ext.grid.GridPanel({
             gridContextMenu.showAt(e.getXY());
             return false;
         }
-    }
+    },
+
+    tbar: {
+            xtype: 'toolbar',
+            height: 30,
+            items: [
+                {
+                    id: 'genreFilterCombo',
+                    store: XWMM.video.genreStore,
+
+                    xtype: 'combo',
+                    name: 'label',
+                    emptyText: 'Filter by genre...',
+                    displayField: 'label',
+                    mode: 'local',
+                    triggerAction: 'all',
+                    listeners: {
+                        select: function(combo, record, index) {
+                            storeMovie.proxy.conn.xbmcParams.params.filter = {
+                                field: 'genre',
+                                operator: 'contains',
+                                value: record.data.label
+                            };
+                            storeMovie.load();
+                        }
+                    }
+                }
+            ]
+        }
 });

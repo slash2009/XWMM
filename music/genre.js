@@ -94,6 +94,8 @@ function onAdd(btn, ev) {
 
 
 function onDelete() {
+    console.error('BROKEN! This doesn\'t work at the moment.');
+    /*
     var rec = GenreMgmtGrid.getSelectionModel().getSelected();
     if (!rec) {return false;}
 
@@ -105,6 +107,7 @@ function onDelete() {
         removeXBMCGenre(rec);
         GenreMgmtGrid.store.remove(rec);
     }
+    */
 }
 
 //grid for Genres
