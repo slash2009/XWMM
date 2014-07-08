@@ -1,5 +1,16 @@
 XWMM Change log
 
+4.1.4
+- Clean up TV and Movie section
+- Add missing writer field for episodes
+- Allow TV shows to be sorted with the ignore article option
+- Remove extra favicon.ico
+- Use the same field names as XBMC
+- Add missing tag field for movies
+- Sort movies by sort title
+- Require Gotham (XBMC 13.x) as a minimum
+- No default image is better than a squished one
+
 4.1.3
 - Fix performance issues on Movies by Genre view (Issue #81)
 - Rewrite the Genre Management feature (Issues #45, #61)
