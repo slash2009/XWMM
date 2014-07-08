@@ -212,7 +212,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                         },
                         {
                             fieldLabel: 'Genres',
-                            name: 'TVGenre',
+                            name: 'genre',
                             readOnly: true,
                             id: 'genreString'
                         },
@@ -546,8 +546,8 @@ TVShow.Mainpanel = new Ext.Panel({
             ' Watched)</div>');
         episodeDetailsPanel.setTitle('<div align="center">Select an episode</div>');
 
-        updateTVShowGenreGrid(record);
         loadTVShowDetails(record);
+        updateTVShowGenreGrid(record);
         clearEpisodeDetails();
 
 

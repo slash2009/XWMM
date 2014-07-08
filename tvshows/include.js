@@ -58,12 +58,6 @@ function updateXBMCAll() {
                         mesg = 'Updating TV show information...';
                     }
                 }
-                if (v === 20) {
-                    if (Ext.getCmp('genreString').isDirty()) {
-                        saveTVShowGenre();
-                        mesg = 'Updating genres...';
-                    }
-                }
                 Ext.MessageBox.updateProgress(i, mesg);
             }
         };
@@ -177,28 +171,6 @@ function tvShowGenreChange(sm) {
     Ext.getCmp('genreString').setValue(list);
 
     Ext.getCmp('savebutton').enable();
-}
-
-function saveTVShowGenre() {
-    var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
-    var selectedGenres = Ext.getCmp('genresGrid').getSelectionModel().getSelections();
-    var genres = [];
-
-    for (var i = 0, len = selectedGenres.length; i < len; i++) {
-        genres.push(selectedGenres[i].data.label);
-    }
-
-    var request = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.SetTVShowDetails',
-        params: {
-            tvshowid: selectedTVShow.data.tvshowid,
-            genre: genres
-        },
-        id: 'XWMM'
-    };
-
-    xbmcJsonRPC(Ext.util.JSON.encode(request));
 }
 
 function updateTVShowGenreGrid(record) {

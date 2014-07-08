@@ -114,10 +114,6 @@ function updateXBMCTables(form, recordType, recordId) {
         }
 
         switch (f.name) {
-            case 'genre':
-                continue; // We don't want to save genres here
-                break;
-
             case 'runtime':
                 params.runtime = parseInt(f.getValue()) * 60; // JSON uses runtime as # of seconds.
                 break;

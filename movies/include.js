@@ -99,12 +99,6 @@ function updateXBMCAll() {
                         mesg = 'updating additional info';
                     }
                 }
-                else if (v === 15) {
-                    if (Ext.getCmp('moviegenres').isDirty()) {
-                        saveMovieGenre();
-                        mesg = 'updating Genres';
-                    }
-                }
                 Ext.MessageBox.updateProgress(i, mesg);
             }
         };
@@ -208,31 +202,6 @@ function movieGenreChange(sm) {
     Ext.getCmp('moviegenres').setValue(list);
 
     Ext.getCmp('savebutton').enable();
-}
-
-/**
- * Save genre changes back to XBMC.
- */
-function saveMovieGenre() {
-    var selectedMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected();
-    var selectedGenres = Ext.getCmp('genresGrid').getSelectionModel().getSelections();
-    var genres = [];
-
-    for (var i = 0, len = selectedGenres.length; i < len; i++) {
-        genres.push(selectedGenres[i].data.label);
-    }
-
-    var request = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.SetMovieDetails',
-        params: {
-            movieid: selectedMovie.data.movieid,
-            genre: genres
-        },
-        id: 'XWMM'
-    };
-
-    xbmcJsonRPC(Ext.util.JSON.encode(request));
 }
 
 /**
