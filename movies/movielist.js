@@ -21,7 +21,7 @@ var storeMovie = new Ext.data.Store({
                 sort: {
                     order: 'ascending',
                     ignorearticle: sortArticles,
-                    method: 'title'
+                    method: 'sorttitle'
                 }
             },
             id: 'XWMM'
