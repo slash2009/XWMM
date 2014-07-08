@@ -18,7 +18,7 @@ var tvShowRecord = Ext.data.Record.create([
    { name: 'tvshowid' },
    { name: 'studio', convert: XWMM.util.convertArrayToList },
    { name: 'episode' },
-   { name: 'rating' },
+   { name: 'rating', convert: XWMM.util.convertRating },
    { name: 'premiered' },
    { name: 'tvshowid' },
    { name: 'playcount' },

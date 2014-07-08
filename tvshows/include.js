@@ -91,6 +91,9 @@ function loadTVShowDetails(record) {
     XWMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
+    record.data.genre = XWMM.util.convertArrayToList(response.tvshowdetails.genre);
+    record.data.studio = XWMM.util.convertArrayToList(response.tvshowdetails.studio);
+    record.data.rating = XWMM.util.convertRating(response.tvshowdetails.rating);
     record.data.fanart = XWMM.util.convertArtworkURL(response.tvshowdetails.fanart);
     record.data.thumbnail = XWMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
     updateTVShowDetails(record);
