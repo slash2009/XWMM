@@ -29,7 +29,7 @@
  * @param {boolean} watched Has it been watched?
  */
 function setXBMCWatched(mediaId, mediaType, watched) {
-    var playCount = watched ? 1 : 0;
+    var playCount = (watched === true) ? 1 : 0;
     var rpcCmd = {
         jsonrpc: '2.0',
         method: '',
@@ -40,12 +40,12 @@ function setXBMCWatched(mediaId, mediaType, watched) {
     switch (mediaType) {
         case 'movie':
             rpcCmd.method = 'VideoLibrary.SetMovieDetails';
-            rpcCmd.params = {movieid: mediaId, playcount: playCount};
+            rpcCmd.params = { movieid: mediaId, playcount: playCount };
             break;
 
         case 'episode':
             rpcCmd.method = 'VideoLibrary.SetEpisodeDetails';
-            rpcCmd.params = {episodeid: mediaId, playcount: playCount};
+            rpcCmd.params = { episodeid: mediaId, playcount: playCount };
             break;
 
         case 'musicvideo': // For future use, when music video support is added. :)
@@ -57,9 +57,8 @@ function setXBMCWatched(mediaId, mediaType, watched) {
             return;
     }
 
-    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
-    xbmcJsonRPC(rpcCmdJSON);
+    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmd);
+    xbmcJsonRPC(rpcCmd);
 }
 
 /**
@@ -114,7 +113,7 @@ function updateXBMCTables(form, recordType, recordId) {
         return;
     }
 
-    var rpcCmd = {jsonrpc: '2.0', id: 1};
+    var rpcCmd = { jsonrpc: '2.0', id: 1 };
     switch (recordType) {
         case 'episode':
             params.episodeid = recordId;
@@ -145,9 +144,8 @@ function updateXBMCTables(form, recordType, recordId) {
             return;
     }
 
-    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmdJSON);
-    xbmcJsonRPC(rpcCmdJSON);
+    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmd);
+    xbmcJsonRPC(rpcCmd);
 }
 
 
