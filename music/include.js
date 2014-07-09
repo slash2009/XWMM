@@ -101,6 +101,6 @@ function GetAlbumDetails(r) {
 
     XWMM.util.merge2Objects(r.data, jsonResponse.albumdetails);
 
-    r.data.currentThumbnail = r.data.currentThumbnail.replace(/image:\/\//g, '').slice(0,-1);
+    r.data.currentThumbnail = '/image/' + encodeURI(r.data.currentThumbnail);
     r.data.details = true;
 }

@@ -1,12 +1,12 @@
 //------------ Movie All Sets (including orphans) ----------------
 
 var MovieSetRecord = Ext.data.Record.create([
-   {name: 'idSet', mapping: 'setid', type: 'int'},
-   {name: 'strSet', mapping: 'title'}
+   {name: 'setid', type: 'int'},
+   {name: 'title'}
 ]);
 
 var MovieSetStore = new Ext.data.GroupingStore({
-    sortInfo: {field: 'strSet', direction: 'ASC'},
+    sortInfo: {field: 'title', direction: 'ASC'},
     //autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
@@ -18,13 +18,13 @@ var MovieSetStore = new Ext.data.GroupingStore({
 });
 
 var MoviesInSetcolModel = new Ext.grid.ColumnModel([
-        {header: '#', dataIndex: 'idMovie', hidden: true},
+        {header: '#', dataIndex: 'movieid', hidden: true},
         {header: 'Movie Title', dataIndex: 'movieinset', width: 200}
     ]);
 
 
 var MoviesInSetRecord = Ext.data.Record.create([
-   {name: 'idMovie', mapping: 'movieid'},
+   {name: 'movieid'},
    {name: 'movieinset', mapping: 'title'}
 ]);
 
@@ -57,8 +57,8 @@ var MovieInSetGrid = new Ext.grid.GridPanel({
 
 function onAddMovieSet(btn, ev) {
         var u = new MovieSetMgmtGrid.store.recordType({
-                strSet: 'New Set',
-        idSet: '-1' // flag as new record
+                title: 'New Set',
+        setid: '-1' // flag as new record
         });
         editor.stopEditing();
         MovieSetStore.insert(0, u);
@@ -73,7 +73,7 @@ function onDeleteMovieSet() {
     MovieSetStore.remove(rec);
     MoviesInSetStore.each( function (movieRecord)
         {
-            xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": ""}, "id": 1}');
+            xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.movieid +', "set": ""}, "id": 1}');
         }, this);
     MovieSetStore.reload();
 }
@@ -82,13 +82,13 @@ var MovieSetEditor = new Ext.ux.grid.RowEditor({
     saveText: 'Update',
     listeners: {
         afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.idSet === -1) {
+            if (record.data.setid === -1) {
                 //should add a bubble to tell user to add movies in the set
             }
             else {
                 MoviesInSetStore.each( function (movieRecord)
                     {
-                        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.idMovie +', "set": "'+ changes.strSet +'"}, "id": 1}');
+                        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.movieid +', "set": "'+ changes.title +'"}, "id": 1}');
                     }, this);
                 MovieSetStore.reload();
             }
@@ -101,8 +101,8 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
     width: 250,
     height: 290,
     columns: [
-        {header: '#', dataIndex: 'idSet', hidden: true},
-        {header: 'Set Name', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'strSet'}
+        {header: '#', dataIndex: 'setid', hidden: true},
+        {header: 'Set Name', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'title'}
     ],
     clicksToEdit: 1,
     title: 'Sets',
@@ -112,7 +112,7 @@ var MovieSetMgmtGrid = new Ext.grid.GridPanel({
         singleSelect: true,
         listeners : {
         rowselect: function(sm, row, rec) {
-                MoviesInSetStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': rec.data.idSet, 'movies': {'properties': ['title']} }, 'id': 1};
+                MoviesInSetStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': rec.data.setid, 'movies': {'properties': ['title']} }, 'id': 1};
                 MoviesInSetStore.load();
             }
         }

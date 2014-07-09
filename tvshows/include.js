@@ -58,12 +58,6 @@ function updateXBMCAll() {
                         mesg = 'Updating TV show information...';
                     }
                 }
-                if (v === 20) {
-                    if (Ext.getCmp('genreString').isDirty()) {
-                        saveTVShowGenre();
-                        mesg = 'Updating genres...';
-                    }
-                }
                 Ext.MessageBox.updateProgress(i, mesg);
             }
         };
@@ -91,6 +85,9 @@ function loadTVShowDetails(record) {
     XWMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
+    record.data.genre = XWMM.util.convertArrayToList(response.tvshowdetails.genre);
+    record.data.studio = XWMM.util.convertArrayToList(response.tvshowdetails.studio);
+    record.data.rating = XWMM.util.convertRating(response.tvshowdetails.rating);
     record.data.fanart = XWMM.util.convertArtworkURL(response.tvshowdetails.fanart);
     record.data.thumbnail = XWMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
     updateTVShowDetails(record);
@@ -148,8 +145,7 @@ function updateEpisodeDetails(record) {
 
 function clearEpisodeDetails() {
     episodeStars.updateSrc({data:{}});
-    // FIXME: this doesn't work because updateSrc appends /images/
-    //Ext.getCmp('seasoncover').updateSrc('../images/nobanner.png');
+    Ext.getCmp('seasoncover').updateSrc(undefined);
 
     Ext.getCmp('episodedetailPanel').getForm().reset();
     Ext.getCmp('filedetailPanel').getForm().reset();
@@ -177,32 +173,10 @@ function tvShowGenreChange(sm) {
     Ext.getCmp('savebutton').enable();
 }
 
-function saveTVShowGenre() {
-    var selectedTVShow = Ext.getCmp('tvshowgrid').getSelectionModel().getSelected();
-    var selectedGenres = Ext.getCmp('genresGrid').getSelectionModel().getSelections();
-    var genres = [];
-
-    for (var i = 0, len = selectedGenres.length; i < len; i++) {
-        genres.push(selectedGenres[i].data.label);
-    }
-
-    var request = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.SetTVShowDetails',
-        params: {
-            tvshowid: selectedTVShow.data.tvshowid,
-            genre: genres
-        },
-        id: 'XWMM'
-    };
-
-    xbmcJsonRPC(Ext.util.JSON.encode(request));
-}
-
 function updateTVShowGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = splitStringList(record.data.TVGenre, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = XWMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {

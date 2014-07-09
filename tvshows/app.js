@@ -9,6 +9,22 @@ Ext.onReady(function() {
                     text: 'Manage Genres',
                     iconCls: 'silk-plugin',
                     handler: function(){ Ext.getCmp('manageGenresWin').show(); }
+                },
+                {
+                    xtype: 'menucheckitem',
+                    checked: (docCookies.getItem('sortArticles') === '1'),
+                    text: 'Ignore articles when sorting (e.g. "the")',
+                    handler: function() {
+                        // extjs cookies aren't available until v3.4.0, so we'll use cookies.js
+                        var sortArticles = docCookies.getItem('sortArticles');
+                        if (sortArticles === '1') {
+                            docCookies.removeItem('sortArticles');
+                        }
+                        else {
+                            docCookies.setItem('sortArticles', '1', Infinity);
+                        }
+                        window.location.reload();
+                    }
                 }
             ]
         },

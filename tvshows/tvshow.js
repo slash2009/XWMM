@@ -1,15 +1,4 @@
-// -----------------------------------------
-// tvshow.js
-// last modified : 27-08-2013
-// modified by : MokuJinJin
-//
-//------------------------------------------
-
 Ext.ns('TVShow');
-
-function genreConvert(value, record) {
-    return value.join(' / ');
-}
 
 function bannerConvert(value, record) {
     return XWMM.util.convertArtworkURL(value.banner);
@@ -21,15 +10,15 @@ function fanartConvert(value, record) {
 
 var tvShowRecord = Ext.data.Record.create([
    { name: 'title' },
-   { name: 'TVGenre', mapping: 'genre', convert: genreConvert },
+   { name: 'genre', convert: XWMM.util.convertArrayToList },
    { name: 'year' },
    { name: 'plot' },
    { name: 'fanart', mapping: 'art', convert: fanartConvert },
    { name: 'banner', mapping: 'art', convert: bannerConvert },
    { name: 'tvshowid' },
-   { name: 'studio' },
+   { name: 'studio', convert: XWMM.util.convertArrayToList },
    { name: 'episode' },
-   { name: 'rating' },
+   { name: 'rating', convert: XWMM.util.convertRating },
    { name: 'premiered' },
    { name: 'tvshowid' },
    { name: 'playcount' },
@@ -48,7 +37,8 @@ var episodeRecord = Ext.data.Record.create([
     { name: 'rating', convert: XWMM.util.convertRating },
     { name: 'plot' },
     { name: 'firstaired' },
-    { name: 'director' },
+    { name: 'director', convert: XWMM.util.convertArrayToList },
+    { name: 'writer', convert: XWMM.util.convertArrayToList },
     { name: 'streamdetails' },
     { name: 'playcount' },
     { name: 'episodeid' },
@@ -61,8 +51,8 @@ var actorRecord = Ext.data.Record.create([
     { name: 'role' }
 ]);
 
+var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeTVShow = new Ext.data.Store({
-    sortInfo: { field: 'title', direction: 'ASC' },
     proxy: new Ext.data.XBMCProxy({
         url: '/jsonrpc',
         xbmcParams: {
@@ -73,7 +63,12 @@ var storeTVShow = new Ext.data.Store({
                     'title', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
                     'episode', 'imdbnumber', 'premiered', 'votes', 'lastplayed', 'art', 'file',
                     'watchedepisodes'
-                ]
+                ],
+                sort: {
+                    order: 'ascending',
+                    ignorearticle: sortArticles,
+                    method: 'title'
+                }
             },
             id: 'XWMM'
         }
@@ -110,7 +105,7 @@ var storeEpisode = new Ext.data.Store({
                 season: -1, // Replaced by valid season id before loaded.
                 properties: [
                     'episode', 'title', 'rating', 'plot', 'firstaired',
-                    'director', 'streamdetails', 'playcount', 'file'
+                    'director', 'streamdetails', 'playcount', 'file', 'writer'
                 ]
             },
             id: 'XWMM'
@@ -155,7 +150,7 @@ var TVShowCover = new Ext.ux.XbmcImages({
     border: 0,
     width: 380,
     height:70,
-    autoEl: {tag: 'img', src: '../images/nobanner.png'}
+    autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
 var SeasonCover = new Ext.ux.XbmcImages({
@@ -164,7 +159,7 @@ var SeasonCover = new Ext.ux.XbmcImages({
     border: 0,
     width: 160,
     height:231,
-    autoEl: {tag: 'img', src: '../images/nobanner.png'}
+    autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
 var tvShowDetailsPanel = new Ext.FormPanel({
@@ -217,7 +212,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                         },
                         {
                             fieldLabel: 'Genres',
-                            name: 'TVGenre',
+                            name: 'genre',
                             readOnly: true,
                             id: 'genreString'
                         },
@@ -289,6 +284,10 @@ var episodeDetailsPanel = new Ext.FormPanel({
                     name: 'director'
                 },
                 {
+                    fieldLabel: 'Writer',
+                    name: 'writer'
+                },
+                {
                     fieldLabel: 'Rating',
                     name: 'rating'
                 }
@@ -305,7 +304,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
                     xtype: 'textarea',
                     fieldLabel: 'Description',
                     name: 'plot',
-                    height: 100,
+                    height: 125,
                     width: 400,
                     listeners: {
                         change: function() {
@@ -547,8 +546,8 @@ TVShow.Mainpanel = new Ext.Panel({
             ' Watched)</div>');
         episodeDetailsPanel.setTitle('<div align="center">Select an episode</div>');
 
-        updateTVShowGenreGrid(record);
         loadTVShowDetails(record);
+        updateTVShowGenreGrid(record);
         clearEpisodeDetails();
 
 

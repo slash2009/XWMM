@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="webinterface.XWMM"
-  version="4.1.3"
+  version="4.1.4"
   name="XWMM"
   provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe | criticalfiction">
   <requires>
-    <import addon="xbmc.gui" version="5.0.1"/>
-    <import addon="xbmc.json" version="6.6.0"/>
+    <import addon="xbmc.json" version="6.14.3"/>
   </requires>
   <extension
     point="xbmc.gui.webinterface"/>

@@ -1,17 +1,9 @@
-function genreConvert(value, record) {
-    return value.join(' / ');
-}
-
 var MovieRecord = Ext.data.Record.create([
-    { name: 'idMovie', mapping: 'movieid' },
-    { name: 'strFilename', mapping: 'file' },
+    { name: 'movieid' },
     { name: 'Movietitle', mapping: 'title' },
-    { name: 'Moviegenres', mapping: 'genre', convert: genreConvert },
-    { name: 'strGenre' },
     { name: 'watched', mapping: 'playcount' },
-    { name: 'MovieRelease', mapping: 'year' },
-    { name: 'streamdetails' },
-    { name: 'strSet', mapping: 'set' }
+    { name: 'set' },
+    { name: 'year' }
 ]);
 
 var sortArticles = docCookies.getItem('sortArticles') === '1';
@@ -25,13 +17,12 @@ var storeMovie = new Ext.data.Store({
             method: 'VideoLibrary.GetMovies',
             params: {
                 properties: [
-                    'title', 'genre', 'year', 'playcount',
-                    'file', 'set', 'streamdetails'
+                    'title', 'year', 'playcount', 'set'
                 ],
                 sort: {
                     order: 'ascending',
                     ignorearticle: sortArticles,
-                    method: 'title'
+                    method: 'sorttitle'
                 }
             },
             id: 'XWMM'
