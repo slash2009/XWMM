@@ -5,6 +5,7 @@ XWMM Change log
 - Rewrite movie set management feature (Issue #88)
 - Rearrange directory layout (Issue #85)
 - Add icons to set and watched headings (Issue #87)
+- Remove unused icons
 
 4.1.4
 - Clean up TV and Movie section
