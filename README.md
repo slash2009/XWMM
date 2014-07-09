@@ -9,6 +9,8 @@ This tool is intended to facilitate the use of the XBMC media management feature
 * [Releases](https://github.com/slash2009/XWMM/releases)
 * [Support and Discussion](http://forum.xbmc.org/showthread.php?tid=188839)
 * [Report an issue](https://github.com/slash2009/XWMM/issues)
+* [F.A.Q. - <b>F</b>requently <b>A</b>sked <b>Q</b>uestions](https://github.com/slash2009/XWMM/wiki/F.A.Q.-Frequently-asked-questions)
+* [XWMM wiki](https://github.com/slash2009/XWMM/wiki)
 
 - - -
 
@@ -48,13 +50,3 @@ A pull request (PR) should be made to **master**, (using branches is ok if your 
 * It will be reviewed and merged as soon as possible by someone who understands what's going on.
 
 - - -
-
-### To Do
-
-Features not yet working (incomplete list):
-
-* Managing genres and actors (although these can be changed on a per movie/TV/music basis)
-
-Due to XBMC's current API not supporting the following features they will not be implemented:
-
-* Changing artwork
