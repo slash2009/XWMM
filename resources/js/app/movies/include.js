@@ -241,6 +241,6 @@ function checkSet(value) {
 
 var movieColumnModel = new Ext.grid.ColumnModel([
     { header: 'Title', dataIndex: 'Movietitle', id: 'title' },
-    { header: '&#160;', dataIndex: 'set', width: 30, renderer: checkSet, tooltip: 'In Set' },
-    { header: '&#160;', dataIndex: 'watched', width: 26, renderer: checkWatched, tooltip: 'Watched' }
+    { header: '<img src="../resources/images/icons/set.png" width="16" height="16" alt="In Set">', dataIndex: 'set', width: 30, renderer: checkSet, tooltip: 'In Set' },
+    { header: '<img src="../resources/images/icons/checked.png" width="16" height="16" alt="Watched">', dataIndex: 'watched', width: 26, renderer: checkWatched, tooltip: 'Watched' }
 ]);
