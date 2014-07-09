@@ -273,32 +273,44 @@ Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
         };
     },
 
-    onRead : function(action, o, response) {
-        var result;
+    onRead: function(action, o, response) {
+        var result = {
+            records: [],
+            success: true,
+            totalRecords: 0
+        };
+
         try {
-            result = o.reader.read(response);
-        }catch(e){
-
-            this.fireEvent('loadexception', this, o, response, e);
-
+            if ('result' in response.responseJSON) {
+                if ('limits' in response.responseJSON.result && response.responseJSON.result.limits.total === 0) {
+                    // Do nothing, no records found.
+                }
+                else {
+                    result = o.reader.read(response);
+                }
+            }
+            else {
+                result.success = false;
+            }
+        }
+        catch(e) {
             this.fireEvent('exception', this, 'response', action, o, response, e);
             o.request.callback.call(o.request.scope, null, o.request.arg, false);
             return;
         }
-        if (result.success === false) {
 
-            this.fireEvent('loadexception', this, o, response);
-
+        if (result.success === true) {
+            this.fireEvent('load', this, o, o.request.arg);
+        }
+        else {
             // Get DataReader read-back a response-object to pass along to exception event
             var res = o.reader.readResponse(action, response);
             this.fireEvent('exception', this, 'remote', action, o, res, null);
         }
-        else {
-            this.fireEvent('load', this, o, o.request.arg);
-        }
 
         o.request.callback.call(o.request.scope, result, o.request.arg, result.success);
     },
+
     // inherit docs
     destroy: function(){
         if(!this.useAjax){

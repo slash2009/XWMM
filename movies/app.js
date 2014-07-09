@@ -14,7 +14,7 @@ Ext.onReady(function() {
                 {
                     text: 'Manage Movie Sets',
                     iconCls: 'silk-plugin',
-                    handler: function() { winMovieSet.show(); }
+                    handler: function() { Ext.getCmp('manageMovieSetsWin').show(); }
                 },
                 {
                     xtype: 'menucheckitem',
@@ -73,5 +73,5 @@ Ext.onReady(function() {
     addQuickSearch('quicksearch', storeMovie, 'Movietitle');
 
     XWMM.video.setGenreMode('movie');
-    MovieSetStore.load();
+    XWMM.video.movieSetStore.load();
 });

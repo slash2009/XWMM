@@ -1,5 +1,9 @@
 XWMM Change log
 
+4.1.5
+- Don't freak out when XBMC returns no results
+- Rewrite movie set management feature (Issue #88)
+
 4.1.4
 - Clean up TV and Movie section
 - Add missing writer field for episodes
