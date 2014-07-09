@@ -30,13 +30,21 @@ Ext.ns('XWMM.video');
         { name: 'label' }
     ]);
 
+    var sortArticles = docCookies.getItem('sortArticles') === '1';
+
     XWMM.video.movieSetStore = new Ext.data.Store({
-        sortInfo: { field: 'label', direction: 'ASC' },
         proxy: new Ext.data.XBMCProxy({
             url: '/jsonrpc',
             xbmcParams: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetMovieSets',
+                params: {
+                    sort: {
+                        order: 'ascending',
+                        ignorearticle: sortArticles,
+                        method: 'label'
+                    }
+                },
                 id: 'XWMM'
             }
         }),
