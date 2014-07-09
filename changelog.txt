@@ -4,6 +4,7 @@ XWMM Change log
 - Add header icon that was missed in a7f7ee5
 - Rename field that was missed from 0ebbce8
 - Allow ignore article sort with genres and sets
+- Fix padding on season and episode list when there's a scrollbar
 
 4.1.5
 - Don't freak out when XBMC returns no results

@@ -390,7 +390,6 @@ var seasonGrid = new Ext.grid.GridPanel({
     stripeRows: true,
 
     viewConfig: {
-        scrollOffset: 1,
         headersDisabled: true
     },
 
@@ -423,7 +422,6 @@ var episodeGrid = new Ext.grid.GridPanel({
     stripeRows: true,
 
     viewConfig: {
-        scrollOffset: 1,
         headersDisabled: true
     },
 
