@@ -4,6 +4,7 @@ XWMM Change log
 - Don't freak out when XBMC returns no results
 - Rewrite movie set management feature (Issue #88)
 - Rearrange directory layout (Issue #85)
+- Add icons to set and watched headings (Issue #87)
 
 4.1.4
 - Clean up TV and Movie section
