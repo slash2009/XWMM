@@ -1,3 +1,26 @@
+/*
+ * Copyright 2011 slash2009.
+ * Copyright 2013 Zernable.
+ * Copyright 2013 uNiversal.
+ * Copyright 2013 nwtn.
+ * Copyright 2013, 2014 Andrew Fyfe.
+ *
+ * This file is part of XBMC Web Media Manager (XWMM).
+ *
+ * XWMM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * XWMM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with XWMM.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 var MovieRecord = Ext.data.Record.create([
     { name: 'movieid' },
     { name: 'Movietitle', mapping: 'title' },
