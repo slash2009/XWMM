@@ -56,12 +56,11 @@ var actorRecord = Ext.data.Record.create([
 var storeActor = new Ext.data.Store({
     sortInfo: { field: 'name', direction: 'ASC' },
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovieDetails',
             params: {
-                movieid: -1, // Replaced by valid movie id before loaded.
+                // movieid: -1, // Replaced by valid movie id before loaded.
                 properties: ['cast']
             },
             id: 'XWMM'
@@ -350,7 +349,6 @@ var mainPanel = new Ext.Panel({
         updateMovieGenreGrid(record);
         Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
-        storeActor.proxy.conn.xbmcParams.params.movieid = record.data.movieid;
-        storeActor.load();
+        storeActor.load({ params: { movieid: record.data.movieid } });
     }
 });

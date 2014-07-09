@@ -148,91 +148,64 @@ function updateXBMCTables(form, recordType, recordId) {
     xbmcJsonRPC(rpcCmd);
 }
 
+Ext.data.XBMCProxy = function(conn) {
+    // default connection settings
+    this.conn = {
+        url: '/jsonrpc',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        async: false,
+        timeout: 5000
+    };
 
-Ext.data.XBMCProxy = function(conn){
+    // apply store specific settings
+    Ext.applyIf(this.conn, conn);
+
     Ext.data.XBMCProxy.superclass.constructor.call(this, conn);
 
-    this.conn = conn;
-    this.conn.url = null;
-    this.useAjax = !conn || !conn.events;
-
-    var actions = Ext.data.Api.actions;
-    this.activeRequest = {};
-    for (var verb in actions) {
-        this.activeRequest[actions[verb]] = undefined
-    }
+    // XBMCProxy only supports read actions
+    this.api = { read: '/jsonrpc' };
+    this.activeRequest = undefined;
 };
 
 Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
-
-    getConnection : function() {
-        return this.useAjax ? Ext.Ajax : this.conn;
-    },
-
-    setUrl : function(url, makePermanent) {
-        this.conn.url = url;
-        if (makePermanent === true) {
-            this.url = url;
-            this.api = null;
-            Ext.data.Api.prepare(this);
-        }
-    },
-
-    doRequest : function(action, rs, params, reader, cb, scope, arg) {
-        var  o = {
-            method: (this.api[action]) ? this.api[action]['method'] : undefined,
+    doRequest: function(action, rs, params, reader, cb, scope, arg) {
+        var request = {
             request: {
-                callback : cb,
-                scope : scope,
-                arg : arg
+                callback: cb,
+                scope: scope,
+                arg: arg
             },
             reader: reader,
             callback : this.createCallback(action, rs),
             scope: this
         };
 
-        o.jsonData = Ext.util.JSON.encode(this.conn.xbmcParams);
+        Ext.applyIf(request, this.conn);
 
-        if (params.jsonData) {
-            o.jsonData = params.jsonData;
-        } else if (params.xmlData) {
-            o.xmlData = params.xmlData;
-        } else {
-            o.params = params || {};
+        if (!('params' in request.jsonData)) {
+            request.jsonData.params = {};
         }
 
-        this.conn.url = this.buildUrl(action, rs);
+        Ext.apply(request.jsonData.params, params);
 
-        if(this.useAjax){
-
-            Ext.applyIf(o, this.conn);
-
-            this.activeRequest[action] = Ext.Ajax.request(o);
-        }else{
-            this.conn.request(o);
-        }
-        // request is sent, nullify the connection url in preparation for the next request
-        this.conn.url = null;
+        this.activeRequest = Ext.Ajax.request(request);
     },
 
-    createCallback : function(action, rs) {
+    createCallback: function(action, rs) {
         return function(o, success, response) {
-            this.activeRequest[action] = undefined;
+            this.activeRequest = undefined;
+
             if (!success) {
-                if (action === Ext.data.Api.actions.read) {
-                    // @deprecated: fire loadexception for backwards compat.
-                    // TODO remove
-                    this.fireEvent('loadexception', this, o, response);
-                }
                 this.fireEvent('exception', this, 'response', action, o, response);
                 o.request.callback.call(o.request.scope, null, o.request.arg, false);
                 return;
             }
-            if (action === Ext.data.Api.actions.read) {
-                this.onRead(action, o, response);
-            } else {
-                this.onWrite(action, o, response, rs);
-            }
+
+            this.onRead(action, o, response);
         };
     },
 
@@ -274,19 +247,26 @@ Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
         o.request.callback.call(o.request.scope, result, o.request.arg, result.success);
     },
 
-    // inherit docs
-    destroy: function(){
-        if(!this.useAjax){
-            this.conn.abort();
-        }else if(this.activeRequest){
-            var actions = Ext.data.Api.actions;
-            for (var verb in actions) {
-                if(this.activeRequest[actions[verb]]){
-                    Ext.Ajax.abort(this.activeRequest[actions[verb]]);
-                }
-            }
+    destroy: function() {
+        if (this.activeRequest !== undefined) {
+            Ext.Ajax.abort(this.activeRequest);
         }
+
         Ext.data.HttpProxy.superclass.destroy.call(this);
+    }
+});
+
+Ext.data.DataProxy.on('exception', function(conn, type, action, options, response, arg) {
+    if ('error' in response.responseJSON) {
+        console.error('JSON-RPC request failed. %s',
+            response.responseJSON.error.message,
+            response.responseJSON.error,
+            Ext.util.JSON.decode(options.jsonData));
+    }
+    else {
+        console.error('JSON-RPC request failed.',
+            response,
+            Ext.util.JSON.decode(options.jsonData));
     }
 });
 

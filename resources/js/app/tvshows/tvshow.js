@@ -76,8 +76,7 @@ var actorRecord = Ext.data.Record.create([
 var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeTVShow = new Ext.data.Store({
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShows',
             params: {
@@ -101,12 +100,11 @@ var storeTVShow = new Ext.data.Store({
 var storeSeason = new Ext.data.Store({
     sortInfo: { field: 'season', direction: 'ASC' },
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetSeasons',
             params: {
-                tvshowid: -1, // Replaced by valid tv show id before loaded.
+                // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['season', 'thumbnail']
             },
             id: 'XWMM'
@@ -118,13 +116,12 @@ var storeSeason = new Ext.data.Store({
 var storeEpisode = new Ext.data.Store({
     sortInfo: { field: 'episode', direction: 'ASC' },
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetEpisodes',
             params: {
-                tvshowid: -1, // Replaced by valid tv show id before loaded.
-                season: -1, // Replaced by valid season id before loaded.
+                // tvshowid: -1, // Replaced by valid tv show id before loaded.
+                // season: -1, // Replaced by valid season id before loaded.
                 properties: [
                     'episode', 'title', 'rating', 'plot', 'firstaired',
                     'director', 'streamdetails', 'playcount', 'file', 'writer'
@@ -139,12 +136,11 @@ var storeEpisode = new Ext.data.Store({
 var storeActor = new Ext.data.Store({
     sortInfo: { field: 'name', direction: 'ASC' },
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShowDetails',
             params: {
-                tvshowid: -1, // Replaced by valid tv show id before loaded.
+                // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['cast']
             },
             id: 'XWMM'
@@ -570,12 +566,8 @@ TVShow.Mainpanel = new Ext.Panel({
         updateTVShowGenreGrid(record);
         clearEpisodeDetails();
 
-
-        storeSeason.proxy.conn.xbmcParams.params.tvshowid = record.data.tvshowid;
-        storeSeason.load();
-
-        storeActor.proxy.conn.xbmcParams.params.tvshowid = record.data.tvshowid;
-        storeActor.load();
+        storeSeason.load({ params: { tvshowid: record.data.tvshowid } });
+        storeActor.load({ params: { tvshowid: record.data.tvshowid } });
     },
 
     seasonSelect: function(sm, rowIdx, record) {
@@ -588,9 +580,10 @@ TVShow.Mainpanel = new Ext.Panel({
         seasonCover.updateSrc(record.data.thumbnail);
         episodeDetailsPanel.getForm().reset();
 
-        storeEpisode.proxy.conn.xbmcParams.params.tvshowid = selectedTvShow.data.tvshowid;
-        storeEpisode.proxy.conn.xbmcParams.params.season = record.data.season;
-        storeEpisode.load();
+        storeEpisode.load({ params: {
+            tvshowid: selectedTvShow.data.tvshowid,
+            season: record.data.season
+        } });
     },
 
     episodeSelect: function(sm, rowIdx, record) {

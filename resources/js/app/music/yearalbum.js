@@ -33,8 +33,7 @@ var AlbumStore = new Ext.data.GroupingStore({
     autoLoad: true,
     groupField: 'year',
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetAlbums', 'params': {'properties': ['genre', 'artist', 'year', 'thumbnail']},'id': 1}
+        jsonData : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetAlbums', 'params': {'properties': ['genre', 'artist', 'year', 'thumbnail']},'id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root:'result.albums'

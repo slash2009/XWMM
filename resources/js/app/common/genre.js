@@ -33,12 +33,10 @@ Ext.ns('XWMM.video');
 
     XWMM.video.genreStore = new Ext.data.Store({
         proxy: new Ext.data.XBMCProxy({
-            url: '/jsonrpc',
-            xbmcParams: {
+            jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetGenres',
                 params: {
-                    type: 'movie',
                     sort: {
                         order: 'ascending',
                         ignorearticle: sortArticles,
@@ -287,8 +285,7 @@ Ext.ns('XWMM.video');
             return;
         }
 
-        XWMM.video.genreStore.proxy.conn.xbmcParams.params.type = mode;
-        XWMM.video.genreStore.load();
+        XWMM.video.genreStore.load({ params: { type: mode } });
     };
 
 })();

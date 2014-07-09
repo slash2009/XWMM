@@ -33,8 +33,7 @@ var storeMovie = new Ext.data.Store({
     autoLoad: true,
 
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovies',
             params: {
@@ -98,12 +97,11 @@ var movieGrid = new Ext.grid.GridPanel({
                     triggerAction: 'all',
                     listeners: {
                         select: function(combo, record, index) {
-                            storeMovie.proxy.conn.xbmcParams.params.filter = {
+                            storeMovie.load({ params: { filter: {
                                 field: 'genre',
                                 operator: 'contains',
                                 value: record.data.label
-                            };
-                            storeMovie.load();
+                            } } });
                         }
                     }
                 }

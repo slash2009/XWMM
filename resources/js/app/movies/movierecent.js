@@ -32,8 +32,7 @@ var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeMovie = new Ext.data.Store({
     autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {
+        jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovies',
             params: {

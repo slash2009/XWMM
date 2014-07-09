@@ -55,8 +55,7 @@ var ArtistRecord = Ext.data.Record.create([
 var ArtistStore = new Ext.data.Store({
     autoLoad: true,
     proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetArtists','id': 1}
+        jsonData : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetArtists','id': 1}
     }),
     reader: new Ext.data.JsonReader({
         root: 'result.artists',
