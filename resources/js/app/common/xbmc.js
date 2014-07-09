@@ -22,20 +22,6 @@
  * along with XWMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function XBMCExecSql(inputUrl) { // #BROKEN
-    console.error('BROKEN! Don\'t use XBMCExecSql');
-/*
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-*/
-}
-
 /**
  * Save the watched state back to XBMC.
  * @param {int} mediaId The media id.
@@ -74,51 +60,6 @@ function setXBMCWatched(mediaId, mediaType, watched) {
     var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
     //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
     xbmcJsonRPC(rpcCmdJSON);
-}
-
-
-function downloadNewXBMCFile(url,myFile) { // #BROKEN
-    console.error('BROKEN! Don\'t use downloadNewXBMCFile');
-/*
-    var inputUrl = '/xbmcCmds/xbmcHttp?command=FileDownloadFromInternet('+url+'; '+myFile+')';
-    Ext.Ajax.request({
-        url: inputUrl,
-        method: 'GET',
-        async: false,
-        success: function (t){},
-        failure: function(t){},
-        timeout: 2000
-    });
-*/
-};
-
- function getTagAttribute(xmlString, tag) {
-    var temp ="";
-    for (var i=0 ; i < xmlString.attributes.length; i++) {
-        if (xmlString.attributes[i].nodeName == tag) {
-            temp = xmlString.attributes[i].nodeValue
-        }
-    }
-    return temp;
- }
-
-function TrimXmltofields(t) {
-    var temp = t.responseText.replace(/<html>/g, "");
-    temp = temp.replace(/<\/html>/g, "");
-    temp = temp.replace(/<recordset>/g, "");
-    temp = temp.replace(/<\/record>/g, "");
-    temp = temp.replace(/<\/recordset>/g, "");
-    temp = temp.replace(/\n/g, '');
-    temp = temp.replace(/<\/field>/g, "");
-
-    return temp;
-}
-
-function TrimXbmcXml(t){
-    var temp = TrimXmltofields(t);
-    temp = temp.replace(/<field>/g, "");
-
-    return temp;
 }
 
 /**
