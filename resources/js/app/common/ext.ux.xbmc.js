@@ -98,12 +98,12 @@ Ext.ux.XbmcStars = function(config) {
 
 Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
     border: 0,
-    autoEl: {tag: 'img', src: '../images/stars/0.png'},
+    autoEl: {tag: 'img', src: '../resources/images/stars/0.png'},
     updateSrc: function(r) {
         var value = 0;
         if (r.data.rating !== undefined) {
           value = Math.round(r.data.rating);
         }
-        this.el.dom.src =  '../images/stars/'+value+'.png';
+        this.el.dom.src =  '../resources/images/stars/'+value+'.png';
     }
 });

@@ -261,7 +261,7 @@ function convertTime(val) {
 }
 
 function starRating(val) {
-    return '<img src="../images/small-stars/' + val + '.gif" width="80" height="16" alt="' + val + ' Star(s)">';
+    return '<img src="../resources/images/small-stars/' + val + '.gif" width="80" height="16" alt="' + val + ' Star(s)">';
 }
 
 var SongcolModel = new Ext.grid.ColumnModel([

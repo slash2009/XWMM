@@ -117,7 +117,7 @@ function ChangeImages(record) {
     var preview = new Ext.Container ({
     id: 'preview',
     border: 0,
-    autoEl: {tag: 'img', src: '../images/defaultMovieFanart.jpg'},
+    autoEl: {tag: 'img', src: '../resources/images/defaultMovieFanart.jpg'},
     updateSrc :function(v){
         this.el.dom.src = v;
     }
