@@ -44,41 +44,6 @@ function setUnwatched() {
     }
 }
 
-/**
- * Save set changes back to XBMC.
- * @param {Ext.form.Field} setField The set field.
- */
-function updateXBMCSet(setField) {
-    var newValue = setField.getValue();
-
-    if (setField.originalValue === newValue) {
-        // No change, don't save the value.
-        return;
-    }
-
-    var movieGrid = Ext.getCmp('Moviegrid');
-    var selectedMovie = movieGrid.getSelectionModel().getSelected();
-
-    var rpcCmd = {
-        jsonrpc: '2.0',
-        method: 'VideoLibrary.SetMovieDetails',
-        params: {
-            movieid: selectedMovie.data.movieid,
-            set: newValue
-        },
-        id: 'XWMM'
-    };
-
-    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
-    xbmcJsonRPC(rpcCmdJSON);
-
-    setField.IsDirty = false;
-    setField.originalValue = newValue;
-    selectedMovie.data.set = newValue;
-    movieGrid.getView().refresh();
-}
-
 function updateXBMCAll() {
     Ext.MessageBox.show({
         title: 'Please wait',
@@ -108,12 +73,6 @@ function updateXBMCAll() {
                         updateXBMCTables(form, 'movie',
                             Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating movie info';
-                    }
-
-                    form = Ext.getCmp('moviesetcombo');
-                    if (form.isDirty()) {
-                        updateXBMCSet(form);
-                        mesg = 'updating Sets';
                     }
 
                     form = Ext.getCmp('filedetailPanel').getForm();
@@ -195,7 +154,7 @@ function loadMovieDetails(record) {
         },
         id: 'XWMM'
     };
-    var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+    var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved

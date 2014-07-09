@@ -33,12 +33,10 @@ Ext.ns('XWMM.video');
 
     XWMM.video.genreStore = new Ext.data.Store({
         proxy: new Ext.data.XBMCProxy({
-            url: '/jsonrpc',
-            xbmcParams: {
+            jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetGenres',
                 params: {
-                    type: 'movie',
                     sort: {
                         order: 'ascending',
                         ignorearticle: sortArticles,
@@ -48,21 +46,7 @@ Ext.ns('XWMM.video');
                 id: 'XWMM'
             }
         }),
-        reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord),
-        listeners: {
-            load: function(store, records, options) {
-                /*
-                 * When asking XBMC for a list of genres it will return a blank one. This blank one is a catch all for all
-                 * items that don't have a genre assigned to them. We don't want this blank genre to show up, so it's
-                 * remove from the store at load.
-                 */
-                 for (var i = 0, len = records.length; i < len; i++) {
-                    if (records[i].data.label === '') {
-                        store.remove(records[i]);
-                    }
-                }
-            }
-        }
+        reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord)
     });
 
     var rowEditor = new Ext.ux.grid.RowEditor({
@@ -107,7 +91,7 @@ Ext.ns('XWMM.video');
             },
             id: 'XWMM'
         };
-        var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+        var response = xbmcJsonRPC(request);
 
         var i, i_len, j, j_len, oldGenreList, newGenreList, updateRequest;
         for (i = 0, i_len = response[resultField].length; i < i_len; i++) {
@@ -132,7 +116,7 @@ Ext.ns('XWMM.video');
                 id: 'XWMM'
             };
             updateRequest.params[idField] = response[resultField][i][idField];
-            xbmcJsonRPC(Ext.util.JSON.encode(updateRequest));
+            xbmcJsonRPC(updateRequest);
         }
 
         Ext.getCmp(gridId).getStore().load();
@@ -287,8 +271,7 @@ Ext.ns('XWMM.video');
             return;
         }
 
-        XWMM.video.genreStore.proxy.conn.xbmcParams.params.type = mode;
-        XWMM.video.genreStore.load();
+        XWMM.video.genreStore.load({ params: { type: mode } });
     };
 
 })();

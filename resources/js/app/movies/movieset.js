@@ -34,8 +34,7 @@ Ext.ns('XWMM.video');
 
     XWMM.video.movieSetStore = new Ext.data.Store({
         proxy: new Ext.data.XBMCProxy({
-            url: '/jsonrpc',
-            xbmcParams: {
+            jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetMovieSets',
                 params: {

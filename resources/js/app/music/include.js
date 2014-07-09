@@ -74,8 +74,10 @@ function ValidateAlbuminfo (record) {
     // AlbumInfoStore.reload();
     // if (AlbumInfoStore.find('idAlbum',record.data.albumid,0,false,false) == -1) {
     if (record.data.scraperInfo === false) {
-        var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.albumid+'", "'+record.data.year+'", "'+record.data.genre+'""))';
-        XBMCExecSql(inputUrl);
+        // # BROKEN - HTTP API no longer supported
+        console.error('BROKEN! - HTTP API no longer supported');
+        //var inputUrl = '/xbmcCmds/xbmcHttp?command=execmusicdatabase(INSERT INTO albuminfo (idAlbum, iYear, idGenre) VALUES ("'+record.data.albumid+'", "'+record.data.year+'", "'+record.data.genre+'""))';
+        //XBMCExecSql(inputUrl);
         record.data.scraperInfo = true;
     }
 }
@@ -115,6 +117,16 @@ function getMusicCoverList(str, r) {
         result.push([previewUrl, downloadUrl, 'Remote', '']);
     }
      return result;
+}
+
+function getTagAttribute(xmlString, tag) {
+    var temp ="";
+    for (var i=0 ; i < xmlString.attributes.length; i++) {
+        if (xmlString.attributes[i].nodeName == tag) {
+            temp = xmlString.attributes[i].nodeValue
+        }
+    }
+    return temp;
 }
 
 function GetAlbumDetails(r) {

@@ -99,7 +99,7 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
 
         r.data.details = true;
 
-        SongStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetSongs', 'params': {'properties': [ 'track', 'artist', 'duration'], 'filter': {'albumid': r.data.albumid}},'id': 1};
+        SongStore.proxy.conn.jsonData = {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetSongs', 'params': {'properties': [ 'track', 'artist', 'duration'], 'filter': {'albumid': r.data.albumid}},'id': 1};
 
         //SongStore.proxy.conn.url = '/xbmcCmds/xbmcHttp?command=querymusicdatabase(select idSong, strTitle, iTrack, iDuration, iYear, strFileName, rating, idAlbum, strAlbum, strPath, idArtist, strArtist, idGenre, strGenre FROM songview WHERE idAlbum = '+r.data.albumid+')';
         SongStore.load();

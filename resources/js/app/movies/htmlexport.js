@@ -91,7 +91,7 @@
             };
         }
 
-        var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+        var response = xbmcJsonRPC(request);
 
         var win = open('', 'XWMM.exportToHTML', 'width=900,height=700,status=yes,toolbar=yes,scrollbars=yes');
         win.document.open();

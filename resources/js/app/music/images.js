@@ -44,7 +44,9 @@ function ChangeImages(record) {
         var selNode = viewCovers.getSelectedRecords();
         var currentAlbum = AlbumGrid.getSelectionModel().getSelected();
         // selNode contains only one item
-        downloadNewXBMCFile(selNode[0].data.url, currentAlbum.data.strThumb );
+        // # BROKEN - HTTP API no longer supported
+        console.error('BROKEN! - HTTP API no longer supported');
+        //downloadNewXBMCFile(selNode[0].data.url, currentAlbum.data.strThumb );
         //update Album Cover in form
         Ext.getCmp('albumCover').refreshMe();
         loadingMask.hide();

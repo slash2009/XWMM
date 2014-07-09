@@ -20,20 +20,6 @@
  * along with XWMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.data.DataProxy.on('exception', function(conn, type, action, options, response, arg) {
-    if ('error' in response.responseJSON) {
-        console.error('JSON-RPC request failed. %s',
-            response.responseJSON.error.message,
-            response.responseJSON.error,
-            Ext.util.JSON.decode(options.jsonData));
-    }
-    else {
-        console.error('JSON-RPC request failed.',
-            response,
-            Ext.util.JSON.decode(options.jsonData));
-    }
-});
-
 function xbmcJsonRPC(params) {
     var result;
 
