@@ -106,13 +106,13 @@ var otherDetailsPanel = new Ext.FormPanel({
         },
         {
             id: 'moviesetcombo',
-            store: MovieSetStore,
+            store: XWMM.video.movieSetStore,
 
             xtype: 'combo',
             fieldLabel: 'Set',
-            name: 'title',
+            name: 'set',
             emptyText: '-- None --',
-            displayField: 'title',
+            displayField: 'label',
             mode: 'local',
             triggerAction: 'all',
             listeners: {

@@ -1,153 +1,154 @@
-//------------ Movie All Sets (including orphans) ----------------
+/* global Ext: false, XWMM: false */
 
-var MovieSetRecord = Ext.data.Record.create([
-   {name: 'setid', type: 'int'},
-   {name: 'title'}
-]);
+Ext.ns('XWMM.video');
 
-var MovieSetStore = new Ext.data.GroupingStore({
-    sortInfo: {field: 'title', direction: 'ASC'},
-    //autoLoad: true,
-    proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSets', 'params': {'properties': ['title']},'id': 1}
-    }),
-    reader: new Ext.data.JsonReader({
-        root: 'result.sets'
-    }, MovieSetRecord)
-});
+(function() {
 
-var MoviesInSetcolModel = new Ext.grid.ColumnModel([
-        {header: '#', dataIndex: 'movieid', hidden: true},
-        {header: 'Movie Title', dataIndex: 'movieinset', width: 200}
+    var movieSetRecord = Ext.data.Record.create([
+        { name: 'setid' },
+        { name: 'label' }
     ]);
 
-
-var MoviesInSetRecord = Ext.data.Record.create([
-   {name: 'movieid'},
-   {name: 'movieinset', mapping: 'title'}
-]);
-
-
-var MoviesInSetStore = new Ext.data.GroupingStore({
-    sortInfo: {field: 'movieinset', direction: 'ASC'},
-    id: 'moviesinsetstore',
-    proxy: new Ext.data.XBMCProxy({
-        url: '/jsonrpc',
-        xbmcParams: {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': 2147483647, 'movies': {'properties': ['title']} }, 'id': 1} //dummy ID will be replaced by selected setid when set selected
-    }),
-    reader: new Ext.data.JsonReader({
-        root:'result.setdetails.movies'
-       }, MoviesInSetRecord)
-});
-
-
-var MovieInSetGrid = new Ext.grid.GridPanel({
-    width:230,
-    height: 290,
-    cm: MoviesInSetcolModel,
-    title: 'Movies in Set',
-    enableDragDrop: false,
-    disableSelection : true,
-    store: MoviesInSetStore,
-    viewConfig: {forceFit: true}
-});
-
-// ----- Movie Set Management Window
-
-function onAddMovieSet(btn, ev) {
-        var u = new MovieSetMgmtGrid.store.recordType({
-                title: 'New Set',
-        setid: '-1' // flag as new record
-        });
-        editor.stopEditing();
-        MovieSetStore.insert(0, u);
-        editor.startEditing(0);
-}
-
-function onDeleteMovieSet() {
-    var rec = MovieSetMgmtGrid.getSelectionModel().getSelected();
-    if (!rec) {return false;}
-
-
-    MovieSetStore.remove(rec);
-    MoviesInSetStore.each( function (movieRecord)
-        {
-            xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.movieid +', "set": ""}, "id": 1}');
-        }, this);
-    MovieSetStore.reload();
-}
-
-var MovieSetEditor = new Ext.ux.grid.RowEditor({
-    saveText: 'Update',
-    listeners: {
-        afteredit: function(roweditor, changes, record, rowIndex) {
-            if (record.data.setid === -1) {
-                //should add a bubble to tell user to add movies in the set
+    XWMM.video.movieSetStore = new Ext.data.Store({
+        sortInfo: { field: 'label', direction: 'ASC' },
+        proxy: new Ext.data.XBMCProxy({
+            url: '/jsonrpc',
+            xbmcParams: {
+                jsonrpc: '2.0',
+                method: 'VideoLibrary.GetMovieSets',
+                id: 'XWMM'
             }
-            else {
-                MoviesInSetStore.each( function (movieRecord)
-                    {
-                        xbmcJsonRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": '+ movieRecord.data.movieid +', "set": "'+ changes.title +'"}, "id": 1}');
-                    }, this);
-                MovieSetStore.reload();
+        }),
+        reader: new Ext.data.JsonReader({ root:'result.sets' }, movieSetRecord)
+    });
+
+    var rowEditor = new Ext.ux.grid.RowEditor({
+        saveText: 'Update',
+        listeners: {
+            afteredit: function(roweditor, changes, record, rowIndex) {
+                if (record.data.setid > -1) {
+                    renameMovieSet(record.modified.label, changes.label);
+                    roweditor.grid.getStore().reload();
+                }
             }
         }
+    });
+
+    function renameMovieSet(oldMovieSet, newMovieSet) {
+        if (newMovieSet === undefined) {
+            newMovieSet = '';
+        }
+
+        console.debug(oldMovieSet, newMovieSet);
+        var request = {
+            jsonrpc: '2.0',
+            method: 'VideoLibrary.GetMovies',
+            params: {
+                filter: { field: 'set', operator: 'contains', value: oldMovieSet }
+            },
+            id: 'XWMM'
+        };
+        var response = xbmcJsonRPC(request);
+
+        var i, i_len, updateRequest;
+        for (i = 0, i_len = response.movies.length; i < i_len; i++) {
+            updateRequest = {
+                jsonrpc: '2.0',
+                method: 'VideoLibrary.SetMovieDetails',
+                params: {
+                    movieid: response.movies[i].movieid,
+                    set: newMovieSet
+                },
+                id: 'XWMM'
+            };
+            xbmcJsonRPC(updateRequest);
+        }
+
+        Ext.getCmp('Moviegrid').getStore().load();
     }
-});
 
-var MovieSetMgmtGrid = new Ext.grid.GridPanel({
-    id: 'moviesetmgmtgrid',
-    width: 250,
-    height: 290,
-    columns: [
-        {header: '#', dataIndex: 'setid', hidden: true},
-        {header: 'Set Name', width: 200, editor: new Ext.form.TextField({allowBlank: false}),dataIndex: 'title'}
-    ],
-    clicksToEdit: 1,
-    title: 'Sets',
-    enableDragDrop: false,
-    stripeRows: true,
-    selModel: new Ext.grid.RowSelectionModel({
-        singleSelect: true,
-        listeners : {
-        rowselect: function(sm, row, rec) {
-                MoviesInSetStore.proxy.conn.xbmcParams = {'jsonrpc': '2.0', 'method': 'VideoLibrary.GetMovieSetDetails', 'params': {'setid': rec.data.setid, 'movies': {'properties': ['title']} }, 'id': 1};
-                MoviesInSetStore.load();
+    new Ext.Window({
+        id: 'manageMovieSetsWin',
+        title: 'Movie Set Management',
+        layout: 'fit',
+        width: 500,
+        height: 300,
+        modal: true,
+        closeAction:'hide',
+        items: [
+            {
+                id: 'manageMovieSetsGrid',
+                xtype: 'grid',
+                columns: [
+                    { header: '#', dataIndex: 'setid', hidden: true },
+                    { header: 'Set', editor: new Ext.form.TextField({ allowBlank: false }), dataIndex: 'label', id: 'title' }
+                ],
+                autoExpandColumn: 'title',
+                enableColumnResize: false,
+                clicksToEdit: 1,
+                stripeRows: true,
+                plugins: [rowEditor],
+                store: XWMM.video.movieSetStore,
+                tbar: [
+                    {
+                        text: 'Add',
+                        iconCls: 'silk-add',
+                        handler: function(btn, e) {
+                            Ext.MessageBox.prompt(
+                                'Add a movie set',
+                                'Enter the name of the movie set you would like to add:',
+                                function(btn, text) {
+                                    if (btn === 'ok') {
+                                        var newMovieSet = new movieSetRecord({ label: text });
+                                        var grid = Ext.getCmp('manageMovieSetsGrid');
+                                        grid.getStore().add(newMovieSet);
+                                        grid.getSelectionModel().selectLastRow();
+                                    }
+                                }
+                            );
+                        }
+                    },
+                    '-',
+                    {
+                        text: 'Delete',
+                        iconCls: 'silk-delete',
+                        handler: function(btn, e) {
+                            var grid = Ext.getCmp('manageMovieSetsGrid');
+                            var record = grid.getSelectionModel().getSelected();
+
+                            if (record === undefined) {
+                                Ext.Msg.alert(
+                                    'Select a movie set',
+                                    'You must select a movie set to delete first.'
+                                );
+                                return false;
+                            }
+
+                            Ext.Msg.confirm(
+                                'Are you sure?',
+                                'Are you sure you want to delete the ' + record.data.label + ' movie set?<br>' +
+                                'This can\'t be undone!',
+                                function(btn) {
+                                    if (btn === 'yes') {
+                                        renameMovieSet(record.data.label, undefined);
+                                        grid.getStore().reload();
+                                    }
+                                }
+                            );
+                        }
+                    }
+                ],
             }
-        }
-    }),
-    plugins: [MovieSetEditor],
-    store: MovieSetStore,
-    tbar: [{
-        text: 'Add',
-        //disabled: 'true', //disabled as no method of adding new sets via JSON currently
-        iconCls: 'silk-add',
-        handler: onAddMovieSet
-    }, '-', {
-        text: 'Delete',
-        //disabled: 'true', //disabled as no method of deleting sets via JSON currently
-        iconCls: 'silk-delete',
-        handler: onDeleteMovieSet
-    }, '-'],
-    viewConfig: {forceFit: true}
-});
 
-var winMovieSet = new Ext.Window({
-    layout:'table',
-    layoutConfig: {columns:2},
-    title: 'Movie Set Management',
-    width:500,
-    height:300,
-    closeAction:'hide',
-    plain: true,
-    items: [
-        MovieSetMgmtGrid, MovieInSetGrid
-    ],
-    buttons: [{
-        text: 'Close',
-        handler: function(){
-            winMovieSet.hide();
-        }
-    }]
-});
+        ],
+        buttons: [
+            {
+                text: 'Close',
+                handler: function(btn, e) {
+                    Ext.getCmp('manageMovieSetsWin').hide();
+                }
+            }
+        ]
+    });
+
+})();
