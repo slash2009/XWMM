@@ -29,15 +29,21 @@ Ext.ns('XWMM.video');
         { name: 'label', type: 'string' }
     ]);
 
+    var sortArticles = docCookies.getItem('sortArticles') === '1';
+
     XWMM.video.genreStore = new Ext.data.Store({
-        sortInfo: { field: 'label', direction: 'ASC' },
         proxy: new Ext.data.XBMCProxy({
             url: '/jsonrpc',
             xbmcParams: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetGenres',
                 params: {
-                    type: 'movie'
+                    type: 'movie',
+                    sort: {
+                        order: 'ascending',
+                        ignorearticle: sortArticles,
+                        method: 'label'
+                    }
                 },
                 id: 'XWMM'
             }

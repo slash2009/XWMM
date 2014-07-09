@@ -390,7 +390,6 @@ var seasonGrid = new Ext.grid.GridPanel({
     stripeRows: true,
 
     viewConfig: {
-        scrollOffset: 1,
         headersDisabled: true
     },
 
@@ -415,15 +414,14 @@ var episodeGrid = new Ext.grid.GridPanel({
     cm: new Ext.grid.ColumnModel([
         { header: '#', dataIndex: 'episode', width: 30 },
         { header: 'Title', dataIndex: 'title', id: 'title' },
-        { header: '&#160;', dataIndex: 'playcount', width: 30, tooltip: 'Watched',
-          renderer: checkWatched }
+        { header: '<img src="../resources/images/icons/checked.png" width="16" height="16" alt="Watched">',
+          dataIndex: 'playcount', width: 30, tooltip: 'Watched', renderer: checkWatched }
     ]),
     autoExpandColumn: 'title',
     enableColumnResize: false,
     stripeRows: true,
 
     viewConfig: {
-        scrollOffset: 1,
         headersDisabled: true
     },
 

@@ -111,7 +111,7 @@ var otherDetailsPanel = new Ext.FormPanel({
     items: [
         {
             fieldLabel: 'Name',
-            name: 'strFilename',
+            name: 'file',
             readOnly: true
         },
         {
