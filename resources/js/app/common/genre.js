@@ -46,21 +46,7 @@ Ext.ns('XWMM.video');
                 id: 'XWMM'
             }
         }),
-        reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord),
-        listeners: {
-            load: function(store, records, options) {
-                /*
-                 * When asking XBMC for a list of genres it will return a blank one. This blank one is a catch all for all
-                 * items that don't have a genre assigned to them. We don't want this blank genre to show up, so it's
-                 * remove from the store at load.
-                 */
-                 for (var i = 0, len = records.length; i < len; i++) {
-                    if (records[i].data.label === '') {
-                        store.remove(records[i]);
-                    }
-                }
-            }
-        }
+        reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord)
     });
 
     var rowEditor = new Ext.ux.grid.RowEditor({
