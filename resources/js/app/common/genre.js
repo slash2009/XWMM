@@ -91,7 +91,7 @@ Ext.ns('XWMM.video');
             },
             id: 'XWMM'
         };
-        var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+        var response = xbmcJsonRPC(request);
 
         var i, i_len, j, j_len, oldGenreList, newGenreList, updateRequest;
         for (i = 0, i_len = response[resultField].length; i < i_len; i++) {
@@ -116,7 +116,7 @@ Ext.ns('XWMM.video');
                 id: 'XWMM'
             };
             updateRequest.params[idField] = response[resultField][i][idField];
-            xbmcJsonRPC(Ext.util.JSON.encode(updateRequest));
+            xbmcJsonRPC(updateRequest);
         }
 
         Ext.getCmp(gridId).getStore().load();

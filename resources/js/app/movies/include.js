@@ -69,9 +69,8 @@ function updateXBMCSet(setField) {
         id: 'XWMM'
     };
 
-    var rpcCmdJSON = Ext.util.JSON.encode(rpcCmd);
-    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmdJSON);
-    xbmcJsonRPC(rpcCmdJSON);
+    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmd);
+    xbmcJsonRPC(rpcCmd);
 
     setField.IsDirty = false;
     setField.originalValue = newValue;
@@ -195,7 +194,7 @@ function loadMovieDetails(record) {
         },
         id: 'XWMM'
     };
-    var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+    var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved

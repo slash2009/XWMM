@@ -103,7 +103,7 @@ function loadTVShowDetails(record) {
         },
         id: 'XWMM'
     };
-    var response = xbmcJsonRPC(Ext.util.JSON.encode(request));
+    var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
