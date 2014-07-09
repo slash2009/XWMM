@@ -6,6 +6,8 @@ XWMM Change log
 - Rearrange directory layout (Issue #85)
 - Add icons to set and watched headings (Issue #87)
 - Remove unused icons
+- Add missing license file
+- Add license header to source files
 
 4.1.4
 - Clean up TV and Movie section
