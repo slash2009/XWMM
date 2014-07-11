@@ -345,7 +345,30 @@ Ext.onReady(function() {
     menuBar.add({
             xtype: 'tbbutton',
             text: 'Tools',
-            menu: [{
+            menu: [
+                {
+                    text: 'Scan Library',
+                    iconCls: 'silk-plugin',
+                    handler: function() {
+                        XWMM.audio.scanLibrary();
+                        Ext.MessageBox.alert(
+                            'Scan Library',
+                            'A library scan has begun.'
+                        );
+                    }
+                },
+                {
+                    text: 'Clean Library',
+                    iconCls: 'silk-plugin',
+                    handler: function() {
+                        XWMM.audio.cleanLibrary();
+                        Ext.MessageBox.alert(
+                            'Clean Library',
+                            'The library is being cleaned.'
+                        );
+                    }
+                },
+            {
                 text: 'Manage Genres',
                 disabled: 'true',
                 iconCls: 'silk-plugin',
