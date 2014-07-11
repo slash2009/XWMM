@@ -28,6 +28,28 @@ Ext.onReady(function() {
             text: 'Tools',
             menu: [
                 {
+                    text: 'Scan Library',
+                    iconCls: 'silk-plugin',
+                    handler: function() {
+                        XWMM.video.scanLibrary();
+                        Ext.MessageBox.alert(
+                            'Scan Library',
+                            'A library scan has begun.'
+                        );
+                    }
+                },
+                {
+                    text: 'Clean Library',
+                    iconCls: 'silk-plugin',
+                    handler: function() {
+                        XWMM.video.cleanLibrary();
+                        Ext.MessageBox.alert(
+                            'Clean Library',
+                            'The library is being cleaned.'
+                        );
+                    }
+                },
+                {
                     text: 'Manage Genres',
                     iconCls: 'silk-plugin',
                     handler: function(){ Ext.getCmp('manageGenresWin').show(); }
