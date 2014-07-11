@@ -59,6 +59,7 @@ function updateXBMCAll() {
         return function() {
             if (v === 30) {
                 Ext.MessageBox.hide();
+                Ext.getCmp('Moviegrid').store.load();
             }
             else {
                 var i = v/29;

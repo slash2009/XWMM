@@ -3,6 +3,7 @@ XWMM Change log
 4.1.7
 - Add option to scan/clean the library (Issue #100)
 - Adjust TV show layout for smaller screens (Issue #99)
+- Update movie list when changes are saved (Issue #88)
 
 4.1.6
 - Add header icon that was missed in a7f7ee5
