@@ -206,12 +206,12 @@ var tvShowDetailsPanel = new Ext.FormPanel({
         },
         {
             layout: 'column',
-            labelWidth: 50,
-            items:[
+            items: [
                 {
                     columnWidth: 0.40,
                     layout: 'form',
                     labelWidth: 65,
+                    padding: '0 10px',
                     defaults: {
                         xtype: 'textfield',
                         width: 200,
@@ -249,7 +249,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                     fieldLabel: 'Description',
                     name: 'plot',
 
-                    columnWidth: 0.60,
+                    columnWidth: 0.40,
                     height: 100,
 
                     listeners: {
@@ -272,14 +272,15 @@ var episodeDetailsPanel = new Ext.FormPanel({
     frame: true,
 
     layout: 'table',
-    layoutConfig: { columns: 3 },
+    layoutConfig: { columns: 2 },
     items:[
         {
             layout: 'form',
             labelWidth: 65,
+            padding: '0 10px',
             defaults: {
                 xtype: 'textfield',
-                width: 200,
+                width: 400,
                 listeners: {
                     change: function() {
                         Ext.getCmp('savebutton').enable();
@@ -308,39 +309,26 @@ var episodeDetailsPanel = new Ext.FormPanel({
                 {
                     fieldLabel: 'Rating',
                     name: 'rating'
-                }
-            ]
-        },
-        {
-            layout: 'form',
-            hideLabels: true,
-            padding: 5,
-            labelWidth: 65,
-
-            items: [
+                },
                 {
                     xtype: 'textarea',
                     fieldLabel: 'Description',
                     name: 'plot',
                     height: 125,
-                    width: 400,
-                    listeners: {
-                        change: function() {
-                            Ext.getCmp('savebutton').enable();
-                        }
-                    }
-                },
+                }
             ]
-        },
+        }, 
         {
             width: 170,
-            rowspan: 2,
             items: [episodeStars, SeasonCover]
         },
         {
+            xtype: 'panel',
+            layout: 'hbox',
             colspan: 2,
             items: [videoFlagsPanel, audioFlagsPanel]
         }
+        
     ]
 });
 

@@ -29,7 +29,7 @@ Ext.ns('XWMM.util');
  * @return {string} The string converted to title case.
  */
 XWMM.util.toTitleCase = function(str) {
-	return str.replace(/\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+    return str.replace(/\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 };
 
 
@@ -86,7 +86,7 @@ XWMM.util.convertArtworkURL = function(value) {
  * @return {string} The converted rating.
  */
 XWMM.util.convertRating = function(value) {
-	return value.toFixed(1);
+    return value.toFixed(1);
 };
 
 /**
