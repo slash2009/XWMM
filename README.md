@@ -1,9 +1,9 @@
 XWMM - XBMC Web Media Manager
 ====
 
-XWMM is a cross platform tool to manage the XBMC Media Database. It is completely web based, so you don't need to install anything on your workstation to manage your media.
+XWMM is a cross platform tool to manage the Kodi Media Database. It is completely web based, so you don't need to install anything on your workstation to manage your media.
 
-This tool is intended to facilitate the use of the XBMC media management features (media infos, media categorization, scraping, etc ...)
+This tool is intended to facilitate the use of the Kodi media management features (media infos, media categorization, scraping, etc ...)
 
 #### Useful Links
 * [Releases](https://github.com/slash2009/XWMM/releases)
@@ -15,7 +15,7 @@ This tool is intended to facilitate the use of the XBMC media management feature
 - - -
 
 ### DEVELOPERS NEEDED - We don't pay either hehe ;)
-Please join XWMM, help this XBMC web-interface be nr#1, we need skilled developers which can help improve and add exciting new features to XWMM.
+Please join XWMM, help this Kodi web-interface be nr#1, we need skilled developers which can help improve and add exciting new features to XWMM.
 
 - - -
 
@@ -28,7 +28,7 @@ Please join XWMM, help this XBMC web-interface be nr#1, we need skilled develope
 
 - Enable web interface:
   - Go to System > Services > Webserver > Services
-  - Enable **Allow control XBMC via HTTP**
+  - Enable **Allow control Kodi via HTTP**
   - Set **Web Interface** to XWMM *(optional)*
 
 - Access XWMM:
