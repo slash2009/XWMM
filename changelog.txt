@@ -1,8 +1,12 @@
-WiMM Change log
+[B]WIMM Change log[/B]
 
 4.1.8
-- partial rename from XWMM to WiMM
+- Partial rename from XWMM to WIMM
+- Tab name fix
+- Copyright headers XWMM to WIMM
 - Bump json api to 6.16.0 (Kodi Helix api version)
+
+[B]XWMM Change log[/B]
 
 4.1.7
 - Add option to scan/clean the library (Issue #100)

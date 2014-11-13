@@ -1,4 +1,4 @@
- You may use, distribute and copy XWMM under the terms of GNU General
+ You may use, distribute and copy WIMM under the terms of GNU General
  Public License version 2 or any later version, which is displayed below.
 
 -------------------------------------------------------------------------
