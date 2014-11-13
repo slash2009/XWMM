@@ -1,4 +1,8 @@
-XWMM Change log
+WiMM Change log
+
+4.1.8
+- partial rename from XWMM to WiMM
+- Bump json api to 6.16.0 (Kodi Helix api version)
 
 4.1.7
 - Add option to scan/clean the library (Issue #100)
