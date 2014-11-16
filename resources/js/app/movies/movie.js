@@ -324,7 +324,10 @@ var mainPanel = new Ext.Panel({
             xtype: 'panel',
             region: 'east',
             split: true,
+            collapsible: true,
+            collapsed: true,
             width: 225,
+
             items: [{
                 layout: 'accordion',
                 height: 500,
