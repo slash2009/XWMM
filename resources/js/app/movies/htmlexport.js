@@ -172,7 +172,7 @@
                         name: 'sortby',
                         allowBlank: false,
                         autoSelect: true,
-                        store: ['Title', 'Sort Title', 'Year', 'Rating', 'Runtime'],
+                        store: ['Title', 'Sort Title', 'Year', 'Rating', 'Runtime', 'Date Added'],
                         triggerAction:'all',
                         emptyText: 'Select field to sort by',
                         value: 'Title'
