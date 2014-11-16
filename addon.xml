@@ -15,6 +15,6 @@
     <platform>all</platform>
     <source>https://github.com/slash2009/XWMM</source>
     <forum>http://forum.kodi.tv/showthread.php?tid=188839</forum>
-	<disclaimer lang="en">This is a beta addon and may contain bugs or flawed code, please contact us via github project issues and help us fix the problem</disclaimer>
+    <disclaimer lang="en">This is a beta addon and may contain bugs or flawed code, please contact us via github project issues and help us fix the problem</disclaimer>
   </extension>
 </addon>

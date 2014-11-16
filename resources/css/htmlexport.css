@@ -18,8 +18,8 @@
  */
 
 body {
-	font-family: sans-serif;
-	font-size: 1em;
+    font-family: sans-serif;
+    font-size: 1em;
 }
 
 table {
@@ -31,9 +31,9 @@ table, th, td {
 }
 
 th, td {
-	padding: 5px;
+    padding: 5px;
 }
 
 tbody tr:nth-child(odd) td {
-	background-color: #ccc;
+    background-color: #ccc;
 }

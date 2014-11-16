@@ -317,7 +317,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
                     height: 125,
                 }
             ]
-        }, 
+        },
         {
             width: 170,
             items: [episodeStars, SeasonCover]
@@ -328,7 +328,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
             colspan: 2,
             items: [videoFlagsPanel, audioFlagsPanel]
         }
-        
+
     ]
 });
 
@@ -506,7 +506,7 @@ TVShow.Mainpanel = new Ext.Panel({
                         tvShowGrid,
                         seasonGrid
                     ]
-                },                
+                },
                 episodeGrid
             ]
         },
