@@ -211,8 +211,8 @@ function updateMovieGenreGrid(record) {
     }
 }
 
-function checkWatched(value) {
-    return value === 1 ?
+function checkWatched(playCount) {
+    return playCount > 0 ?
         '<img src="../resources/images/icons/checked.png" width="16" height="16" alt="Watched">' :
         '';
 }
