@@ -554,6 +554,7 @@ TVShow.Mainpanel = new Ext.Panel({
         updateTVShowGenreGrid(record);
         clearEpisodeDetails();
 
+        storeEpisode.removeAll();
         storeSeason.load({ params: { tvshowid: record.data.tvshowid } });
         storeActor.load({ params: { tvshowid: record.data.tvshowid } });
     },
@@ -563,10 +564,10 @@ TVShow.Mainpanel = new Ext.Panel({
         var episodeDetailsPanel = Ext.getCmp('episodedetailPanel');
         var seasonCover = Ext.getCmp('seasoncover');
 
+        clearEpisodeDetails();
         episodeDetailsPanel.setTitle('<div align="center">Season ' + record.data.season +
             ' / Select an episode</div>');
         seasonCover.updateSrc(record.data.thumbnail);
-        episodeDetailsPanel.getForm().reset();
 
         storeEpisode.load({ params: {
             tvshowid: selectedTvShow.data.tvshowid,
