@@ -71,7 +71,7 @@ XWMM.util.convertListToArray = function(stringList, sep) {
  * @return {string} The converted url.
  */
 XWMM.util.convertArtworkURL = function(value) {
-    if (value === undefined) {
+    if (value === undefined || value === '') {
         return '';
     }
     else {

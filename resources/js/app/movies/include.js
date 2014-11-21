@@ -98,8 +98,20 @@ function updateMovieDetails(record) {
     Ext.getCmp('filedetailPanel').getForm().loadRecord(record);
 
     Ext.getCmp('movierating').updateSrc(record);
-    Ext.getCmp('fanart').updateSrc(record.data.fanart);
-    Ext.getCmp('cover').updateSrc(record.data.thumbnail);
+
+    if (record.data.fanart === '') {
+        Ext.getCmp('fanart').updateSrc('../resources/images/defaultMovieFanart.jpg');
+    }
+    else {
+        Ext.getCmp('fanart').updateSrc(record.data.fanart);
+    }
+
+    if (record.data.thumbnail === '') {
+        Ext.getCmp('cover').updateSrc('../resources/images/defaultMovieCover.jpg');
+    }
+    else {
+        Ext.getCmp('cover').updateSrc(record.data.thumbnail);
+    }
 
     var videoCodec = Ext.getCmp('videocodec').getEl().dom;
     var aspect = Ext.getCmp('aspect').getEl().dom;
