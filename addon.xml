@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="webinterface.WIMM"
-  version="4.1.9"
+  version="4.1.10"
   name="WIMM"
   provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe | criticalfiction">
   <requires>
-    <import addon="xbmc.json" version="6.16.0"/>
+    <import addon="xbmc.json" version="6.14.3"/>
   </requires>
   <extension
     point="xbmc.gui.webinterface"/>

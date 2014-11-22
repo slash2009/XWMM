@@ -1,5 +1,8 @@
 [B]WIMM Change log[/B]
 
+4.1.10
+ - Revert JSON API version to 6.14.3
+
 4.1.9
 - New project logo/fanart/favicon courtesy of
   (c) 2014 Mike Kalashnikov aka samfisher
@@ -10,7 +13,7 @@
 - Tab name fix
 - Copyright headers XWMM to WIMM
 - Bump json api to 6.16.0 (Kodi Helix api version)
-- Allow movie export data to be sorted by date added. (Issue #110) 
+- Allow movie export data to be sorted by date added. (Issue #110)
 - Fix watched marker. (Issue #103)
 - Clear episode details when show or season is changed. (Issue #105)
 - Collapse extra details panels. (Issue #99)
