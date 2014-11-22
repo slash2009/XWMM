@@ -257,6 +257,15 @@ Ext.ns('XWMM.video');
                         }
                     );
                 }
+            },
+            {
+                text: 'Clear Selection',
+                iconCls: 'silk-delete',
+                handler: function(btn, e) {
+                    console.log('Clear Selection');
+                    var grid = Ext.getCmp('genresGrid');
+                    grid.getSelectionModel().clearSelections(false);
+                }
             }
         ]
     });
