@@ -104,6 +104,18 @@ var movieGrid = new Ext.grid.GridPanel({
                             } } });
                         }
                     }
+                },
+                {
+                    text: 'X',
+                    tooltip: 'Clear genre filter',
+                    handler: function() {
+                        Ext.getCmp('genreFilterCombo').clearValue();
+                        storeMovie.load({ params: { filter: {
+                                field: 'genre',
+                                operator: 'contains',
+                                value: ''
+                            } } });
+                    }
                 }
             ]
         }
