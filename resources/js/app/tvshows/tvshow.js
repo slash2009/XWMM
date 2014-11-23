@@ -31,20 +31,19 @@ function fanartConvert(value, record) {
 }
 
 var tvShowRecord = Ext.data.Record.create([
+   { name: 'tvshowid' },
    { name: 'title' },
    { name: 'sorttitle' },
    { name: 'genre', convert: XWMM.util.convertArrayToList },
    { name: 'year' },
+   { name: 'rating', convert: XWMM.util.convertRating },
    { name: 'plot' },
+   { name: 'studio', convert: XWMM.util.convertArrayToList },
+   { name: 'playcount' },
+   { name: 'episode' },
+   { name: 'premiered' },
    { name: 'fanart', mapping: 'art', convert: fanartConvert },
    { name: 'banner', mapping: 'art', convert: bannerConvert },
-   { name: 'tvshowid' },
-   { name: 'studio', convert: XWMM.util.convertArrayToList },
-   { name: 'episode' },
-   { name: 'rating', convert: XWMM.util.convertRating },
-   { name: 'premiered' },
-   { name: 'tvshowid' },
-   { name: 'playcount' },
    { name: 'watchedepisodes' },
    { name: 'tag', convert: XWMM.util.convertArrayToList }
 ]);
