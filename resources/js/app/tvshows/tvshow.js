@@ -32,6 +32,7 @@ function fanartConvert(value, record) {
 
 var tvShowRecord = Ext.data.Record.create([
    { name: 'title' },
+   { name: 'sorttitle' },
    { name: 'genre', convert: XWMM.util.convertArrayToList },
    { name: 'year' },
    { name: 'plot' },
@@ -82,7 +83,7 @@ var storeTVShow = new Ext.data.Store({
             method: 'VideoLibrary.GetTVShows',
             params: {
                 properties: [
-                    'title', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
+                    'title', 'sorttitle', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
                     'episode', 'imdbnumber', 'premiered', 'votes', 'lastplayed', 'art', 'file',
                     'watchedepisodes', 'tag'
                 ],
@@ -230,6 +231,10 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                             allowBlank: false
                         },
                         {
+                            fieldLabel: 'Sort Title',
+                            name: 'sorttitle'
+                        },
+                        {
                             fieldLabel: 'Genres',
                             name: 'genre',
                             readOnly: true,
@@ -255,7 +260,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                     name: 'plot',
 
                     columnWidth: 0.40,
-                    height: 125,
+                    height: 150,
 
                     listeners: {
                         change: function() {

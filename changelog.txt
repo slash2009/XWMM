@@ -2,6 +2,7 @@
 
 4.1.11
  - Add support for tags to TV shows
+ - Add sort title for TV shows
 
 4.1.10
  - Revert JSON API version to 6.14.3
