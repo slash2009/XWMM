@@ -50,11 +50,11 @@ Ext.onReady(function() {
                         );
                     }
                 },
-                {
-                    text: 'Manage Genres',
-                    iconCls: 'silk-plugin',
-                    handler: function() { /* Ext.getCmp('manageGenresWin').show(); */ winGenre.show(); }
-                },
+                //{
+                //    text: 'Manage Genres',
+                //    iconCls: 'silk-plugin',
+                //    handler: function() { /* Ext.getCmp('manageGenresWin').show(); */ winGenre.show(); }
+                //},
                 {
                     xtype: 'menucheckitem',
                     checked: (docCookies.getItem('sortArticles') === '1'),
