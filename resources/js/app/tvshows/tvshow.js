@@ -39,6 +39,7 @@ var tvShowRecord = Ext.data.Record.create([
    { name: 'rating', convert: XWMM.util.convertRating },
    { name: 'plot' },
    { name: 'studio', convert: XWMM.util.convertArrayToList },
+   { name: 'mpaa' },
    { name: 'playcount' },
    { name: 'episode' },
    { name: 'premiered' },
@@ -211,7 +212,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                 {
                     columnWidth: 0.40,
                     layout: 'form',
-                    labelWidth: 65,
+                    labelWidth: 85,
                     padding: '0 10px',
                     defaults: {
                         xtype: 'textfield',
@@ -248,6 +249,10 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                             name: 'studio'
                         },
                         {
+                            fieldLabel: 'Content Rating',
+                            name: 'mpaa'
+                        },
+                        {
                             fieldLabel: 'Tags',
                             name: 'tag'
                         }
@@ -259,7 +264,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                     name: 'plot',
 
                     columnWidth: 0.40,
-                    height: 150,
+                    height: 175,
 
                     listeners: {
                         change: function() {
