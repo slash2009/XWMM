@@ -73,10 +73,6 @@ Audio.Mainpanel = Ext.extend(Ext.Panel, {
         var currentAlbum = this.getComponent('albumGrid').getSelectionModel();
 
         currentAlbum.on('rowselect', this.onRowSelect, this);
-
-        //add double-click event to cover object
-        var element = AlbumCover.getEl();
-        element.on('dblclick', function(){ChangeImages(currentRecord);});
     },
 
     onRowSelect: function(sm, rowIdx, r) {
