@@ -38,12 +38,16 @@ XWMM.util.toTitleCase = function(str) {
  * @param {array} value The array to convert.
  * @return {string} The list.
  */
-XWMM.util.convertArrayToList = function(value) {
+XWMM.util.convertArrayToList = function(value, delim) {
     if (value === undefined || value.length === 0) {
         return '';
     }
     else {
-        return value.join(' / ');
+        if (delim === undefined) {
+            delim = ' / ';
+        }
+
+        return value.join(delim);
     }
 };
 
