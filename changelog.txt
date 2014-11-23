@@ -1,6 +1,7 @@
 [B]WIMM Change log[/B]
 
 4.1.12
+ - Massive clean up of the music section
 
 4.1.11
  - Add support for tags to TV shows
