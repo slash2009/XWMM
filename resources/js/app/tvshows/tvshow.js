@@ -44,7 +44,8 @@ var tvShowRecord = Ext.data.Record.create([
    { name: 'premiered' },
    { name: 'tvshowid' },
    { name: 'playcount' },
-   { name: 'watchedepisodes' }
+   { name: 'watchedepisodes' },
+   { name: 'tag', convert: XWMM.util.convertArrayToList }
 ]);
 
 var seasonRecord = Ext.data.Record.create([
@@ -83,7 +84,7 @@ var storeTVShow = new Ext.data.Store({
                 properties: [
                     'title', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
                     'episode', 'imdbnumber', 'premiered', 'votes', 'lastplayed', 'art', 'file',
-                    'watchedepisodes'
+                    'watchedepisodes', 'tag'
                 ],
                 sort: {
                     order: 'ascending',
@@ -241,6 +242,10 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                         {
                             fieldLabel: 'Channel',
                             name: 'studio'
+                        },
+                        {
+                            fieldLabel: 'Tags',
+                            name: 'tag'
                         }
                     ]
                 },
@@ -250,7 +255,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                     name: 'plot',
 
                     columnWidth: 0.40,
-                    height: 100,
+                    height: 125,
 
                     listeners: {
                         change: function() {
