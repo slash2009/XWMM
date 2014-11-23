@@ -31,20 +31,22 @@ function fanartConvert(value, record) {
 }
 
 var tvShowRecord = Ext.data.Record.create([
+   { name: 'tvshowid' },
    { name: 'title' },
+   { name: 'sorttitle' },
    { name: 'genre', convert: XWMM.util.convertArrayToList },
    { name: 'year' },
+   { name: 'rating', convert: XWMM.util.convertRating },
    { name: 'plot' },
+   { name: 'studio', convert: XWMM.util.convertArrayToList },
+   { name: 'mpaa' },
+   { name: 'playcount' },
+   { name: 'episode' },
+   { name: 'premiered' },
    { name: 'fanart', mapping: 'art', convert: fanartConvert },
    { name: 'banner', mapping: 'art', convert: bannerConvert },
-   { name: 'tvshowid' },
-   { name: 'studio', convert: XWMM.util.convertArrayToList },
-   { name: 'episode' },
-   { name: 'rating', convert: XWMM.util.convertRating },
-   { name: 'premiered' },
-   { name: 'tvshowid' },
-   { name: 'playcount' },
-   { name: 'watchedepisodes' }
+   { name: 'watchedepisodes' },
+   { name: 'tag', convert: XWMM.util.convertArrayToList }
 ]);
 
 var seasonRecord = Ext.data.Record.create([
@@ -81,9 +83,9 @@ var storeTVShow = new Ext.data.Store({
             method: 'VideoLibrary.GetTVShows',
             params: {
                 properties: [
-                    'title', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
+                    'title', 'sorttitle', 'genre', 'year', 'rating', 'plot', 'studio', 'mpaa', 'playcount',
                     'episode', 'imdbnumber', 'premiered', 'votes', 'lastplayed', 'art', 'file',
-                    'watchedepisodes'
+                    'watchedepisodes', 'tag'
                 ],
                 sort: {
                     order: 'ascending',
@@ -210,7 +212,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                 {
                     columnWidth: 0.40,
                     layout: 'form',
-                    labelWidth: 65,
+                    labelWidth: 85,
                     padding: '0 10px',
                     defaults: {
                         xtype: 'textfield',
@@ -229,6 +231,10 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                             allowBlank: false
                         },
                         {
+                            fieldLabel: 'Sort Title',
+                            name: 'sorttitle'
+                        },
+                        {
                             fieldLabel: 'Genres',
                             name: 'genre',
                             readOnly: true,
@@ -241,6 +247,14 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                         {
                             fieldLabel: 'Channel',
                             name: 'studio'
+                        },
+                        {
+                            fieldLabel: 'Content Rating',
+                            name: 'mpaa'
+                        },
+                        {
+                            fieldLabel: 'Tags',
+                            name: 'tag'
                         }
                     ]
                 },
@@ -250,7 +264,7 @@ var tvShowDetailsPanel = new Ext.FormPanel({
                     name: 'plot',
 
                     columnWidth: 0.40,
-                    height: 100,
+                    height: 175,
 
                     listeners: {
                         change: function() {
