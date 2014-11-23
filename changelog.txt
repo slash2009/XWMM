@@ -1,5 +1,8 @@
 [B]WIMM Change log[/B]
 
+4.1.11
+
+
 4.1.10
  - Revert JSON API version to 6.14.3
  - Show placeholder artwork if no poster/fanart available for a movie

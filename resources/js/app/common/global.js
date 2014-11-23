@@ -22,7 +22,7 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var myVersion = '4.1.10';
+var myVersion = '4.1.11';
 
 /**
  * Protect window.console method calls, e.g. console is not defined on IE
