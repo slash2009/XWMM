@@ -289,14 +289,31 @@ var movieDetailsPanel = new Ext.FormPanel({
                     name: 'trailer'
                 },
                 {
-                    xtype: 'button',
-                    text: 'View Trailer',
-                    handler: function() {
-                        if (Ext.getCmp('trailer').getValue() !== '') {
-                            window.open(Ext.getCmp('trailer').getValue(), '');
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: 'Download Movie',
+                            handler: function() {
+                                var selectedMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected(),
+                                    path = selectedMovie.data.file;
+
+                                if (path !== '') {
+                                    window.open(XWMM.util.convertVFSURL(path), '');
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'View Trailer',
+                            handler: function() {
+                                if (Ext.getCmp('trailer').getValue() !== '') {
+                                    window.open(Ext.getCmp('trailer').getValue(), '');
+                                }
+                            }
                         }
-                    },
-                    width: 60
+                    ]
                 }
             ]
         },
