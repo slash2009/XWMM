@@ -2,8 +2,8 @@
 
 4.1.13
  - Allow semi-colon (;) to be used as a list delimiter
- - Add download movie/episode button
- - Add link to IMDb page
+ - Add download movie/episode button (Issue #106)
+ - Add link to IMDb page (Issue #108)
 
 4.1.12
  - Massive clean up of the music section
@@ -18,7 +18,7 @@
  - Revert JSON API version to 6.14.3
  - Show placeholder artwork if no poster/fanart available for a movie
  - Add button to clear selected genres
- - Add repository to addon.xml for auto updates
+ - Add repository to addon.xml for auto updates (Issue #97)
 
 4.1.9
 - New project logo/fanart/favicon courtesy of
