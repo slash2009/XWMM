@@ -312,6 +312,21 @@ var movieDetailsPanel = new Ext.FormPanel({
                                     window.open(Ext.getCmp('trailer').getValue(), '');
                                 }
                             }
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'View on IMDb',
+                            handler: function() {
+                                var selectedMovie = Ext.getCmp('Moviegrid').getSelectionModel().getSelected(),
+                                    imdbId = selectedMovie.data.imdbnumber;
+
+                                if (imdbId !== '') {
+                                    window.open('http://imdb.com/title/' + imdbId, '');
+                                }
+                                else {
+                                    alert('There is no IMDb ID set for this movie.');
+                                }
+                            }
                         }
                     ]
                 }
