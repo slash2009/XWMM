@@ -85,6 +85,20 @@ XWMM.util.convertArtworkURL = function(value) {
 };
 
 /**
+ * Converts a file path to a VFS url
+ * @param {string} value The file path to convert.
+ * @return {string} The converted url.
+ */
+XWMM.util.convertVFSURL = function(value) {
+    if (value === undefined || value === '') {
+        return '';
+    }
+    else {
+        return '/vfs/' + encodeURI(value);
+    }
+};
+
+/**
  * Convert a rating to 1 decimal place
  * @param {string} value The rating to convert.
  * @return {string} The converted rating.
