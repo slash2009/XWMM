@@ -1,6 +1,7 @@
 [B]WIMM Change log[/B]
 
 4.1.13
+ - Allow semi-colon (;) to be used as a list delimiter
 
 4.1.12
  - Massive clean up of the music section

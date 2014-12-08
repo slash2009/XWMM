@@ -99,7 +99,7 @@ function updateXBMCTables(form, recordType, recordId) {
             case 'mood':
             case 'style':
             case 'artist':
-                params[f.name] = XWMM.util.convertListToArray(f.getValue(), /[,\/\|]+/); // Split list separated with , / or |.
+                params[f.name] = XWMM.util.convertListToArray(f.getValue(), /[,\/\|;]+/); // Split list separated with , / or |.
                 break;
 
             default:
