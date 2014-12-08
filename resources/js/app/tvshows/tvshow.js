@@ -329,6 +329,18 @@ var episodeDetailsPanel = new Ext.FormPanel({
                     fieldLabel: 'Description',
                     name: 'plot',
                     height: 125,
+                },
+                {
+                    xtype: 'button',
+                    text: 'Download Episode',
+                    handler: function() {
+                        var selectedEpisode = Ext.getCmp('episodeGird').getSelectionModel().getSelected(),
+                            path = selectedEpisode.data.directory + selectedEpisode.data.file;
+
+                        if (path !== '') {
+                            window.open(XWMM.util.convertVFSURL(path), '');
+                        }
+                    }
                 }
             ]
         },

@@ -2,6 +2,7 @@
 
 4.1.13
  - Allow semi-colon (;) to be used as a list delimiter
+ - Add download movie/episode button
 
 4.1.12
  - Massive clean up of the music section
