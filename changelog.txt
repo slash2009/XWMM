@@ -1,6 +1,7 @@
 [B]WIMM Change log[/B]
 
 4.1.14
+ - Fix music genre field not being split correctly (Issue #120)
 
 4.1.13
  - Allow semi-colon (;) to be used as a list delimiter
