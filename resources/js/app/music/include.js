@@ -71,7 +71,7 @@ function GetAlbumDetails(record) {
         params: {
             albumid: record.data.albumid,
             properties: [
-                'description', 'theme', 'mood', 'style',
+                'description', 'theme', 'mood', 'style', 'genre',
                 'type', 'albumlabel', 'rating', 'thumbnail'
             ]
         },
@@ -80,6 +80,7 @@ function GetAlbumDetails(record) {
     var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.albumdetails);
 
+    record.data.genre = XWMM.util.convertArrayToList(response.albumdetails.genre, ' | ');
     record.data.theme = XWMM.util.convertArrayToList(response.albumdetails.theme, ' | ');
     record.data.mood = XWMM.util.convertArrayToList(response.albumdetails.mood, ' | ');
     record.data.style = XWMM.util.convertArrayToList(response.albumdetails.style, ' | ');
