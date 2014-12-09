@@ -101,7 +101,7 @@ function loadTVShowDetails(record) {
                 'premiered', 'votes', 'fanart', 'thumbnail', 'file', 'episodeguide'
             ]
         },
-        id: 'XWMM'
+        id: 'WIMM'
     };
     var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.tvshowdetails);

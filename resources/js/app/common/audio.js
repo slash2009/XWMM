@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2014 Andrew Fyfe.
  *
@@ -29,7 +29,7 @@ Ext.ns('XWMM.audio');
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Clean',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         xbmcJsonRPC(request);
@@ -43,7 +43,7 @@ Ext.ns('XWMM.audio');
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Scan',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         if (directory !== undefined) {

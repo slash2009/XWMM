@@ -93,7 +93,7 @@ var storeTVShow = new Ext.data.Store({
                     method: 'sorttitle'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.tvshows' }, tvShowRecord)
@@ -109,7 +109,7 @@ var storeSeason = new Ext.data.Store({
                 // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['season', 'thumbnail']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.seasons' }, seasonRecord)
@@ -129,7 +129,7 @@ var storeEpisode = new Ext.data.Store({
                     'director', 'streamdetails', 'playcount', 'file', 'writer'
                 ]
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.episodes' }, episodeRecord)
@@ -145,7 +145,7 @@ var storeActor = new Ext.data.Store({
                 // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['cast']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.tvshowdetails.cast' }, actorRecord)

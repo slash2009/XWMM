@@ -60,7 +60,7 @@
                     method: options.sortby.toLowerCase().replace(' ', '')
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         if ('ignoreArticle' in options && options.ignoreArticle === 'on') {

@@ -45,7 +45,7 @@ var storeMovie = new Ext.data.Store({
                     method: 'dateadded'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
