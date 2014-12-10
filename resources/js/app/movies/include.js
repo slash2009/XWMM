@@ -165,7 +165,7 @@ function loadMovieDetails(record) {
                 'fanart', 'thumbnail', 'file', 'sorttitle', 'tag'
             ]
         },
-        id: 'XWMM'
+        id: 'WIMM'
     };
     var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.moviedetails);

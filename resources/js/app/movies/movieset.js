@@ -44,7 +44,7 @@ Ext.ns('XWMM.video');
                         method: 'label'
                     }
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             }
         }),
         reader: new Ext.data.JsonReader({ root:'result.sets' }, movieSetRecord)
@@ -74,7 +74,7 @@ Ext.ns('XWMM.video');
             params: {
                 filter: { field: 'set', operator: 'contains', value: oldMovieSet }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         };
         var response = xbmcJsonRPC(request);
 
@@ -87,7 +87,7 @@ Ext.ns('XWMM.video');
                     movieid: response.movies[i].movieid,
                     set: newMovieSet
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             };
             xbmcJsonRPC(updateRequest);
         }

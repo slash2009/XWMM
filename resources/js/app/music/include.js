@@ -75,7 +75,7 @@ function GetAlbumDetails(record) {
                 'type', 'albumlabel', 'rating', 'thumbnail'
             ]
         },
-        id: 'XWMM'
+        id: 'WIMM'
     };
     var response = xbmcJsonRPC(request);
     XWMM.util.merge2Objects(record.data, response.albumdetails);

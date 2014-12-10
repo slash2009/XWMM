@@ -29,7 +29,7 @@ Ext.ns('XWMM.video');
         var request = {
             jsonrpc: '2.0',
             method: 'VideoLibrary.Clean',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         xbmcJsonRPC(request);
@@ -43,7 +43,7 @@ Ext.ns('XWMM.video');
         var request = {
             jsonrpc: '2.0',
             method: 'VideoLibrary.Scan',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         if (directory !== undefined) {

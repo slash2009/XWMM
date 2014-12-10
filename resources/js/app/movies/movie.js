@@ -63,7 +63,7 @@ var storeActor = new Ext.data.Store({
                 // movieid: -1, // Replaced by valid movie id before loaded.
                 properties: ['cast']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.moviedetails.cast' }, actorRecord)

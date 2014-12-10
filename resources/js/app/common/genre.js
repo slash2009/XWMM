@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2013 Zernable.
  * Copyright 2013 uNiversal.
@@ -43,7 +43,7 @@ Ext.ns('XWMM.video');
                         method: 'label'
                     }
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             }
         }),
         reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord)
@@ -89,7 +89,7 @@ Ext.ns('XWMM.video');
                 properties: ['genre'],
                 filter: { field: 'genre', operator: 'contains', value: oldGenre }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         };
         var response = xbmcJsonRPC(request);
 
@@ -113,7 +113,7 @@ Ext.ns('XWMM.video');
                 jsonrpc: '2.0',
                 method: writeMethod,
                 params: { genre: newGenreList },
-                id: 'XWMM'
+                id: 'WIMM'
             };
             updateRequest.params[idField] = response[resultField][i][idField];
             xbmcJsonRPC(updateRequest);

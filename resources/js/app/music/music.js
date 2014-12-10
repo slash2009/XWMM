@@ -47,7 +47,7 @@ var AlbumStore = new Ext.data.GroupingStore({
                     method: 'title'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.albums' }, AlbumRecord)
@@ -296,7 +296,7 @@ var SongStore = new Ext.data.Store({
                     method: 'track'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.songs' }, SongRecord)

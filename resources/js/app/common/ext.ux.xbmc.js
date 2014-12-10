@@ -58,7 +58,7 @@ function xbmcJsonRPC(params) {
     return result;
 }
 
-// Name space for XBMC objects
+// Name space for kodi objects
 
 Ext.namespace('Ext.ux');
 
