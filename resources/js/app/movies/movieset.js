@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2011, 2013 slash2009.
  * Copyright 2013 Zernable.
@@ -21,7 +21,7 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.video');
+Ext.ns('WIMM.video');
 
 (function() {
 
@@ -32,8 +32,8 @@ Ext.ns('XWMM.video');
 
     var sortArticles = docCookies.getItem('sortArticles') === '1';
 
-    XWMM.video.movieSetStore = new Ext.data.Store({
-        proxy: new Ext.data.XBMCProxy({
+    WIMM.video.movieSetStore = new Ext.data.Store({
+        proxy: new Ext.data.KodiProxy({
             jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetMovieSets',
@@ -44,7 +44,7 @@ Ext.ns('XWMM.video');
                         method: 'label'
                     }
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             }
         }),
         reader: new Ext.data.JsonReader({ root:'result.sets' }, movieSetRecord)
@@ -74,9 +74,9 @@ Ext.ns('XWMM.video');
             params: {
                 filter: { field: 'set', operator: 'contains', value: oldMovieSet }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         };
-        var response = xbmcJsonRPC(request);
+        var response = kodiJsonRPC(request);
 
         var i, i_len, updateRequest;
         for (i = 0, i_len = response.movies.length; i < i_len; i++) {
@@ -87,9 +87,9 @@ Ext.ns('XWMM.video');
                     movieid: response.movies[i].movieid,
                     set: newMovieSet
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             };
-            xbmcJsonRPC(updateRequest);
+            kodiJsonRPC(updateRequest);
         }
 
         Ext.getCmp('Moviegrid').getStore().load();
@@ -116,7 +116,7 @@ Ext.ns('XWMM.video');
                 clicksToEdit: 1,
                 stripeRows: true,
                 plugins: [rowEditor],
-                store: XWMM.video.movieSetStore,
+                store: WIMM.video.movieSetStore,
                 tbar: [
                     {
                         text: 'Add',

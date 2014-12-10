@@ -32,7 +32,7 @@ var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeMovie = new Ext.data.Store({
     autoLoad: true,
 
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovies',
@@ -46,7 +46,7 @@ var storeMovie = new Ext.data.Store({
                     method: 'sorttitle'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.movies' }, MovieRecord)
@@ -87,7 +87,7 @@ var movieGrid = new Ext.grid.GridPanel({
             items: [
                 {
                     id: 'genreFilterCombo',
-                    store: XWMM.video.genreStore,
+                    store: WIMM.video.genreStore,
 
                     xtype: 'combo',
                     name: 'label',

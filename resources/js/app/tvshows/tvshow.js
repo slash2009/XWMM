@@ -23,22 +23,22 @@
 Ext.ns('TVShow');
 
 function bannerConvert(value, record) {
-    return XWMM.util.convertArtworkURL(value.banner);
+    return WIMM.util.convertArtworkURL(value.banner);
 }
 
 function fanartConvert(value, record) {
-    return XWMM.util.convertArtworkURL(value.fanart);
+    return WIMM.util.convertArtworkURL(value.fanart);
 }
 
 var tvShowRecord = Ext.data.Record.create([
    { name: 'tvshowid' },
    { name: 'title' },
    { name: 'sorttitle' },
-   { name: 'genre', convert: XWMM.util.convertArrayToList },
+   { name: 'genre', convert: WIMM.util.convertArrayToList },
    { name: 'year' },
-   { name: 'rating', convert: XWMM.util.convertRating },
+   { name: 'rating', convert: WIMM.util.convertRating },
    { name: 'plot' },
-   { name: 'studio', convert: XWMM.util.convertArrayToList },
+   { name: 'studio', convert: WIMM.util.convertArrayToList },
    { name: 'mpaa' },
    { name: 'playcount' },
    { name: 'episode' },
@@ -46,28 +46,28 @@ var tvShowRecord = Ext.data.Record.create([
    { name: 'fanart', mapping: 'art', convert: fanartConvert },
    { name: 'banner', mapping: 'art', convert: bannerConvert },
    { name: 'watchedepisodes' },
-   { name: 'tag', convert: XWMM.util.convertArrayToList }
+   { name: 'tag', convert: WIMM.util.convertArrayToList }
 ]);
 
 var seasonRecord = Ext.data.Record.create([
    { name: 'season' },
    { name: 'label' },
-   { name: 'thumbnail', convert: XWMM.util.convertArtworkURL }
+   { name: 'thumbnail', convert: WIMM.util.convertArtworkURL }
 ]);
 
 var episodeRecord = Ext.data.Record.create([
     { name: 'episode' },
     { name: 'title' },
-    { name: 'rating', convert: XWMM.util.convertRating },
+    { name: 'rating', convert: WIMM.util.convertRating },
     { name: 'plot' },
     { name: 'firstaired' },
-    { name: 'director', convert: XWMM.util.convertArrayToList },
-    { name: 'writer', convert: XWMM.util.convertArrayToList },
+    { name: 'director', convert: WIMM.util.convertArrayToList },
+    { name: 'writer', convert: WIMM.util.convertArrayToList },
     { name: 'streamdetails' },
     { name: 'playcount' },
     { name: 'episodeid' },
-    { name: 'file', convert: XWMM.util.convertPathToFileName },
-    { name: 'directory', mapping: 'file', convert: XWMM.util.convertPathToDirectory }
+    { name: 'file', convert: WIMM.util.convertPathToFileName },
+    { name: 'directory', mapping: 'file', convert: WIMM.util.convertPathToDirectory }
 ]);
 
 var actorRecord = Ext.data.Record.create([
@@ -77,7 +77,7 @@ var actorRecord = Ext.data.Record.create([
 
 var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeTVShow = new Ext.data.Store({
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShows',
@@ -93,7 +93,7 @@ var storeTVShow = new Ext.data.Store({
                     method: 'sorttitle'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.tvshows' }, tvShowRecord)
@@ -101,7 +101,7 @@ var storeTVShow = new Ext.data.Store({
 
 var storeSeason = new Ext.data.Store({
     sortInfo: { field: 'season', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetSeasons',
@@ -109,7 +109,7 @@ var storeSeason = new Ext.data.Store({
                 // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['season', 'thumbnail']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.seasons' }, seasonRecord)
@@ -117,7 +117,7 @@ var storeSeason = new Ext.data.Store({
 
 var storeEpisode = new Ext.data.Store({
     sortInfo: { field: 'episode', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetEpisodes',
@@ -129,7 +129,7 @@ var storeEpisode = new Ext.data.Store({
                     'director', 'streamdetails', 'playcount', 'file', 'writer'
                 ]
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.episodes' }, episodeRecord)
@@ -137,7 +137,7 @@ var storeEpisode = new Ext.data.Store({
 
 var storeActor = new Ext.data.Store({
     sortInfo: { field: 'name', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShowDetails',
@@ -145,26 +145,26 @@ var storeActor = new Ext.data.Store({
                 // tvshowid: -1, // Replaced by valid tv show id before loaded.
                 properties: ['cast']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.tvshowdetails.cast' }, actorRecord)
 });
 
-var tvshowStars = new Ext.ux.XbmcStars ({
+var tvshowStars = new Ext.ux.KodiStars ({
     id: 'tvShowStarRating',
     border: 0,
     width: 96,
     height:27
 });
 
-var episodeStars = new Ext.ux.XbmcStars ({
+var episodeStars = new Ext.ux.KodiStars ({
     id: 'episodeStarRating',
     width: 72,
     height:20
 });
 
-var TVShowCover = new Ext.ux.XbmcImages({
+var TVShowCover = new Ext.ux.KodiImages({
     id: 'tvshowcover',
     cls: 'center-align',
     border: 0,
@@ -173,7 +173,7 @@ var TVShowCover = new Ext.ux.XbmcImages({
     autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
-var SeasonCover = new Ext.ux.XbmcImages({
+var SeasonCover = new Ext.ux.KodiImages({
     id: 'seasoncover',
     cls: 'center-align',
     border: 0,
@@ -338,7 +338,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
                             path = selectedEpisode.data.directory + selectedEpisode.data.file;
 
                         if (path !== '') {
-                            window.open(XWMM.util.convertVFSURL(path), '');
+                            window.open(WIMM.util.convertVFSURL(path), '');
                         }
                     }
                 }
@@ -546,7 +546,7 @@ TVShow.Mainpanel = new Ext.Panel({
                     text: 'Save',
                     id: 'savebutton',
                     handler: function(e) {
-                        updateXBMCAll();
+                        updateKodiAll();
                         this.disable();
                     }
                 },

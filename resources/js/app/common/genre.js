@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2013 Zernable.
  * Copyright 2013 uNiversal.
@@ -20,7 +20,7 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.video');
+Ext.ns('WIMM.video');
 
 (function() {
 
@@ -31,8 +31,8 @@ Ext.ns('XWMM.video');
 
     var sortArticles = docCookies.getItem('sortArticles') === '1';
 
-    XWMM.video.genreStore = new Ext.data.Store({
-        proxy: new Ext.data.XBMCProxy({
+    WIMM.video.genreStore = new Ext.data.Store({
+        proxy: new Ext.data.KodiProxy({
             jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetGenres',
@@ -43,7 +43,7 @@ Ext.ns('XWMM.video');
                         method: 'label'
                     }
                 },
-                id: 'XWMM'
+                id: 'WIMM'
             }
         }),
         reader: new Ext.data.JsonReader({ root:'result.genres' }, genreRecord)
@@ -63,14 +63,14 @@ Ext.ns('XWMM.video');
 
     function renameGenre(oldGenre, newGenre) {
         var idField, resultField, readMethod, writeMethod, gridId;
-        if (XWMM.video.genreMode === 'movie') {
+        if (WIMM.video.genreMode === 'movie') {
             idField = 'movieid';
             resultField = 'movies';
             readMethod = 'VideoLibrary.GetMovies';
             writeMethod = 'VideoLibrary.SetMovieDetails';
             gridId = 'Moviegrid';
         }
-        else if (XWMM.video.genreMode === 'tvshow') {
+        else if (WIMM.video.genreMode === 'tvshow') {
             idField = 'tvshowid';
             resultField = 'tvshows';
             readMethod = 'VideoLibrary.GetTVShows';
@@ -78,7 +78,7 @@ Ext.ns('XWMM.video');
             gridId = 'tvshowgrid';
         }
         else {
-            console.error('Unknown XWMM.video.mode. [' + XWMM.video.mode + ']');
+            console.error('Unknown WIMM.video.mode. [' + WIMM.video.mode + ']');
             return;
         }
 
@@ -89,9 +89,9 @@ Ext.ns('XWMM.video');
                 properties: ['genre'],
                 filter: { field: 'genre', operator: 'contains', value: oldGenre }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         };
-        var response = xbmcJsonRPC(request);
+        var response = kodiJsonRPC(request);
 
         var i, i_len, j, j_len, oldGenreList, newGenreList, updateRequest;
         for (i = 0, i_len = response[resultField].length; i < i_len; i++) {
@@ -113,10 +113,10 @@ Ext.ns('XWMM.video');
                 jsonrpc: '2.0',
                 method: writeMethod,
                 params: { genre: newGenreList },
-                id: 'XWMM'
+                id: 'WIMM'
             };
             updateRequest.params[idField] = response[resultField][i][idField];
-            xbmcJsonRPC(updateRequest);
+            kodiJsonRPC(updateRequest);
         }
 
         Ext.getCmp(gridId).getStore().load();
@@ -143,7 +143,7 @@ Ext.ns('XWMM.video');
                 clicksToEdit: 1,
                 stripeRows: true,
                 plugins: [rowEditor],
-                store: XWMM.video.genreStore,
+                store: WIMM.video.genreStore,
                 tbar: [
                     {
                         text: 'Add',
@@ -213,23 +213,23 @@ Ext.ns('XWMM.video');
         header: false,
         listeners: {
             selectionchange: function(sm) {
-                if (XWMM.video.genreMode === 'movie') {
+                if (WIMM.video.genreMode === 'movie') {
                     movieGenreChange(sm);
                 }
-                else if (XWMM.video.genreMode === 'tvshow') {
+                else if (WIMM.video.genreMode === 'tvshow') {
                     tvShowGenreChange(sm);
                 }
                 else {
-                    console.error('Unknown XWMM.video.mode. [' + XWMM.video.mode + ']');
+                    console.error('Unknown WIMM.video.mode. [' + WIMM.video.mode + ']');
                 }
             }
         }
     });
 
-    XWMM.video.genresGrid = new Ext.grid.GridPanel({
+    WIMM.video.genresGrid = new Ext.grid.GridPanel({
         id: 'genresGrid',
         title: 'Genres',
-        store: XWMM.video.genreStore,
+        store: WIMM.video.genreStore,
 
         cm: new Ext.grid.ColumnModel([
             genreChkBoxSM,
@@ -271,16 +271,16 @@ Ext.ns('XWMM.video');
     });
 
 
-    XWMM.video.setGenreMode = function(mode) {
+    WIMM.video.setGenreMode = function(mode) {
         if (mode === 'movie' || mode === 'tvshow') {
-            XWMM.video.genreMode = mode;
+            WIMM.video.genreMode = mode;
         }
         else {
-            console.error('XWMM.video.setGenreMode :: Unknown mode. [' + mode + ']');
+            console.error('WIMM.video.setGenreMode :: Unknown mode. [' + mode + ']');
             return;
         }
 
-        XWMM.video.genreStore.load({ params: { type: mode } });
+        WIMM.video.genreStore.load({ params: { type: mode } });
     };
 
 })();

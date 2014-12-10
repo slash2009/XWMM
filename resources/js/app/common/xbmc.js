@@ -23,12 +23,12 @@
  */
 
 /**
- * Save the watched state back to XBMC.
+ * Save the watched state back to Kodi.
  * @param {int} mediaId The media id.
  * @param {string} mediaType The type of media.
  * @param {boolean} watched Has it been watched?
  */
-function setXBMCWatched(mediaId, mediaType, watched) {
+function setKodiWatched(mediaId, mediaType, watched) {
     var playCount = (watched === true) ? 1 : 0;
     var rpcCmd = {
         jsonrpc: '2.0',
@@ -57,17 +57,17 @@ function setXBMCWatched(mediaId, mediaType, watched) {
             return;
     }
 
-    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmd);
-    xbmcJsonRPC(rpcCmd);
+    //console.debug('WIMM::updateKodiSet rpcCmd: ' + rpcCmd);
+    kodiJsonRPC(rpcCmd);
 }
 
 /**
- * Save the changes back to XBMC.
+ * Save the changes back to Kodi.
  * @param {Ext.form.BasicForm} form The form containing the record.
  * @param {string}recordType The type of record.
  * @param {int} recordId The id of the item record saved.
  */
-function updateXBMCTables(form, recordType, recordId) {
+function updateKodiTables(form, recordType, recordId) {
     var itemsList = form.items.items;
     var params = {};
 
@@ -99,7 +99,7 @@ function updateXBMCTables(form, recordType, recordId) {
             case 'mood':
             case 'style':
             case 'artist':
-                params[f.name] = XWMM.util.convertListToArray(f.getValue(), /[,\/\|;]+/); // Split list separated with , / or |.
+                params[f.name] = WIMM.util.convertListToArray(f.getValue(), /[,\/\|;]+/); // Split list separated with , / or |.
                 break;
 
             default:
@@ -144,11 +144,11 @@ function updateXBMCTables(form, recordType, recordId) {
             return;
     }
 
-    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmd);
-    xbmcJsonRPC(rpcCmd);
+    //console.debug('WIMM::updateKodiTables rpcCmd: ' + rpcCmd);
+    kodiJsonRPC(rpcCmd);
 }
 
-Ext.data.XBMCProxy = function(conn) {
+Ext.data.KodiProxy = function(conn) {
     // default connection settings
     this.conn = {
         url: '/jsonrpc',
@@ -164,14 +164,14 @@ Ext.data.XBMCProxy = function(conn) {
     // apply store specific settings
     Ext.applyIf(this.conn, conn);
 
-    Ext.data.XBMCProxy.superclass.constructor.call(this, conn);
+    Ext.data.KodiProxy.superclass.constructor.call(this, conn);
 
-    // XBMCProxy only supports read actions
+    // KodiProxy only supports read actions
     this.api = { read: '/jsonrpc' };
     this.activeRequest = undefined;
 };
 
-Ext.extend(Ext.data.XBMCProxy, Ext.data.DataProxy, {
+Ext.extend(Ext.data.KodiProxy, Ext.data.DataProxy, {
     doRequest: function(action, rs, params, reader, cb, scope, arg) {
         var request = {
             request: {

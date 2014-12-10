@@ -20,7 +20,7 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function xbmcJsonRPC(params) {
+function kodiJsonRPC(params) {
     var result;
 
     if (typeof(params) === 'object') {
@@ -58,24 +58,24 @@ function xbmcJsonRPC(params) {
     return result;
 }
 
-// Name space for XBMC objects
+// Name space for kodi objects
 
 Ext.namespace('Ext.ux');
 
 /**
-  * Ext.ux.XbmcImages Extension Class
+  * Ext.ux.KodiImages Extension Class
   * @author slash
   * @version 1.0
-  * @class Ext.ux.XbmcImages
+  * @class Ext.ux.KodiImages
   * @extends Ext.Container
   * @constructor
   */
 
-Ext.ux.XbmcImages = function(config) {
-    Ext.ux.XbmcImages.superclass.constructor.call(this, config);
+Ext.ux.KodiImages = function(config) {
+    Ext.ux.KodiImages.superclass.constructor.call(this, config);
 };
 
-Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
+Ext.extend(Ext.ux.KodiImages, Ext.Container, {
     // refresh image
     refreshMe: function() {
         this.el.dom.src =  this.el.dom.src + '?dc=' + new Date().getTime();
@@ -92,19 +92,19 @@ Ext.extend(Ext.ux.XbmcImages, Ext.Container, {
 });
 
 /**
-  * Ext.ux.XbmcStars Extension Class
+  * Ext.ux.KodiStars Extension Class
   * @author slash
   * @version 1.0
-  * @class Ext.ux.XbmcStars
+  * @class Ext.ux.KodiStars
   * @extends Ext.Container
   * @constructor
   */
 
-Ext.ux.XbmcStars = function(config) {
-    Ext.ux.XbmcStars.superclass.constructor.call(this, config);
+Ext.ux.KodiStars = function(config) {
+    Ext.ux.KodiStars.superclass.constructor.call(this, config);
 };
 
-Ext.extend(Ext.ux.XbmcStars, Ext.Container, {
+Ext.extend(Ext.ux.KodiStars, Ext.Container, {
     border: 0,
     autoEl: {tag: 'img', src: '../resources/images/stars/0.png'},
     updateSrc: function(r) {

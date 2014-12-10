@@ -32,7 +32,7 @@ Ext.onReady(function() {
                     text: 'Scan Library',
                     iconCls: 'silk-plugin',
                     handler: function() {
-                        XWMM.audio.scanLibrary();
+                        WIMM.audio.scanLibrary();
                         Ext.MessageBox.alert(
                             'Scan Library',
                             'A library scan has begun.'
@@ -43,7 +43,7 @@ Ext.onReady(function() {
                     text: 'Clean Library',
                     iconCls: 'silk-plugin',
                     handler: function() {
-                        XWMM.audio.cleanLibrary();
+                        WIMM.audio.cleanLibrary();
                         Ext.MessageBox.alert(
                             'Clean Library',
                             'The library is being cleaned.'

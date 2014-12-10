@@ -23,9 +23,9 @@
 var AlbumRecord = Ext.data.Record.create([
    { name: 'albumid' },
    { name: 'title' },
-   { name: 'artist', convert: XWMM.util.convertArrayToList },
+   { name: 'artist', convert: WIMM.util.convertArrayToList },
    { name: 'displayartist' },
-   { name: 'genre', convert: XWMM.util.convertArrayToList },
+   { name: 'genre', convert: WIMM.util.convertArrayToList },
    { name: 'year' }
 ]);
 
@@ -33,7 +33,7 @@ var sortArticles = docCookies.getItem('sortArticles') === '1';
 var AlbumStore = new Ext.data.GroupingStore({
     autoLoad: true,
     sortInfo: { field: 'title', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'AudioLibrary.GetAlbums',
@@ -47,7 +47,7 @@ var AlbumStore = new Ext.data.GroupingStore({
                     method: 'title'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.albums' }, AlbumRecord)
@@ -84,14 +84,14 @@ var AlbumGrid = new Ext.grid.GridPanel({
 
 // ------------ Album information -------------
 
-var AlbumCover = new Ext.ux.XbmcImages ({
+var AlbumCover = new Ext.ux.KodiImages ({
     autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
     border: 0,
     width: 160,
     height: 160
 });
 
-var AlbumStars = new Ext.ux.XbmcStars ({
+var AlbumStars = new Ext.ux.KodiStars ({
     border: 0,
     width: 58,
     height: 16
@@ -278,11 +278,11 @@ var SongRecord = Ext.data.Record.create([
    { name: 'title' },
    { name: 'track' },
    { name: 'duration' },
-   { name: 'rating', convert: XWMM.util.convertRating },
+   { name: 'rating', convert: WIMM.util.convertRating },
 ]);
 
 var SongStore = new Ext.data.Store({
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'AudioLibrary.GetSongs',
@@ -296,7 +296,7 @@ var SongStore = new Ext.data.Store({
                     method: 'track'
                 }
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.songs' }, SongRecord)

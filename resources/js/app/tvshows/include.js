@@ -25,7 +25,7 @@ function setWatched() {
     var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
 
     if (selectedEpisode.data.playcount === 0) {
-        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', true);
+        setKodiWatched(selectedEpisode.data.episodeid, 'episode', true);
         selectedEpisode.data.playcount = 1;
         episodeGrid.getView().refresh();
     }
@@ -36,13 +36,13 @@ function setUnwatched() {
     var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
 
     if (selectedEpisode.data.playcount !== 0) {
-        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', false);
+        setKodiWatched(selectedEpisode.data.episodeid, 'episode', false);
         selectedEpisode.data.playcount = 0;
         episodeGrid.getView().refresh();
     }
 }
 
-function updateXBMCAll() {
+function updateKodiAll() {
     Ext.MessageBox.show({
         title: 'Please wait',
         msg: 'Saving changes',
@@ -67,7 +67,7 @@ function updateXBMCAll() {
                     mesg = 'Checking for changes...';
                     form = Ext.getCmp('episodedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'episode',
+                        updateKodiTables(form, 'episode',
                             Ext.getCmp('episodeGird').getSelectionModel().getSelected().data.episodeid);
                         mesg = 'Updating episode information...';
                     }
@@ -75,7 +75,7 @@ function updateXBMCAll() {
                 if (v === 10) {
                     form = Ext.getCmp('tvShowdetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'tvshow',
+                        updateKodiTables(form, 'tvshow',
                             Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.tvshowid);
                         mesg = 'Updating TV show information...';
                     }
@@ -101,17 +101,17 @@ function loadTVShowDetails(record) {
                 'premiered', 'votes', 'fanart', 'thumbnail', 'file', 'episodeguide'
             ]
         },
-        id: 'XWMM'
+        id: 'WIMM'
     };
-    var response = xbmcJsonRPC(request);
-    XWMM.util.merge2Objects(record.data, response.tvshowdetails);
+    var response = kodiJsonRPC(request);
+    WIMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
-    record.data.genre = XWMM.util.convertArrayToList(response.tvshowdetails.genre);
-    record.data.studio = XWMM.util.convertArrayToList(response.tvshowdetails.studio);
-    record.data.rating = XWMM.util.convertRating(response.tvshowdetails.rating);
-    record.data.fanart = XWMM.util.convertArtworkURL(response.tvshowdetails.fanart);
-    record.data.thumbnail = XWMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
+    record.data.genre = WIMM.util.convertArrayToList(response.tvshowdetails.genre);
+    record.data.studio = WIMM.util.convertArrayToList(response.tvshowdetails.studio);
+    record.data.rating = WIMM.util.convertRating(response.tvshowdetails.rating);
+    record.data.fanart = WIMM.util.convertArtworkURL(response.tvshowdetails.fanart);
+    record.data.thumbnail = WIMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
     updateTVShowDetails(record);
 }
 
@@ -146,11 +146,11 @@ function updateEpisodeDetails(record) {
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
                 '../resources/images/flags/aspectratio/' +
-                    XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                    WIMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
                 '../resources/images/flags/video/' +
-                    XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                    WIMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
@@ -198,7 +198,7 @@ function tvShowGenreChange(sm) {
 function updateTVShowGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = XWMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = WIMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {

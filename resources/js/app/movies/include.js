@@ -27,7 +27,7 @@ function setWatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched === 0) {
-        setXBMCWatched(selectedMovie.data.movieid, 'movie', true);
+        setKodiWatched(selectedMovie.data.movieid, 'movie', true);
         selectedMovie.data.watched = 1;
         movieGrid.getView().refresh();
     }
@@ -38,13 +38,13 @@ function setUnwatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched !== 0) {
-        setXBMCWatched(selectedMovie.data.movieid, 'movie', false);
+        setKodiWatched(selectedMovie.data.movieid, 'movie', false);
         selectedMovie.data.watched = 0;
         movieGrid.getView().refresh();
     }
 }
 
-function updateXBMCAll() {
+function updateKodiAll() {
     Ext.MessageBox.show({
         title: 'Please wait',
         msg: 'Saving changes',
@@ -71,14 +71,14 @@ function updateXBMCAll() {
 
                     form = Ext.getCmp('MoviedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'movie',
+                        updateKodiTables(form, 'movie',
                             Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating movie info';
                     }
 
                     form = Ext.getCmp('filedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'movie',
+                        updateKodiTables(form, 'movie',
                             Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating additional info';
                     }
@@ -133,11 +133,11 @@ function updateMovieDetails(record) {
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
                 '../resources/images/flags/aspectratio/' +
-                    XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                    WIMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
                 '../resources/images/flags/video/' +
-                    XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                    WIMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
@@ -165,21 +165,21 @@ function loadMovieDetails(record) {
                 'fanart', 'thumbnail', 'file', 'sorttitle', 'tag'
             ]
         },
-        id: 'XWMM'
+        id: 'WIMM'
     };
-    var response = xbmcJsonRPC(request);
-    XWMM.util.merge2Objects(record.data, response.moviedetails);
+    var response = kodiJsonRPC(request);
+    WIMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved
-    record.data.genre = XWMM.util.convertArrayToList(response.moviedetails.genre);
-    record.data.director = XWMM.util.convertArrayToList(response.moviedetails.director);
-    record.data.writer = XWMM.util.convertArrayToList(response.moviedetails.writer);
-    record.data.studio = XWMM.util.convertArrayToList(response.moviedetails.studio);
-    record.data.country = XWMM.util.convertArrayToList(response.moviedetails.country);
-    record.data.tag = XWMM.util.convertArrayToList(response.moviedetails.tag);
-    record.data.fanart = XWMM.util.convertArtworkURL(response.moviedetails.fanart);
-    record.data.thumbnail = XWMM.util.convertArtworkURL(response.moviedetails.thumbnail);
-    record.data.rating = XWMM.util.convertRating(response.moviedetails.rating);
+    record.data.genre = WIMM.util.convertArrayToList(response.moviedetails.genre);
+    record.data.director = WIMM.util.convertArrayToList(response.moviedetails.director);
+    record.data.writer = WIMM.util.convertArrayToList(response.moviedetails.writer);
+    record.data.studio = WIMM.util.convertArrayToList(response.moviedetails.studio);
+    record.data.country = WIMM.util.convertArrayToList(response.moviedetails.country);
+    record.data.tag = WIMM.util.convertArrayToList(response.moviedetails.tag);
+    record.data.fanart = WIMM.util.convertArtworkURL(response.moviedetails.fanart);
+    record.data.thumbnail = WIMM.util.convertArtworkURL(response.moviedetails.thumbnail);
+    record.data.rating = WIMM.util.convertRating(response.moviedetails.rating);
     record.data.runtime = Math.round(response.moviedetails.runtime / 60);
     updateMovieDetails(record);
 }
@@ -207,7 +207,7 @@ function movieGenreChange(sm) {
 function updateMovieGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = XWMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = WIMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {

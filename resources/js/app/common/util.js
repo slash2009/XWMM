@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2011 slash2009.
  * Copyright 2013 Zernable.
@@ -21,14 +21,14 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.util');
+Ext.ns('WIMM.util');
 
 /**
  * Convert a string to title case.
  * @param {string} str The string to convert.
  * @return {string} The string converted to title case.
  */
-XWMM.util.toTitleCase = function(str) {
+WIMM.util.toTitleCase = function(str) {
     return str.replace(/\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 };
 
@@ -38,7 +38,7 @@ XWMM.util.toTitleCase = function(str) {
  * @param {array} value The array to convert.
  * @return {string} The list.
  */
-XWMM.util.convertArrayToList = function(value, delim) {
+WIMM.util.convertArrayToList = function(value, delim) {
     if (value === undefined || value.length === 0) {
         return '';
     }
@@ -57,7 +57,7 @@ XWMM.util.convertArrayToList = function(value, delim) {
  * @param {(string|RegExp)} sep The separator to split the list on.
  * @returns {Array} The string list as an array.
  */
-XWMM.util.convertListToArray = function(stringList, sep) {
+WIMM.util.convertListToArray = function(stringList, sep) {
     var inList = stringList.split(sep);
     var outList = [];
     for (var i = 0, len = inList.length; i < len; i++) {
@@ -74,7 +74,7 @@ XWMM.util.convertListToArray = function(stringList, sep) {
  * @param {string} value The artwork url to convert.
  * @return {string} The converted url.
  */
-XWMM.util.convertArtworkURL = function(value) {
+WIMM.util.convertArtworkURL = function(value) {
     if (value === undefined || value === '') {
         return '';
     }
@@ -89,7 +89,7 @@ XWMM.util.convertArtworkURL = function(value) {
  * @param {string} value The file path to convert.
  * @return {string} The converted url.
  */
-XWMM.util.convertVFSURL = function(value) {
+WIMM.util.convertVFSURL = function(value) {
     if (value === undefined || value === '') {
         return '';
     }
@@ -103,7 +103,7 @@ XWMM.util.convertVFSURL = function(value) {
  * @param {string} value The rating to convert.
  * @return {string} The converted rating.
  */
-XWMM.util.convertRating = function(value) {
+WIMM.util.convertRating = function(value) {
     return value.toFixed(1);
 };
 
@@ -112,7 +112,7 @@ XWMM.util.convertRating = function(value) {
  * @param {string} value The path.
  * @return {string} The file name.
  */
-XWMM.util.convertPathToFileName = function(value) {
+WIMM.util.convertPathToFileName = function(value) {
     var fileName = /([^\\\/]+)$/.exec(value);
 
     return fileName === null ?
@@ -125,7 +125,7 @@ XWMM.util.convertPathToFileName = function(value) {
  * @param {string} value The path.
  * @return {string} The directory.
  */
-XWMM.util.convertPathToDirectory = function(value, record) {
+WIMM.util.convertPathToDirectory = function(value, record) {
     var dirPath = value.replace(/([^\\\/]+)$/, '');
     return dirPath === null ?
         value :
@@ -137,13 +137,13 @@ XWMM.util.convertPathToDirectory = function(value, record) {
  * @param {string} object1 The first object to merge.
  * @param {string} object2 The second object to merge.
  */
-XWMM.util.merge2Objects = function(object1, object2) {
+WIMM.util.merge2Objects = function(object1, object2) {
     for (var prop in object2) {
         object1[prop] = object2[prop];
     }
 };
 
-XWMM.util.findResolution = function(width) {
+WIMM.util.findResolution = function(width) {
     var resolution;
 
     if (width === 0) {
@@ -165,7 +165,7 @@ XWMM.util.findResolution = function(width) {
     return resolution;
 };
 
-XWMM.util.findAspect = function(aspect) {
+WIMM.util.findAspect = function(aspect) {
     var ratio;
 
     if (aspect === 0) {

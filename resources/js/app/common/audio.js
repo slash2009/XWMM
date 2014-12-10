@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2014 Andrew Fyfe.
  *
@@ -18,39 +18,39 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.audio');
+Ext.ns('WIMM.audio');
 
 (function() {
 
     /**
      * Cleans the audio library from non-existent items.
      */
-    XWMM.audio.cleanLibrary = function() {
+    WIMM.audio.cleanLibrary = function() {
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Clean',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
-        xbmcJsonRPC(request);
+        kodiJsonRPC(request);
     };
 
     /**
      * Scans the audio sources for new library items.
      * @param {string} directory Scan a specific directory.
      */
-    XWMM.audio.scanLibrary = function(directory) {
+    WIMM.audio.scanLibrary = function(directory) {
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Scan',
-            id: 'XWMM'
+            id: 'WIMM'
         };
 
         if (directory !== undefined) {
             request.params = { directory: directory };
         }
 
-        xbmcJsonRPC(request);
+        kodiJsonRPC(request);
     };
 
 })();

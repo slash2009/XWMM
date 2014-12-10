@@ -24,7 +24,7 @@
 // movie.js
 //------------------------------------------
 
-var MovieFanart = new Ext.ux.XbmcImages ({
+var MovieFanart = new Ext.ux.KodiImages ({
     id: 'fanart',
     border: 0,
     width: 295,
@@ -32,14 +32,14 @@ var MovieFanart = new Ext.ux.XbmcImages ({
     autoEl: {tag: 'img', src: '../resources/images/defaultMovieFanart.jpg'}//, qtip:'Double-click to change'}
 });
 
-var Stars = new Ext.ux.XbmcStars ({
+var Stars = new Ext.ux.KodiStars ({
     id: 'movierating',
     border: 0,
     width: 96,
     height:27
 });
 
-var MovieCover = new Ext.ux.XbmcImages ({
+var MovieCover = new Ext.ux.KodiImages ({
     id: 'cover',
     cls: 'center-align',
     border: 0,
@@ -55,7 +55,7 @@ var actorRecord = Ext.data.Record.create([
 
 var storeActor = new Ext.data.Store({
     sortInfo: { field: 'name', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovieDetails',
@@ -63,7 +63,7 @@ var storeActor = new Ext.data.Store({
                 // movieid: -1, // Replaced by valid movie id before loaded.
                 properties: ['cast']
             },
-            id: 'XWMM'
+            id: 'WIMM'
         }
     }),
     reader: new Ext.data.JsonReader({ root: 'result.moviedetails.cast' }, actorRecord)
@@ -127,7 +127,7 @@ var otherDetailsPanel = new Ext.FormPanel({
         },
         {
             id: 'moviesetcombo',
-            store: XWMM.video.movieSetStore,
+            store: WIMM.video.movieSetStore,
 
             xtype: 'combo',
             fieldLabel: 'Set',
@@ -170,7 +170,7 @@ var movieDetailsPanel = new Ext.FormPanel({
             text: 'Save',
             id: 'savebutton',
             handler: function() {
-                updateXBMCAll();
+                updateKodiAll();
                 this.disable();
             }
         },
@@ -300,7 +300,7 @@ var movieDetailsPanel = new Ext.FormPanel({
                                     path = selectedMovie.data.file;
 
                                 if (path !== '') {
-                                    window.open(XWMM.util.convertVFSURL(path), '');
+                                    window.open(WIMM.util.convertVFSURL(path), '');
                                 }
                             }
                         },
