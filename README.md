@@ -1,4 +1,4 @@
-![wimm-logo-text](https://cloud.githubusercontent.com/assets/3521959/5104342/09abcce0-6fd9-11e4-9c12-558879aef230.png)
+![wimm-logo-text](https://github.com/slash2009/XWMM/blob/master/resources/images/wimm-text-black-simple-no_bg.png)
 
 ### Web Interface Media Manager for Kodi
 
@@ -18,7 +18,7 @@ This tool is intended to facilitate the use of the Kodi media management feature
 
 #### DEVELOPERS NEEDED - We don't pay either hehe ;)
 Consider joining the **WIMM** project, and help this web-interface for Kodi be **nr #1**, skilled developers are needed to help improve and fix or add exciting new features to WIMM.
- 
+
 - - -
 
 ### Installation Instructions
@@ -27,11 +27,11 @@ Consider joining the **WIMM** project, and help this web-interface for Kodi be *
   - Download [WIMM](https://github.com/slash2009/XWMM/releases)
   - Go to System > Add-ons
   - Select **[Install from a zip file](http://kodi.wiki/view/HOW-TO:Install_an_Add-on_from_a_zip_file "HOW-TO:Install an Add-on from a zip file")**
- 
+
 #### WIMM **auto-updates**
 
 From version 4.1.10 a **repo** has been added, the addon will self update once a release is made within 6 hours or less.
- 
+
   - Installing from WIMM repository
     Go to System > Add-ons > WIMM
     Select Web interfaces > WIMM
@@ -44,7 +44,7 @@ From version 4.1.10 a **repo** has been added, the addon will self update once a
 - Access WIMM:
   - If you made WIMM the default web interface open your browser to http://*WIMM_ip*:*port*/
   - Otherwise open your browser to http://*WIMM_ip*:*port*/addons/webinterface.WIMM/
-  
+
 - - -
 
 ### Submitting patches and PRs
