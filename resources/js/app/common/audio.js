@@ -32,7 +32,7 @@ Ext.ns('WIMM.audio');
             id: 'WIMM'
         };
 
-        xbmcJsonRPC(request);
+        kodiJsonRPC(request);
     };
 
     /**
@@ -50,7 +50,7 @@ Ext.ns('WIMM.audio');
             request.params = { directory: directory };
         }
 
-        xbmcJsonRPC(request);
+        kodiJsonRPC(request);
     };
 
 })();

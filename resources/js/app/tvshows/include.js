@@ -25,7 +25,7 @@ function setWatched() {
     var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
 
     if (selectedEpisode.data.playcount === 0) {
-        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', true);
+        setKodiWatched(selectedEpisode.data.episodeid, 'episode', true);
         selectedEpisode.data.playcount = 1;
         episodeGrid.getView().refresh();
     }
@@ -36,13 +36,13 @@ function setUnwatched() {
     var selectedEpisode = episodeGrid.getSelectionModel().getSelected();
 
     if (selectedEpisode.data.playcount !== 0) {
-        setXBMCWatched(selectedEpisode.data.episodeid, 'episode', false);
+        setKodiWatched(selectedEpisode.data.episodeid, 'episode', false);
         selectedEpisode.data.playcount = 0;
         episodeGrid.getView().refresh();
     }
 }
 
-function updateXBMCAll() {
+function updateKodiAll() {
     Ext.MessageBox.show({
         title: 'Please wait',
         msg: 'Saving changes',
@@ -67,7 +67,7 @@ function updateXBMCAll() {
                     mesg = 'Checking for changes...';
                     form = Ext.getCmp('episodedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'episode',
+                        updateKodiTables(form, 'episode',
                             Ext.getCmp('episodeGird').getSelectionModel().getSelected().data.episodeid);
                         mesg = 'Updating episode information...';
                     }
@@ -75,7 +75,7 @@ function updateXBMCAll() {
                 if (v === 10) {
                     form = Ext.getCmp('tvShowdetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'tvshow',
+                        updateKodiTables(form, 'tvshow',
                             Ext.getCmp('tvshowgrid').getSelectionModel().getSelected().data.tvshowid);
                         mesg = 'Updating TV show information...';
                     }
@@ -103,7 +103,7 @@ function loadTVShowDetails(record) {
         },
         id: 'WIMM'
     };
-    var response = xbmcJsonRPC(request);
+    var response = kodiJsonRPC(request);
     WIMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved

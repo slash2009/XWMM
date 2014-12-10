@@ -91,7 +91,7 @@
             };
         }
 
-        var response = xbmcJsonRPC(request);
+        var response = kodiJsonRPC(request);
 
         var win = open('', 'WIMM.exportToHTML', 'width=900,height=700,status=yes,toolbar=yes,scrollbars=yes');
         win.document.open();

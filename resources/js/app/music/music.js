@@ -33,7 +33,7 @@ var sortArticles = docCookies.getItem('sortArticles') === '1';
 var AlbumStore = new Ext.data.GroupingStore({
     autoLoad: true,
     sortInfo: { field: 'title', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'AudioLibrary.GetAlbums',
@@ -84,14 +84,14 @@ var AlbumGrid = new Ext.grid.GridPanel({
 
 // ------------ Album information -------------
 
-var AlbumCover = new Ext.ux.XbmcImages ({
+var AlbumCover = new Ext.ux.KodiImages ({
     autoEl: { tag: 'img', src: Ext.BLANK_IMAGE_URL },
     border: 0,
     width: 160,
     height: 160
 });
 
-var AlbumStars = new Ext.ux.XbmcStars ({
+var AlbumStars = new Ext.ux.KodiStars ({
     border: 0,
     width: 58,
     height: 16
@@ -282,7 +282,7 @@ var SongRecord = Ext.data.Record.create([
 ]);
 
 var SongStore = new Ext.data.Store({
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'AudioLibrary.GetSongs',

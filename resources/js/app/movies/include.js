@@ -27,7 +27,7 @@ function setWatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched === 0) {
-        setXBMCWatched(selectedMovie.data.movieid, 'movie', true);
+        setKodiWatched(selectedMovie.data.movieid, 'movie', true);
         selectedMovie.data.watched = 1;
         movieGrid.getView().refresh();
     }
@@ -38,13 +38,13 @@ function setUnwatched() {
     var selectedMovie = movieGrid.getSelectionModel().getSelected();
 
     if (selectedMovie !== undefined && selectedMovie.data.watched !== 0) {
-        setXBMCWatched(selectedMovie.data.movieid, 'movie', false);
+        setKodiWatched(selectedMovie.data.movieid, 'movie', false);
         selectedMovie.data.watched = 0;
         movieGrid.getView().refresh();
     }
 }
 
-function updateXBMCAll() {
+function updateKodiAll() {
     Ext.MessageBox.show({
         title: 'Please wait',
         msg: 'Saving changes',
@@ -71,14 +71,14 @@ function updateXBMCAll() {
 
                     form = Ext.getCmp('MoviedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'movie',
+                        updateKodiTables(form, 'movie',
                             Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating movie info';
                     }
 
                     form = Ext.getCmp('filedetailPanel').getForm();
                     if (form.isDirty()) {
-                        updateXBMCTables(form, 'movie',
+                        updateKodiTables(form, 'movie',
                             Ext.getCmp('Moviegrid').getSelectionModel().getSelected().data.movieid);
                         mesg = 'updating additional info';
                     }
@@ -167,7 +167,7 @@ function loadMovieDetails(record) {
         },
         id: 'WIMM'
     };
-    var response = xbmcJsonRPC(request);
+    var response = kodiJsonRPC(request);
     WIMM.util.merge2Objects(record.data, response.moviedetails);
 
     //fix up some data retrieved

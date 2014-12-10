@@ -77,7 +77,7 @@ var actorRecord = Ext.data.Record.create([
 
 var sortArticles = docCookies.getItem('sortArticles') === '1';
 var storeTVShow = new Ext.data.Store({
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShows',
@@ -101,7 +101,7 @@ var storeTVShow = new Ext.data.Store({
 
 var storeSeason = new Ext.data.Store({
     sortInfo: { field: 'season', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetSeasons',
@@ -117,7 +117,7 @@ var storeSeason = new Ext.data.Store({
 
 var storeEpisode = new Ext.data.Store({
     sortInfo: { field: 'episode', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetEpisodes',
@@ -137,7 +137,7 @@ var storeEpisode = new Ext.data.Store({
 
 var storeActor = new Ext.data.Store({
     sortInfo: { field: 'name', direction: 'ASC' },
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData: {
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetTVShowDetails',
@@ -151,20 +151,20 @@ var storeActor = new Ext.data.Store({
     reader: new Ext.data.JsonReader({ root: 'result.tvshowdetails.cast' }, actorRecord)
 });
 
-var tvshowStars = new Ext.ux.XbmcStars ({
+var tvshowStars = new Ext.ux.KodiStars ({
     id: 'tvShowStarRating',
     border: 0,
     width: 96,
     height:27
 });
 
-var episodeStars = new Ext.ux.XbmcStars ({
+var episodeStars = new Ext.ux.KodiStars ({
     id: 'episodeStarRating',
     width: 72,
     height:20
 });
 
-var TVShowCover = new Ext.ux.XbmcImages({
+var TVShowCover = new Ext.ux.KodiImages({
     id: 'tvshowcover',
     cls: 'center-align',
     border: 0,
@@ -173,7 +173,7 @@ var TVShowCover = new Ext.ux.XbmcImages({
     autoEl: {tag: 'img', src: Ext.BLANK_IMAGE_URL}
 });
 
-var SeasonCover = new Ext.ux.XbmcImages({
+var SeasonCover = new Ext.ux.KodiImages({
     id: 'seasoncover',
     cls: 'center-align',
     border: 0,
@@ -546,7 +546,7 @@ TVShow.Mainpanel = new Ext.Panel({
                     text: 'Save',
                     id: 'savebutton',
                     handler: function(e) {
-                        updateXBMCAll();
+                        updateKodiAll();
                         this.disable();
                     }
                 },

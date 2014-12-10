@@ -44,14 +44,14 @@ function updateMusicAlbum() {
                 if (v === 1) {
                     myText = 'Checking changes...';
                     if (standardInfo.getForm().isDirty()) {
-                        updateXBMCTables(standardInfo.form, 'album', AlbumGrid.getSelectionModel().getSelected().data.albumid);
+                        updateKodiTables(standardInfo.form, 'album', AlbumGrid.getSelectionModel().getSelected().data.albumid);
                         myText = 'updating Album info';
                     }
                 }
                 if (v === 19) {
                     if ((extraInfo.getForm().isDirty()) || (albumDescription.getForm().isDirty())) {
-                        updateXBMCTables(extraInfo.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
-                        updateXBMCTables(albumDescription.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
+                        updateKodiTables(extraInfo.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
+                        updateKodiTables(albumDescription.form, 'albuminfo', AlbumGrid.getSelectionModel().getSelected().data.albumid);
                         myText = 'updating Extra info';
                     }
                 }
@@ -77,7 +77,7 @@ function GetAlbumDetails(record) {
         },
         id: 'WIMM'
     };
-    var response = xbmcJsonRPC(request);
+    var response = kodiJsonRPC(request);
     WIMM.util.merge2Objects(record.data, response.albumdetails);
 
     record.data.genre = WIMM.util.convertArrayToList(response.albumdetails.genre, ' | ');

@@ -47,7 +47,7 @@ var GenrecolModel = new Ext.grid.ColumnModel([
 var GenreStore = new Ext.data.Store({
     sortInfo: {field: 'strGenre', direction: 'ASC'},
     autoLoad: true,
-    proxy: new Ext.data.XBMCProxy({
+    proxy: new Ext.data.KodiProxy({
         jsonData : {'jsonrpc': '2.0', 'method': 'AudioLibrary.GetGenres', 'id': 1}
     }),
     reader: new Ext.data.JsonReader({
@@ -62,11 +62,11 @@ var editor = new Ext.ux.grid.RowEditor({
     listeners: {
         afteredit: function(roweditor, changes, record, rowIndex) {
             if (record.data.idGenre === -1) {
-                AddXBMCNewMusicGenre(record);
+                AddKodiNewMusicGenre(record);
                 GenreStore.reload();
             }
             else {
-                updateXBMCMusicGenreString(record);
+                updateKodiMusicGenreString(record);
                 GenreStore.reload();
             }
 
@@ -120,12 +120,12 @@ function onDelete() {
     var rec = GenreMgmtGrid.getSelectionModel().getSelected();
     if (!rec) {return false;}
 
-    if (checkXBMCGenreUsed(rec)){
+    if (checkKodiGenreUsed(rec)){
         Ext.Msg.alert('Error', 'this genre is still in use');
         console.log('cannot remove');
     }
     else {
-        removeXBMCGenre(rec);
+        removeKodiGenre(rec);
         GenreMgmtGrid.store.remove(rec);
     }
     */

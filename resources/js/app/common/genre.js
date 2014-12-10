@@ -32,7 +32,7 @@ Ext.ns('WIMM.video');
     var sortArticles = docCookies.getItem('sortArticles') === '1';
 
     WIMM.video.genreStore = new Ext.data.Store({
-        proxy: new Ext.data.XBMCProxy({
+        proxy: new Ext.data.KodiProxy({
             jsonData: {
                 jsonrpc: '2.0',
                 method: 'VideoLibrary.GetGenres',
@@ -91,7 +91,7 @@ Ext.ns('WIMM.video');
             },
             id: 'WIMM'
         };
-        var response = xbmcJsonRPC(request);
+        var response = kodiJsonRPC(request);
 
         var i, i_len, j, j_len, oldGenreList, newGenreList, updateRequest;
         for (i = 0, i_len = response[resultField].length; i < i_len; i++) {
@@ -116,7 +116,7 @@ Ext.ns('WIMM.video');
                 id: 'WIMM'
             };
             updateRequest.params[idField] = response[resultField][i][idField];
-            xbmcJsonRPC(updateRequest);
+            kodiJsonRPC(updateRequest);
         }
 
         Ext.getCmp(gridId).getStore().load();
