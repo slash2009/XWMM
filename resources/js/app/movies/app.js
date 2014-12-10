@@ -32,7 +32,7 @@ Ext.onReady(function() {
                     text: 'Scan Library',
                     iconCls: 'silk-plugin',
                     handler: function() {
-                        XWMM.video.scanLibrary();
+                        WIMM.video.scanLibrary();
                         Ext.MessageBox.alert(
                             'Scan Library',
                             'A library scan has begun.'
@@ -43,7 +43,7 @@ Ext.onReady(function() {
                     text: 'Clean Library',
                     iconCls: 'silk-plugin',
                     handler: function() {
-                        XWMM.video.cleanLibrary();
+                        WIMM.video.cleanLibrary();
                         Ext.MessageBox.alert(
                             'Clean Library',
                             'The library is being cleaned.'
@@ -116,6 +116,6 @@ Ext.onReady(function() {
 
     addQuickSearch('quicksearch', storeMovie, 'Movietitle');
 
-    XWMM.video.setGenreMode('movie');
-    XWMM.video.movieSetStore.load();
+    WIMM.video.setGenreMode('movie');
+    WIMM.video.movieSetStore.load();
 });

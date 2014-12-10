@@ -78,13 +78,13 @@ function GetAlbumDetails(record) {
         id: 'WIMM'
     };
     var response = xbmcJsonRPC(request);
-    XWMM.util.merge2Objects(record.data, response.albumdetails);
+    WIMM.util.merge2Objects(record.data, response.albumdetails);
 
-    record.data.genre = XWMM.util.convertArrayToList(response.albumdetails.genre, ' | ');
-    record.data.theme = XWMM.util.convertArrayToList(response.albumdetails.theme, ' | ');
-    record.data.mood = XWMM.util.convertArrayToList(response.albumdetails.mood, ' | ');
-    record.data.style = XWMM.util.convertArrayToList(response.albumdetails.style, ' | ');
-    record.data.rating = XWMM.util.convertRating(record.data.rating);
+    record.data.genre = WIMM.util.convertArrayToList(response.albumdetails.genre, ' | ');
+    record.data.theme = WIMM.util.convertArrayToList(response.albumdetails.theme, ' | ');
+    record.data.mood = WIMM.util.convertArrayToList(response.albumdetails.mood, ' | ');
+    record.data.style = WIMM.util.convertArrayToList(response.albumdetails.style, ' | ');
+    record.data.rating = WIMM.util.convertRating(record.data.rating);
     if (record.data.rating < 0) {
         record.data.rating = 0;
     }

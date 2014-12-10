@@ -87,7 +87,7 @@ var movieGrid = new Ext.grid.GridPanel({
             items: [
                 {
                     id: 'genreFilterCombo',
-                    store: XWMM.video.genreStore,
+                    store: WIMM.video.genreStore,
 
                     xtype: 'combo',
                     name: 'label',

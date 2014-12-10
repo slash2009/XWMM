@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2014 Andrew Fyfe.
  *
@@ -18,14 +18,14 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.video');
+Ext.ns('WIMM.video');
 
 (function() {
 
     /**
      * Cleans the video library from non-existent items.
      */
-    XWMM.video.cleanLibrary = function() {
+    WIMM.video.cleanLibrary = function() {
         var request = {
             jsonrpc: '2.0',
             method: 'VideoLibrary.Clean',
@@ -39,7 +39,7 @@ Ext.ns('XWMM.video');
      * Scans the video sources for new library items.
      * @param {string} directory Scan a specific directory.
      */
-    XWMM.video.scanLibrary = function(directory) {
+    WIMM.video.scanLibrary = function(directory) {
         var request = {
             jsonrpc: '2.0',
             method: 'VideoLibrary.Scan',

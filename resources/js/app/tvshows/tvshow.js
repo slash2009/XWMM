@@ -23,22 +23,22 @@
 Ext.ns('TVShow');
 
 function bannerConvert(value, record) {
-    return XWMM.util.convertArtworkURL(value.banner);
+    return WIMM.util.convertArtworkURL(value.banner);
 }
 
 function fanartConvert(value, record) {
-    return XWMM.util.convertArtworkURL(value.fanart);
+    return WIMM.util.convertArtworkURL(value.fanart);
 }
 
 var tvShowRecord = Ext.data.Record.create([
    { name: 'tvshowid' },
    { name: 'title' },
    { name: 'sorttitle' },
-   { name: 'genre', convert: XWMM.util.convertArrayToList },
+   { name: 'genre', convert: WIMM.util.convertArrayToList },
    { name: 'year' },
-   { name: 'rating', convert: XWMM.util.convertRating },
+   { name: 'rating', convert: WIMM.util.convertRating },
    { name: 'plot' },
-   { name: 'studio', convert: XWMM.util.convertArrayToList },
+   { name: 'studio', convert: WIMM.util.convertArrayToList },
    { name: 'mpaa' },
    { name: 'playcount' },
    { name: 'episode' },
@@ -46,28 +46,28 @@ var tvShowRecord = Ext.data.Record.create([
    { name: 'fanart', mapping: 'art', convert: fanartConvert },
    { name: 'banner', mapping: 'art', convert: bannerConvert },
    { name: 'watchedepisodes' },
-   { name: 'tag', convert: XWMM.util.convertArrayToList }
+   { name: 'tag', convert: WIMM.util.convertArrayToList }
 ]);
 
 var seasonRecord = Ext.data.Record.create([
    { name: 'season' },
    { name: 'label' },
-   { name: 'thumbnail', convert: XWMM.util.convertArtworkURL }
+   { name: 'thumbnail', convert: WIMM.util.convertArtworkURL }
 ]);
 
 var episodeRecord = Ext.data.Record.create([
     { name: 'episode' },
     { name: 'title' },
-    { name: 'rating', convert: XWMM.util.convertRating },
+    { name: 'rating', convert: WIMM.util.convertRating },
     { name: 'plot' },
     { name: 'firstaired' },
-    { name: 'director', convert: XWMM.util.convertArrayToList },
-    { name: 'writer', convert: XWMM.util.convertArrayToList },
+    { name: 'director', convert: WIMM.util.convertArrayToList },
+    { name: 'writer', convert: WIMM.util.convertArrayToList },
     { name: 'streamdetails' },
     { name: 'playcount' },
     { name: 'episodeid' },
-    { name: 'file', convert: XWMM.util.convertPathToFileName },
-    { name: 'directory', mapping: 'file', convert: XWMM.util.convertPathToDirectory }
+    { name: 'file', convert: WIMM.util.convertPathToFileName },
+    { name: 'directory', mapping: 'file', convert: WIMM.util.convertPathToDirectory }
 ]);
 
 var actorRecord = Ext.data.Record.create([
@@ -338,7 +338,7 @@ var episodeDetailsPanel = new Ext.FormPanel({
                             path = selectedEpisode.data.directory + selectedEpisode.data.file;
 
                         if (path !== '') {
-                            window.open(XWMM.util.convertVFSURL(path), '');
+                            window.open(WIMM.util.convertVFSURL(path), '');
                         }
                     }
                 }

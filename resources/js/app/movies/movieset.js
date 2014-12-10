@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2011, 2013 slash2009.
  * Copyright 2013 Zernable.
@@ -21,7 +21,7 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.video');
+Ext.ns('WIMM.video');
 
 (function() {
 
@@ -32,7 +32,7 @@ Ext.ns('XWMM.video');
 
     var sortArticles = docCookies.getItem('sortArticles') === '1';
 
-    XWMM.video.movieSetStore = new Ext.data.Store({
+    WIMM.video.movieSetStore = new Ext.data.Store({
         proxy: new Ext.data.XBMCProxy({
             jsonData: {
                 jsonrpc: '2.0',
@@ -116,7 +116,7 @@ Ext.ns('XWMM.video');
                 clicksToEdit: 1,
                 stripeRows: true,
                 plugins: [rowEditor],
-                store: XWMM.video.movieSetStore,
+                store: WIMM.video.movieSetStore,
                 tbar: [
                     {
                         text: 'Add',

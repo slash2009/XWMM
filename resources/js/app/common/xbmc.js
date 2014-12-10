@@ -57,7 +57,7 @@ function setXBMCWatched(mediaId, mediaType, watched) {
             return;
     }
 
-    //console.debug('XWMM::updateXBMCSet rpcCmd: ' + rpcCmd);
+    //console.debug('WIMM::updateXBMCSet rpcCmd: ' + rpcCmd);
     xbmcJsonRPC(rpcCmd);
 }
 
@@ -99,7 +99,7 @@ function updateXBMCTables(form, recordType, recordId) {
             case 'mood':
             case 'style':
             case 'artist':
-                params[f.name] = XWMM.util.convertListToArray(f.getValue(), /[,\/\|;]+/); // Split list separated with , / or |.
+                params[f.name] = WIMM.util.convertListToArray(f.getValue(), /[,\/\|;]+/); // Split list separated with , / or |.
                 break;
 
             default:
@@ -144,7 +144,7 @@ function updateXBMCTables(form, recordType, recordId) {
             return;
     }
 
-    //console.debug('XWMM::updateXBMCTables rpcCmd: ' + rpcCmd);
+    //console.debug('WIMM::updateXBMCTables rpcCmd: ' + rpcCmd);
     xbmcJsonRPC(rpcCmd);
 }
 

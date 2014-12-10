@@ -18,14 +18,14 @@
  * along with WIMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('XWMM.audio');
+Ext.ns('WIMM.audio');
 
 (function() {
 
     /**
      * Cleans the audio library from non-existent items.
      */
-    XWMM.audio.cleanLibrary = function() {
+    WIMM.audio.cleanLibrary = function() {
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Clean',
@@ -39,7 +39,7 @@ Ext.ns('XWMM.audio');
      * Scans the audio sources for new library items.
      * @param {string} directory Scan a specific directory.
      */
-    XWMM.audio.scanLibrary = function(directory) {
+    WIMM.audio.scanLibrary = function(directory) {
         var request = {
             jsonrpc: '2.0',
             method: 'AudioLibrary.Scan',

@@ -23,9 +23,9 @@
 var AlbumRecord = Ext.data.Record.create([
    { name: 'albumid' },
    { name: 'title' },
-   { name: 'artist', convert: XWMM.util.convertArrayToList },
+   { name: 'artist', convert: WIMM.util.convertArrayToList },
    { name: 'displayartist' },
-   { name: 'genre', convert: XWMM.util.convertArrayToList },
+   { name: 'genre', convert: WIMM.util.convertArrayToList },
    { name: 'year' }
 ]);
 
@@ -278,7 +278,7 @@ var SongRecord = Ext.data.Record.create([
    { name: 'title' },
    { name: 'track' },
    { name: 'duration' },
-   { name: 'rating', convert: XWMM.util.convertRating },
+   { name: 'rating', convert: WIMM.util.convertRating },
 ]);
 
 var SongStore = new Ext.data.Store({

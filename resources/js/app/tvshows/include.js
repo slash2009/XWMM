@@ -104,14 +104,14 @@ function loadTVShowDetails(record) {
         id: 'WIMM'
     };
     var response = xbmcJsonRPC(request);
-    XWMM.util.merge2Objects(record.data, response.tvshowdetails);
+    WIMM.util.merge2Objects(record.data, response.tvshowdetails);
 
     //fix up some data retrieved
-    record.data.genre = XWMM.util.convertArrayToList(response.tvshowdetails.genre);
-    record.data.studio = XWMM.util.convertArrayToList(response.tvshowdetails.studio);
-    record.data.rating = XWMM.util.convertRating(response.tvshowdetails.rating);
-    record.data.fanart = XWMM.util.convertArtworkURL(response.tvshowdetails.fanart);
-    record.data.thumbnail = XWMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
+    record.data.genre = WIMM.util.convertArrayToList(response.tvshowdetails.genre);
+    record.data.studio = WIMM.util.convertArrayToList(response.tvshowdetails.studio);
+    record.data.rating = WIMM.util.convertRating(response.tvshowdetails.rating);
+    record.data.fanart = WIMM.util.convertArtworkURL(response.tvshowdetails.fanart);
+    record.data.thumbnail = WIMM.util.convertArtworkURL(response.tvshowdetails.thumbnail);
     updateTVShowDetails(record);
 }
 
@@ -146,11 +146,11 @@ function updateEpisodeDetails(record) {
                 Ext.BLANK_IMAGE_URL;
             aspect.src = (record.data.streamdetails.video[0].aspect !== undefined) ?
                 '../resources/images/flags/aspectratio/' +
-                    XWMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
+                    WIMM.util.findAspect(record.data.streamdetails.video[0].aspect) + '.png' :
                 Ext.BLANK_IMAGE_URL;
             resolution.src = (record.data.streamdetails.video[0].width !== undefined) ?
                 '../resources/images/flags/video/' +
-                    XWMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
+                    WIMM.util.findResolution(record.data.streamdetails.video[0].width) + '.png' :
                 Ext.BLANK_IMAGE_URL;
         }
         if (record.data.streamdetails.audio !== undefined &&
@@ -198,7 +198,7 @@ function tvShowGenreChange(sm) {
 function updateTVShowGenreGrid(record) {
     var genreGrid = Ext.getCmp('genresGrid');
     var genreIds = [];
-    var genres = XWMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
+    var genres = WIMM.util.convertListToArray(record.data.genre, /[,\/\|]+/); // Split list separated with , / or |.
 
     var index;
     for (var i = 0, genreCount = genres.length; i < genreCount; i++) {

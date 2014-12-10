@@ -1,4 +1,4 @@
-/* global Ext: false, XWMM: false */
+/* global Ext: false, WIMM: false */
 /*
  * Copyright 2013 Zernable.
  * Copyright 2013 uNiversal.
@@ -25,7 +25,7 @@
     function formatField(field, value) {
         switch (field) {
             case 'rating':
-                value = XWMM.util.convertRating(value);
+                value = WIMM.util.convertRating(value);
                 break;
 
             case 'country':
@@ -41,7 +41,7 @@
 
             case 'fanart':
             case 'thumbnail':
-                value = decodeURIComponent(XWMM.util.convertArtworkURL(value));
+                value = decodeURIComponent(WIMM.util.convertArtworkURL(value));
                 break;
         }
 
@@ -93,7 +93,7 @@
 
         var response = xbmcJsonRPC(request);
 
-        var win = open('', 'XWMM.exportToHTML', 'width=900,height=700,status=yes,toolbar=yes,scrollbars=yes');
+        var win = open('', 'WIMM.exportToHTML', 'width=900,height=700,status=yes,toolbar=yes,scrollbars=yes');
         win.document.open();
         win.document.write(
             '<!DOCTYPE html>\n' +
@@ -113,7 +113,7 @@
 
         var i, i_len, j, j_len;
         for (i = 0, i_len = options.fields.length; i < i_len; i++) {
-            win.document.write('            <th>' + XWMM.util.toTitleCase(options.fields[i]) + '</th>');
+            win.document.write('            <th>' + WIMM.util.toTitleCase(options.fields[i]) + '</th>');
         }
 
         win.document.write(

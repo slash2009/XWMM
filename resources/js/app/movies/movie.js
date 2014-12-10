@@ -127,7 +127,7 @@ var otherDetailsPanel = new Ext.FormPanel({
         },
         {
             id: 'moviesetcombo',
-            store: XWMM.video.movieSetStore,
+            store: WIMM.video.movieSetStore,
 
             xtype: 'combo',
             fieldLabel: 'Set',
@@ -300,7 +300,7 @@ var movieDetailsPanel = new Ext.FormPanel({
                                     path = selectedMovie.data.file;
 
                                 if (path !== '') {
-                                    window.open(XWMM.util.convertVFSURL(path), '');
+                                    window.open(WIMM.util.convertVFSURL(path), '');
                                 }
                             }
                         },
