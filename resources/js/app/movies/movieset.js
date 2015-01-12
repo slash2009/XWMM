@@ -72,7 +72,7 @@ Ext.ns('WIMM.video');
             jsonrpc: '2.0',
             method: 'VideoLibrary.GetMovies',
             params: {
-                filter: { field: 'set', operator: 'contains', value: oldMovieSet }
+                filter: { field: 'set', operator: 'is', value: oldMovieSet }
             },
             id: 'WIMM'
         };
