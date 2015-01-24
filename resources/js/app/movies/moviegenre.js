@@ -99,7 +99,7 @@ var movieGrid = new Ext.grid.GridPanel({
                         select: function(combo, record, index) {
                             storeMovie.load({ params: { filter: {
                                 field: 'genre',
-                                operator: 'contains',
+                                operator: 'is',
                                 value: record.data.label
                             } } });
                         }

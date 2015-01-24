@@ -1,5 +1,8 @@
 # WIMM Change log
 
+4.1.15
+ - Fix genre rules operator 
+
 4.1.14
  - Fix music genre field not being split correctly (Issue #120)
  - Rename minor id fields now correctly show WIMM

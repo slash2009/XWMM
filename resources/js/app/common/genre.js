@@ -87,7 +87,7 @@ Ext.ns('WIMM.video');
             method: readMethod,
             params: {
                 properties: ['genre'],
-                filter: { field: 'genre', operator: 'contains', value: oldGenre }
+                filter: { field: 'genre', operator: 'is', value: oldGenre }
             },
             id: 'WIMM'
         };
