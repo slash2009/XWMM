@@ -1,5 +1,8 @@
-# WIMM Change log
+# WIMM Changelog
 
+4.1.16
+ - Add missing graphic flags 
+ 
 4.1.15
  - Fix genre rules operator 
 
