@@ -1,5 +1,8 @@
 # WIMM Changelog
 
+4.1.17
+ - Remove version number from addon folder (Issue #129)
+
 4.1.16
  - Add missing graphic flags 
  
