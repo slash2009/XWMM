@@ -43,7 +43,7 @@ WIMM.util.convertArrayToList = function(value, delim) {
         return '';
     }
     else {
-        if (delim === undefined) {
+        if (delim === undefined || typeof(delim) === 'object') {
             delim = ' / ';
         }
 

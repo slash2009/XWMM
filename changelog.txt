@@ -1,13 +1,17 @@
 # WIMM Changelog
 
+4.1.18
+ - Writers needs converted back to an array before saving (Issue #130)
+ - If a delimiter isn't specified ExtJS dumps the record object into the variable instead :(
+
 4.1.17
  - Remove version number from addon folder (Issue #129)
 
 4.1.16
- - Add missing graphic flags 
- 
+ - Add missing graphic flags
+
 4.1.15
- - Fix genre rules operator 
+ - Fix genre rules operator
 
 4.1.14
  - Fix music genre field not being split correctly (Issue #120)
