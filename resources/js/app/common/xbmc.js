@@ -93,6 +93,7 @@ function updateKodiTables(form, recordType, recordId) {
             case 'country':
             case 'studio':
             case 'director':
+            case 'writer':
             case 'genre':
             case 'tag':
             case 'theme':
