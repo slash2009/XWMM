@@ -1,11 +1,25 @@
-# WIMM Changelog
+[B]WIMM developers and contributors[/B]
+* slash
+* Zernable
+* MokuJinJin
+* nwtn
+* fyfe
+* criticalfiction
+* uNiversaI
+
+[B]WIMM Changelog[/B]
+4.1.19
+ - Various cleanup on addon.xml
+ - Add more descriptive addon name. This should be significant for Isengards new addon manager structure.
+ - Move developers names to changelog. (providers filed is getting awfully long, this way all contributors are still listed and it looks tidier.
+ - Remove repository code from webinterface addon.xml We should provide separate repository. W.I.P.
 
 4.1.18
  - Writers needs converted back to an array before saving (Issue #130)
  - If a delimiter isn't specified ExtJS dumps the record object into the variable instead :(
 
 4.1.17
- - Remove version number from addon folder (Issue #129)
+ - Remove version number from add-on folder (Issue #129)
 
 4.1.16
  - Add missing graphic flags
