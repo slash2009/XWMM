@@ -1,27 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<addon
-  id="webinterface.WIMM"
-  version="4.1.18"
-  name="WIMM"
-  provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe | criticalfiction">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.wimm.web"
+       name="Official WIMM repository"
+       version="1.0.0"
+       provider-name="fyfe">
   <requires>
-    <import addon="xbmc.json" version="6.14.3"/>
+    <import addon="xbmc.addon" version="14.0.0"/>
   </requires>
-  <extension
-    point="xbmc.gui.webinterface"/>
-  <extension point="xbmc.addon.metadata">
-    <summary>Web interface to manage media library for kodi.</summary>
-    <description>WIMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
-    <platform>all</platform>
-    <source>https://github.com/slash2009/XWMM</source>
-    <forum>http://forum.kodi.tv/showthread.php?tid=188839</forum>
-    <disclaimer lang="en">This is a beta addon and may contain bugs or flawed code, please contact us via github project issues and help us fix the problem</disclaimer>
-  </extension>
-  <extension
-    point="xbmc.addon.repository"
-    name="WIMM Add-on Repository">
-    <info compressed="true">http://kodi.neptune-one.net/addons/addons.xml</info>
-    <checksum>http://kodi.neptune-one.net/addons/addons.xml.md5</checksum>
-    <datadir zip="true">http://kodi.neptune-one.net/addons</datadir>
-  </extension>
+    <extension point="xbmc.addon.repository"
+	   name="Official WIMM Add-on Repository">
+       <dir minversion="14.0.0">
+            <info compressed="true">http://kodi.neptune-one.net/addons/addons.xml</info>
+            <checksum>http://kodi.neptune-one.net/addons/addons.xml.md5</checksum>
+            <datadir zip="true">http://kodi.neptune-one.net/addons</datadir>
+            <hashes>true</hashes>
+        </dir>
+        <dir minversion="14.9.0">
+            <info compressed="true">http://kodi.neptune-one.net/addons/isengard/addons.xml</info>
+            <checksum>http://kodi.neptune-one.net/addons/isengard/addons.xml.md5</checksum>
+            <datadir zip="true">http://kodi.neptune-one.net/addons/isengard</datadir>
+            <hashes>true</hashes>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Official repository for WIMM web interface</summary>
+        <description lang="en">WIMM repository providing WIMM web interface add-on for kodi</description>
+        <disclaimer lang="en">This is a beta add-on repository</disclaimer>
+        <platform>all</platform>
+    </extension>
 </addon>

@@ -1,6 +1,6 @@
 ![wimm-logo-text](https://github.com/slash2009/XWMM/blob/master/resources/images/wimm-text-black-simple-no_bg.png)
 
-### Web Interface Media Manager for Kodi
+### Official Repository WIMM webinterface
 
 WIMM is a cross platform tool to manage the Kodi Media Databases. It is completely web based, so you don't need to install anything on your workstation to manage your media.
 
@@ -24,13 +24,11 @@ Consider joining the **WIMM** project, and help this web-interface for Kodi be *
 ### Installation Instructions
 
 - Install WIMM:
-  - Download [WIMM](https://github.com/slash2009/XWMM/releases)
+  - Download repository.wimm.web-1.0.0.zip [WIMM](https://github.com/slash2009/XWMM/releases)
   - Go to System > Add-ons
   - Select **[Install from a zip file](http://kodi.wiki/view/HOW-TO:Install_an_Add-on_from_a_zip_file "HOW-TO:Install an Add-on from a zip file")**
 
-#### WIMM **auto-updates**
-
-From version 4.1.10 a **repo** has been added, the addon will self update once a release is made within 6 hours or less.
+Proceed to installing WIMM from Repository
 
   - Installing from WIMM repository
     Go to System > Add-ons > WIMM
