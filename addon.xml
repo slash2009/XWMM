@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="webinterface.WIMM"
-  version="4.1.18"
+  version="4.1.20"
   name="WIMM"
   provider-name="slash | Zernable | MokuJinJin | nwtn | fyfe | criticalfiction">
   <requires>
@@ -9,13 +9,15 @@
   </requires>
   <extension
     point="xbmc.gui.webinterface"/>
-  <extension point="xbmc.addon.metadata">
-    <summary>Web interface to manage media library for kodi.</summary>
-    <description>WIMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
-    <platform>all</platform>
-    <source>https://github.com/slash2009/XWMM</source>
-    <forum>http://forum.kodi.tv/showthread.php?tid=188839</forum>
+  <extension
+    point="xbmc.addon.metadata">
+    <summary lang="en">Web interface to manage media library for kodi.</summary>
+    <description lang="en">WIMM allows you to customize and change metadata for movies, tvshows and music from a standard browser</description>
     <disclaimer lang="en">This is a beta addon and may contain bugs or flawed code, please contact us via github project issues and help us fix the problem</disclaimer>
+    <platform>all</platform>
+    <license>GPLv2</license>
+    <forum>http://forum.kodi.tv/showthread.php?tid=188839</forum>
+    <source>https://github.com/slash2009/XWMM</source>
   </extension>
   <extension
     point="xbmc.addon.repository"

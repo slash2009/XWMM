@@ -1,5 +1,8 @@
 # WIMM Changelog
 
+4.1.20
+ - cleanup addon.xml
+
 4.1.18
  - Writers needs converted back to an array before saving (Issue #130)
  - If a delimiter isn't specified ExtJS dumps the record object into the variable instead :(
