@@ -1,6 +1,6 @@
 # WIMM Changelog
 
-4.1.21
+4.1.22
 - fix broekn and incompatible extension point
 
 4.1.20
