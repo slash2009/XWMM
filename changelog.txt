@@ -1,5 +1,8 @@
 # WIMM Changelog
 
+4.1.23
+- Remove automatic update repository
+
 4.1.22
 - fix broekn and incompatible extension point
 

@@ -28,23 +28,6 @@ Consider joining the **WIMM** project, and help this web-interface for Kodi be *
   - Go to System > Add-ons
   - Select **[Install from a zip file](http://kodi.wiki/view/HOW-TO:Install_an_Add-on_from_a_zip_file "HOW-TO:Install an Add-on from a zip file")**
 
-#### WIMM **auto-updates**
-
-From version 4.1.10 a **repo** has been added, the addon will self update once a release is made within 6 hours or less.
-
-  - Installing from WIMM repository
-    Go to System > Add-ons > WIMM
-    Select Web interfaces > WIMM
-
-- Enable web interface:
-  - Go to System > Services > Webserver > Services
-  - Enable **Allow control Kodi via HTTP**
-  - Set **Web Interface** to WIMM *(optional)*
-
-- Access WIMM:
-  - If you made WIMM the default web interface open your browser to http://*WIMM_ip*:*port*/
-  - Otherwise open your browser to http://*WIMM_ip*:*port*/addons/webinterface.WIMM/
-
 - - -
 
 ### Submitting patches and PRs
